@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CompanionApp</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoicnl1aW53MTIzIiwiYSI6ImNsODV5M21odjB0dXAzbm9lZDhnNXVoY2UifQ.IiTAr5ITOUcCVjPjWiRe1w</string>
+</resources>

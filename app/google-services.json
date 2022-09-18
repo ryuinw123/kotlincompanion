@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "596321626766",
+    "project_id": "companionapp-d1260",
+    "storage_bucket": "companionapp-d1260.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596321626766:android:6af4270ad5fe7b89b9b7df",
+        "android_client_info": {
+          "package_name": "com.project.companion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596321626766-c7bi86vjub6psri87cg3snfvfe3ekkec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.companion",
+            "certificate_hash": "31914ab9e25a7428ae1a597d9f5f9e894b995681"
+          }
+        },
+        {
+          "client_id": "596321626766-ujcfpgepvciibljh3oqq9v2lier9f5ue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMd45iAJg9nxz4RnZwE9Gl_gplQCyeFbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596321626766-ujcfpgepvciibljh3oqq9v2lier9f5ue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
