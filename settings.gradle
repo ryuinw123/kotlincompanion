@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "kmitl_companion"
+rootProject.name = "kmitlcompanion"
 include ':app'

@@ -1,4 +1,4 @@
-package com.example.kmitl_companion
+package com.example.kmitlcompanion
 
 import org.junit.Test
 
