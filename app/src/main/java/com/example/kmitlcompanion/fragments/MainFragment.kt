@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.ui.main
+package com.example.kmitlcompanion.fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -21,13 +21,14 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        return view
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+//
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+//        // TODO: Use the ViewModel
+//    }
 
 }

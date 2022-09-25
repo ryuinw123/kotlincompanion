@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">kmitlcompanion</string>
+    <string name="logout">logout</string>
+    <string name="todo">TODO</string>
 </resources>
