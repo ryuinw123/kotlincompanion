@@ -2,8 +2,7 @@ package com.example.kmitlcompanion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.kmitlcompanion.ui.main.MainFragment
-import com.example.kmitlcompanion.SignIn
+import com.example.kmitlcompanion.fragments.SignIn
 
 class MainActivity : AppCompatActivity() {
 
