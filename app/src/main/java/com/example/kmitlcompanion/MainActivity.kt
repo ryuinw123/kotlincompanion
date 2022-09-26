@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.example.kmitlcompanion.fragments.MainFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +19,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
-        }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.container, MainFragment.newInstance())
+//                //.replace(R.id.container, SignIn.newInstance())
+//                .commitNow()
+//        }
     }
 
 
