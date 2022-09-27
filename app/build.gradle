@@ -3,10 +3,17 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     compileSdk 32
+
+    buildFeatures {
+        dataBinding true
+    }
+
+
 
     defaultConfig {
         applicationId "com.example.kmitlcompanion"
@@ -18,9 +25,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    viewBinding {
-        enabled = true
-    }
+
 
     buildTypes {
         release {
@@ -51,16 +56,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //fragment
-    implementation 'androidx.fragment:fragment:1.5.3'
     implementation 'androidx.fragment:fragment-ktx:1.5.3'
 
     //hilt
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    implementation "com.google.dagger:hilt-android:2.42"
+    kapt "com.google.dagger:hilt-compiler:2.42"
 
     //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
+
+    //Mapbox
+    implementation 'com.mapbox.maps:android:10.8.0'
+    implementation "com.mapbox.navigation:android:2.7.0"
+    implementation "com.mapbox.navigation:ui-dropin:2.7.0"
 
     //OAuth 2.0
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
