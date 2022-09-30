@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.viewmodels
+package com.example.kmitlcompanion.presentation
 
 import androidx.lifecycle.ViewModel
 

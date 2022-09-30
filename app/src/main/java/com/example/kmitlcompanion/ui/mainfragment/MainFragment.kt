@@ -5,14 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentMainBinding
-import com.example.kmitlcompanion.viewmodels.MainViewModel
+import com.example.kmitlcompanion.presentation.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
