@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.api.ApiService
 import com.example.kmitlcompanion.data.test
+import com.example.kmitlcompanion.data.testToken
 import com.example.kmitlcompanion.databinding.FragmentSignInBinding
 import com.example.kmitlcompanion.viewmodels.SignInViewModel
 
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.Task
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.reflect.typeOf
 
 class SignIn : Fragment() {
 
@@ -51,16 +53,18 @@ class SignIn : Fragment() {
         val button = view.findViewById<Button>(R.id.signInButton)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            //.requestIdToken(getString(R.string.AUTH_ID))
+            .requestIdToken(getString(R.string.AUTH_ID))
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
         ///////////////////// test api
-        val apiService = ApiService()
+        //val apiService = ApiService()
+        //val tok_ = testToken(token ="xasiawm@454c028$6%^")
+
 
         //getTestData(apiService)
-        postTestData(apiService)
+        //postTestData(apiService,tok_)
 
 
         button.setOnClickListener{
@@ -74,6 +78,12 @@ class SignIn : Fragment() {
         //send to backend to check token
         val token = account.idToken
         val islogin = true
+
+        Log.d("OAuth",token.toString())
+
+        val apiService = ApiService()
+        val tok_ = testToken(token = token.toString(),auth_userdata = "")
+        postTestData(apiService,tok_)
 
         if (islogin){
             Log.d("Message", "SignIn")
@@ -135,21 +145,37 @@ class SignIn : Fragment() {
         })
     }
 
-    private fun postTestData(apiService: ApiService){
-        val call = apiService.postTest("film","banana")
+    private fun postTestData(apiService: ApiService,text: testToken){
+        val call = apiService.postTest(text)
+        //val call = apiService.getTest()
 
-        call.enqueue(object: Callback<test>{
-            override fun onResponse(call: Call<test>, response: Response<test>) {
-                Log.d("Api",response.isSuccessful.toString())
+        call.enqueue(object: Callback<testToken>{
+            override fun onResponse(call: Call<testToken>, response: Response<testToken>) {
+                Log.d("API",response.isSuccessful.toString())
                 if(response.isSuccessful){
-                    Log.i("Api","helloooooooooooooooooooo api")
+                    val data = response.body()
+                    //println(data!!::class.simpleName)
+                    Log.d("API",data.toString())
                 }
             }
 
-            override fun onFailure(call: Call<test>, t: Throwable) {
+            override fun onFailure(call: Call<testToken>, t: Throwable) {
                 Log.e("API",t.localizedMessage)
             }
         })
+
+//        call.enqueue(object: Callback<testToken>{
+//            override fun onResponse(call: Call<testToken>, response: Response<test>) {
+//                Log.d("Api",response.isSuccessful.toString())
+//                if(response.isSuccessful){
+//                    Log.i("Api","helloooooooooooooooooooo api")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<testToken>, t: Throwable) {
+//                Log.e("API",t.localizedMessage)
+//            }
+//        })
     }
 
     companion object {
