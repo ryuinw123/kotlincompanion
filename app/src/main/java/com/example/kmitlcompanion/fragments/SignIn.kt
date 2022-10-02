@@ -74,24 +74,9 @@ class SignIn : Fragment() {
         return view
     }
 
-    fun updateUI(account: GoogleSignInAccount){
-        //send to backend to check token
-        val token = account.idToken
-        val islogin = true
-
-        Log.d("OAuth",token.toString())
-
-        val apiService = ApiService()
-        val tok_ = testToken(token = token.toString(),auth_userdata = "")
-        postTestData(apiService,tok_)
-
-        if (islogin){
-            Log.d("Message", "SignIn")
-            findNavController().navigate(R.id.action_signIn_to_home)
-        }else{
-            Log.w("Error", "Token หมดอายุจ้า")
-        }
-
+    fun updateUI(){
+        //Log.d("Message", "SignIn")
+        findNavController().navigate(R.id.action_signIn_to_home)
     }
 
     private fun signIn() {
@@ -116,7 +101,13 @@ class SignIn : Fragment() {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            updateUI(account)
+
+            Log.d("OAuth",account.idToken.toString())
+
+            val apiService = ApiService()
+            val tok_ = testToken(token = account.idToken.toString(), validate = false ,auth_userdata = "")
+            postTestData(apiService,tok_)
+            //updateUI(account)
 
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -154,8 +145,9 @@ class SignIn : Fragment() {
                 Log.d("API",response.isSuccessful.toString())
                 if(response.isSuccessful){
                     val data = response.body()
-                    //println(data!!::class.simpleName)
+                    Log.d("API","validate : " + data!!.validate.toString())
                     Log.d("API",data.toString())
+                    updateUI()
                 }
             }
 
@@ -164,18 +156,6 @@ class SignIn : Fragment() {
             }
         })
 
-//        call.enqueue(object: Callback<testToken>{
-//            override fun onResponse(call: Call<testToken>, response: Response<test>) {
-//                Log.d("Api",response.isSuccessful.toString())
-//                if(response.isSuccessful){
-//                    Log.i("Api","helloooooooooooooooooooo api")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<testToken>, t: Throwable) {
-//                Log.e("API",t.localizedMessage)
-//            }
-//        })
     }
 
     companion object {

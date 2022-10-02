@@ -18,7 +18,7 @@ interface ApiService {
     @POST("checktoken")
     fun postTest(
         @Body data: testToken
-    ): Call<testToken>
+        ): Call<testToken>
 
     companion object{
         operator fun invoke(): ApiService {
