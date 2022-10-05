@@ -74,11 +74,6 @@ class SignIn : Fragment() {
         return view
     }
 
-    fun updateUI(){
-        //Log.d("Message", "SignIn")
-        findNavController().navigate(R.id.action_signIn_to_home)
-    }
-
     private fun signIn() {
         val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -117,25 +112,6 @@ class SignIn : Fragment() {
         }
     }
 
-    //api function
-    fun getTestData(apiService: ApiService){
-        val call = apiService.getTest()
-
-        call.enqueue(object: Callback<test>{
-            override fun onResponse(call: Call<test>, response: Response<test>) {
-                Log.d("Api",response.isSuccessful.toString())
-                if(response.isSuccessful){
-                    val list = response.body()
-                    Log.i("Api","helloooooooooooooooooooo api")
-                }
-            }
-
-            override fun onFailure(call: Call<test>, t: Throwable) {
-                Log.e("API",t.localizedMessage)
-            }
-        })
-    }
-
     private fun postTestData(apiService: ApiService,text: testToken){
         val call = apiService.postTest(text)
         //val call = apiService.getTest()
@@ -156,6 +132,34 @@ class SignIn : Fragment() {
             }
         })
 
+    }
+
+    fun updateUI(){
+        //Log.d("Message", "SignIn")
+        findNavController().navigate(R.id.action_signIn_to_home)
+    }
+
+
+
+    /**************/
+
+    //api function
+    fun getTestData(apiService: ApiService){
+        val call = apiService.getTest()
+
+        call.enqueue(object: Callback<test>{
+            override fun onResponse(call: Call<test>, response: Response<test>) {
+                Log.d("Api",response.isSuccessful.toString())
+                if(response.isSuccessful){
+                    val list = response.body()
+                    Log.i("Api","helloooooooooooooooooooo api")
+                }
+            }
+
+            override fun onFailure(call: Call<test>, t: Throwable) {
+                Log.e("API",t.localizedMessage)
+            }
+        })
     }
 
     companion object {
