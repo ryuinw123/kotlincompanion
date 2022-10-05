@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/signin_button"
+        android:layout_width="330dp"
+        android:layout_height="70dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/inter_bold"
+        android:paddingLeft="45dp"
+        android:text="ลงชื่อเข้าใช้ด้วย Kmitl Account"
+        android:textAlignment="center"
+        android:textColor="#FF5E00"
+        android:textSize="12sp"
+        android:typeface="normal"
+        app:cornerRadius="50dp"
+        app:icon="@drawable/googleg_standard_color_18"
+        app:iconGravity="textEnd"
+        app:iconPadding="20dp"
+        app:iconSize="30dp"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/imageWave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageLogo"
+        app:layout_constraintVertical_bias="0.428"
+        app:strokeColor="#FF5E00"
+        app:strokeWidth="5dp" />
+
+    <ImageView
+        android:id="@+id/imageWave"
+        android:layout_width="442dp"
+        android:layout_height="126dp"
+        android:adjustViewBounds="true"
+        android:rotationY="0"
+        android:scaleType="fitXY"
+        android:src="@drawable/wave_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageLogo"
+        android:layout_width="245dp"
+        android:layout_height="281dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_low"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
