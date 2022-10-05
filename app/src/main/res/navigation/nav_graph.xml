@@ -13,9 +13,17 @@
         <action
             android:id="@+id/action_mainFragment_to_mapboxFragment22"
             app:destination="@id/mapboxFragment2" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapboxFragment2"
         android:name="com.example.kmitlcompanion.ui.mapboxview.MapboxFragment"
         android:label="MapboxFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.kmitlcompanion.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>

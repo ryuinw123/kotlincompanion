@@ -28,10 +28,10 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.button.setOnClickListener{
-            view.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapboxFragment22())
-        }
+        view.findNavController().navigate(MainFragmentDirections.actionMainFragmentToLoginFragment())
+//        binding.button.setOnClickListener{
+//            view.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapboxFragment22())
+//        }
     }
 //
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {

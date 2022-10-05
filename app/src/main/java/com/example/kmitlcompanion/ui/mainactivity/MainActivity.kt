@@ -15,6 +15,4 @@ class MainActivity : AppCompatActivity() {
         bindingSetContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
 
-
-
 }
