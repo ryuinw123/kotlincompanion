@@ -26,5 +26,13 @@
         <action
             android:id="@+id/action_loginFragment_to_mapboxFragment2"
             app:destination="@id/mapboxFragment2" />
+        <action
+            android:id="@+id/action_loginFragment_to_identityloginFragment"
+            app:destination="@id/identityloginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/identityloginFragment"
+        android:name="com.example.kmitlcompanion.ui.auth.IdentityloginFragment"
+        android:label="fragment_identitylogin"
+        tools:layout="@layout/fragment_identitylogin" />
 </navigation>

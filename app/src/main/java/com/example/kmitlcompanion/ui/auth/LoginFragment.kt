@@ -25,7 +25,12 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(inflater,container, false)
 
         binding.signinButton.setOnClickListener{
-            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToMapboxFragment2())
+            //auth
+            //check user first login? --> call -->
+            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToIdentityloginFragment())
+            //else
+            //view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToMapboxFragment2())
+
         }
 
         return binding.root
