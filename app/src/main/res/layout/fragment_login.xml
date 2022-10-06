@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kmitlcompanion.presentation.LoginViewModel" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginFragment">
+
 
 
     <Button
@@ -32,7 +41,9 @@
         app:layout_constraintTop_toBottomOf="@+id/imageLogo"
         app:layout_constraintVertical_bias="0.428"
         app:strokeColor="#FF5E00"
-        app:strokeWidth="5dp" />
+        app:strokeWidth="5dp"
+        android:onClick="@{()->viewModel.testfunc()}"
+        />
 
     <ImageView
         android:id="@+id/imageWave"
@@ -57,3 +68,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

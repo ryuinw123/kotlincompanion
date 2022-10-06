@@ -22,16 +22,19 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
-        binding = FragmentLoginBinding.inflate(inflater,container, false)
-
-        binding.signinButton.setOnClickListener{
-            //auth
-            //check user first login? --> call -->
-            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToIdentityloginFragment())
-            //else
-            //view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToMapboxFragment2())
-
+        binding = FragmentLoginBinding.inflate(inflater,container, false).apply {
+            viewModel = this@LoginFragment.viewModel
         }
+
+//        binding.signinButton.setOnClickListener{
+//
+//            //auth
+//            //check user first login? --> call -->
+//            view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToIdentityloginFragment())
+//            //else
+//            //view?.findNavController()?.navigate(LoginFragmentDirections.actionLoginFragmentToMapboxFragment2())
+//
+//        }
 
         return binding.root
     }
