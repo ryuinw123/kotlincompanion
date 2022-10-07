@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.428"
         app:strokeColor="#FF5E00"
         app:strokeWidth="5dp"
-        android:onClick="@{()->viewModel.testfunc()}"
+        android:onClick="@{()->viewModel.signIn()}"
         />
 
     <ImageView

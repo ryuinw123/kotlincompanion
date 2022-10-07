@@ -2,6 +2,7 @@
     <string name="app_name">kmitlcompanion</string>
     <string name="logout">logout</string>
     <string name="todo">TODO</string>
-    <string name="AUTH_ID">563509002084-b7m05boiaqs5mo0thi4ka59noiakeus2.apps.googleusercontent.com</string>
+    <string name="OldAUTH_ID">27567133155-3gsequ5o2m08cnj6vnqgdllkv7tabobg.apps.googleusercontent.com</string>
+    <string name="NewAUTH_ID">563509002084-b7m05boiaqs5mo0thi4ka59noiakeus2.apps.googleusercontent.com</string>
     <string name="mapbox_access_token">pk.eyJ1Ijoicnl1aW53MTIzIiwiYSI6ImNsODV5M21odjB0dXAzbm9lZDhnNXVoY2UifQ.IiTAr5ITOUcCVjPjWiRe1w</string>
 </resources>
