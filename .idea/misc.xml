@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/assistant_navigation-48px.xml" value="0.2225" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_assistant_navigation_fill0_wght300_grad0_opsz48.xml" value="0.2225" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2225" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_createmapboxlocation.xml" value="0.25" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_main.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_mapbox.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_mapbox.xml" value="0.33" />
       </map>
     </option>
   </component>

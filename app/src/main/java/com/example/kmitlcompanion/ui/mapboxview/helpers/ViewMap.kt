@@ -30,7 +30,10 @@ internal class ViewMap @Inject constructor(
     private var weakMapView: WeakReference<MapView?>? = null
 
     fun setup(mapView: MapView? , callback: (MapboxMap) -> Unit) {
+
+
         weakMapView = WeakReference(mapView)
+
 
         mapView?.getMapboxMap()?.loadStyleUri(
             Style.MAPBOX_STREETS,

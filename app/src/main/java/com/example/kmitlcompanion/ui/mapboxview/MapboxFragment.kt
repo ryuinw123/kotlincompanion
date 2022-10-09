@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
@@ -32,7 +33,6 @@ class MapboxFragment : Fragment() {
     @Inject internal lateinit var helper: ViewHelper
     private lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
-    private var mapboxMap: MapboxMap? = null
     private val viewModel: MapboxViewModel by viewModels()
 
     override fun onCreateView(
@@ -44,9 +44,7 @@ class MapboxFragment : Fragment() {
         mapView = binding.mapView
         helper.map.setup(mapView) {
             binding.viewModel = this@MapboxFragment.viewModel
-            mapboxMap = it
             this@MapboxFragment.viewModel.downloadLocations()
-
         }
         binding.setupViewObservers()
 
@@ -54,6 +52,14 @@ class MapboxFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.button2.setOnClickListener {
+            view.findNavController().navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment())
+        }
+
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){

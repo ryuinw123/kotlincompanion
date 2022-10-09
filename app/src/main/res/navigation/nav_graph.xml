@@ -17,5 +17,13 @@
     <fragment
         android:id="@+id/mapboxFragment2"
         android:name="com.example.kmitlcompanion.ui.mapboxview.MapboxFragment"
-        android:label="MapboxFragment" />
+        android:label="MapboxFragment" >
+        <action
+            android:id="@+id/action_mapboxFragment2_to_createMapboxLocationFragment"
+            app:destination="@id/createMapboxLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMapboxLocationFragment"
+        android:name="com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment"
+        android:label="CreateMapboxLocationFragment" />
 </navigation>

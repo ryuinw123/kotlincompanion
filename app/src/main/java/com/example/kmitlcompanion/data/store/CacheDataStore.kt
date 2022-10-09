@@ -9,13 +9,17 @@ import javax.inject.Inject
 
 class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
-) : DataRepository {
+) :DataRepository {
     override fun getMapPoints(): Observable<List<MapPointData>> {
         return cacheRepository.getMapPoints()
     }
 
     override fun updateLastLocationTimeStamp(timestamp: Long): Completable {
         return cacheRepository.updateLastLocationTimeStamp(timestamp)
+    }
+
+    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
+        throw IllegalStateException("Function not currently supported!")
     }
 
     override fun saveMapPoints(list: List<MapPointData>): Completable {
