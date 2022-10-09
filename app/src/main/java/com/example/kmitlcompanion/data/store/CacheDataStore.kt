@@ -22,6 +22,10 @@ class CacheDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
+    override fun postToken(token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
     override fun saveMapPoints(list: List<MapPointData>): Completable {
         return cacheRepository.saveMapPoints(list)
     }

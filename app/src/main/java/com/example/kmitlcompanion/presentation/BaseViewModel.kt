@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
-import com.example.kmitlcompanion.navigation.NavigationCommand
-import com.example.kmitlcompanion.utils.Event
+import com.example.kmitlcompanion.presentation.navigation.NavigationCommand
+import com.example.kmitlcompanion.presentation.eventobserver.Event
 
 abstract class BaseViewModel : ViewModel() {
 

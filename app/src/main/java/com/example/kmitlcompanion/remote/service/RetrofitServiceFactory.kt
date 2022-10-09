@@ -21,6 +21,7 @@ object RetrofitServiceFactory {
     private fun makeRetrofitTestClient(okHttpClient: OkHttpClient, gson: Gson): RetrofitTestClient {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://shitduck.duckdns.org:8000/api/")
+            //.baseUrl("http://192.168.1.22:8000/api/")
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

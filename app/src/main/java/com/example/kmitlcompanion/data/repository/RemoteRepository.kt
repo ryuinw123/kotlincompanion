@@ -7,4 +7,5 @@ import io.reactivex.rxjava3.core.Observable
 interface RemoteRepository {
     fun getMapPoints(): Observable<List<MapPointData>>
     fun createLocationQuery(latitude: Double, longitude: Double): Completable
+    fun postToken(token : String) : Completable
 }

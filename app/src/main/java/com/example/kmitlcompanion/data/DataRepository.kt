@@ -50,4 +50,8 @@ class DataRepository @Inject constructor(
     override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
         return dataStore.getRemoteData(true).createLocationQuery(latitude,longitude)
     }
+
+    override fun postToken(token: String): Completable {
+        return dataStore.getRemoteData(true).postToken(token)
+    }
 }

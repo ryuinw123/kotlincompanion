@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
+import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
@@ -12,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MapboxViewModel @Inject constructor(
     private val getMapLocations: GetMapLocations
-) : ViewModel() {
-
+) : BaseViewModel() {
 
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
     val mapInformationResponse: LiveData<MapInformation> = _mapInformationResponse
@@ -36,4 +36,13 @@ class MapboxViewModel @Inject constructor(
 
         })
     }
+
+    fun goToCreateMapBox(){
+        navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
+    }
+
+    fun goBackClicked() {
+        navigateBack()
+    }
+
 }

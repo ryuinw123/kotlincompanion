@@ -10,17 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.presentation.MapboxViewModel
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
-import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
@@ -28,12 +27,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MapboxFragment : Fragment() {
+class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     @Inject internal lateinit var helper: ViewHelper
-    private lateinit var binding: FragmentMapboxBinding
+    //override lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
-    private val viewModel: MapboxViewModel by viewModels()
+    //private val viewModel: MapboxViewModel by viewModels()
+
+    override val viewModel : MapboxViewModel by viewModels()
+
+    override val layoutId :Int = R.layout.fragment_mapbox
+
+    override fun onReady(savedInstanceState: Bundle?) {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,4 +126,6 @@ class MapboxFragment : Fragment() {
             bitmap
         }
     }
+
+
 }

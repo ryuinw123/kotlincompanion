@@ -8,11 +8,10 @@ import androidx.fragment.app.viewModels
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentHomeBinding
 import com.example.kmitlcompanion.presentation.HomeViewModel
-import com.example.kmitlcompanion.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding,HomeViewModel>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
 
     override val layoutId:Int = R.layout.fragment_home

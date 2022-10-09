@@ -27,5 +27,9 @@ class RemoteDataStore @Inject constructor(
         return remoteRepository.createLocationQuery(latitude,longitude)
     }
 
+    override fun postToken(token: String): Completable {
+        return remoteRepository.postToken(token)
+    }
+
 
 }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateMapboxLocationViewModel @Inject constructor(
     private val createLocationQuery: CreateLocationQuery
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _currentMapLocation = MutableLiveData<String?>()
     val currentMapLocation : LiveData<String?> = _currentMapLocation
@@ -46,4 +46,9 @@ class CreateMapboxLocationViewModel @Inject constructor(
         _currentMapLocation.value = "Lat : $lat, Long: $long"
         println(_currentMapLocation.value)
     }
+
+    fun goBackClicked() {
+        navigateBack()
+    }
+
 }

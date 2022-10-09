@@ -17,4 +17,8 @@ class RetrofitClient @Inject constructor(
     override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
         return retrofitTestClient.createLocationQuery(latitude,longitude)
     }
+
+    override fun postToken(token: String): Completable {
+        return retrofitTestClient.postToken(token)
+    }
 }

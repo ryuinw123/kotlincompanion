@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.base
+package com.example.kmitlcompanion.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.kmitlcompanion.BR
-import com.example.kmitlcompanion.navigation.NavigationCommand
+import com.example.kmitlcompanion.presentation.navigation.NavigationCommand
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.utils.observeNonNull
 

@@ -12,4 +12,7 @@ interface DataRepository {
     fun updateLastLocationTimeStamp(timestamp: Long): Completable
 
     fun createLocationQuery(latitude: Double, longitude: Double) : Completable
+
+    fun postToken(token : String) : Completable
+
 }

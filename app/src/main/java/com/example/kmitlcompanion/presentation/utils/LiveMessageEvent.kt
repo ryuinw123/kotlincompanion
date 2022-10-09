@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.presentation
+package com.example.kmitlcompanion.presentation.utils
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer

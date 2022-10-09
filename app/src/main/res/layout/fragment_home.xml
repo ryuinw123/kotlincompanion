@@ -44,7 +44,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.913"
-            app:strokeColor="#FF5E00" />
+            app:strokeColor="#FF5E00"
+            android:onClick="@{()->viewModel.gotoMap()}"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

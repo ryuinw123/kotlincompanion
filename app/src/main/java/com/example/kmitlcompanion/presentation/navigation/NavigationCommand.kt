@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.navigation
+package com.example.kmitlcompanion.presentation.navigation
 
 import androidx.navigation.NavDirections
 

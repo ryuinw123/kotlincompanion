@@ -19,16 +19,17 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment2" />
-        <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.kmitlcompanion.ui.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_mapboxFragment2"
+            app:destination="@id/mapboxFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/createMapboxLocationFragment2"
         android:name="com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment"
