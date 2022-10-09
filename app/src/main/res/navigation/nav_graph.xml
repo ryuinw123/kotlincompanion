@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/mapboxFragment2"
         android:name="com.example.kmitlcompanion.ui.mapboxview.MapboxFragment"
-        android:label="MapboxFragment" />
+        android:label="MapboxFragment" >
+        <action
+            android:id="@+id/action_mapboxFragment2_to_createMapboxLocationFragment2"
+            app:destination="@id/createMapboxLocationFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.kmitlcompanion.ui.auth.LoginFragment"
@@ -25,4 +29,8 @@
         android:id="@+id/homeFragment"
         android:name="com.example.kmitlcompanion.ui.HomeFragment"
         android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/createMapboxLocationFragment2"
+        android:name="com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment"
+        android:label="CreateMapboxLocationFragment" />
 </navigation>
