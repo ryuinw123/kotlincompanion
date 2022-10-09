@@ -15,12 +15,16 @@ class RemoteDataStore @Inject constructor(
         return remoteRepository.getMapPoints()
     }
 
-    override fun updateLastLocationTimeStamp(timestamp: Long): Completable {
-        TODO("Not yet implemented")
+    override fun saveMapPoints(list: List<MapPointData>): Completable {
+        throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun saveMapPoints(list: List<MapPointData>): Completable {
-        TODO("Not yet implemented")
+    override fun updateLastLocationTimeStamp(timestamp: Long): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
+        return remoteRepository.createLocationQuery(latitude,longitude)
     }
 
 

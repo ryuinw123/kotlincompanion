@@ -6,6 +6,7 @@ import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
 import com.example.kmitlcompanion.domain.repository.DomainRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.descriptors.StructureKind
 import javax.inject.Inject
@@ -44,5 +45,9 @@ class DataRepository @Inject constructor(
             }
             .flatMap { it }
 
+    }
+
+    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
+        return dataStore.getRemoteData(true).createLocationQuery(latitude,longitude)
     }
 }
