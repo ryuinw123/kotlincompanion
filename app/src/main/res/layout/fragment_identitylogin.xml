@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kmitlcompanion.presentation.IdentityloginViewModel" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/kmitl_color"
@@ -29,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/inter_bold"
-                android:text="ลงชื่อเข้าใช้"
+                android:text="ข้อมูลส่วนตัว"
                 android:textAlignment="viewStart"
                 android:textColor="#000000"
                 android:textSize="40sp"
@@ -39,7 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textinput_placeholder"
+                android:id="@+id/textinput_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
@@ -51,7 +59,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintVertical_bias="0.19999999">
+                app:layout_constraintVertical_bias="0.120000005">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditText"
@@ -60,10 +68,51 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textinput_surname"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="นามสกุล"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textinput_name"
+                app:layout_constraintVertical_bias="0.060000002">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/signin_button"
+                android:layout_width="330dp"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/kmitl_color"
+                android:fontFamily="@font/inter_bold"
+                android:text="ยืนยัน"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:typeface="normal"
+                app:cornerRadius="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textinput_surname"
+                app:layout_constraintVertical_bias="0.75"
+                app:strokeColor="#FF5E00" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     </com.google.android.material.card.MaterialCardView>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,12 +1,10 @@
 package com.example.kmitlcompanion.presentation
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.ui.auth.LoginFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -20,7 +18,7 @@ import com.google.android.gms.tasks.Task
 
 @HiltViewModel
 class LoginViewModel @Inject constructor()
-    : ViewModel() {
+    : BaseViewModel() {
 
     //google signin
     val RC_SIGN_IN: Int = 9001
@@ -59,6 +57,7 @@ class LoginViewModel @Inject constructor()
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
             Log.d("OAuth",account.idToken.toString())
             signOut()//*******************
+            nextPage()
 
 //            val apiService = ApiService()
 //            val tok_ = testToken(token = account.idToken.toString(), validate = false ,auth_userdata = "")
@@ -69,6 +68,16 @@ class LoginViewModel @Inject constructor()
             Log.w("Error", "signInResult:failed code=" + e.statusCode)
         }
     }
+
+    /********* navigate function ***********/
+
+    fun nextPage(){Log.d("Massage","NextPage")
+        navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+    }
+
+
+
+    /****** sign out ******/
 
     private fun signOut() {
         mGoogleSignInClient.signOut()
