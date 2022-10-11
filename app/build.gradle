@@ -14,7 +14,14 @@ android {
         dataBinding true
     }
 
-
+    signingConfigs {
+        debug {
+            storeFile file("kmitl_key.keystore")
+            storePassword "kmitlcomp"
+            keyAlias "kmitl_oauth_alias"
+            keyPassword "kmitlcomp"
+        }
+    }
 
     defaultConfig {
         applicationId "com.example.kmitlcompanion"
