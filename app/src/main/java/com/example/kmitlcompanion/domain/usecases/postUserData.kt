@@ -6,14 +6,19 @@ import com.example.kmitlcompanion.domain.repository.DomainRepository
 import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
 
-class PostToken @Inject constructor(
+class postUserData @Inject constructor(
     postExecutionThread: PostExecutionThread,
     private val domainRepository: DomainRepository
-): CompletableUseCase<String?>(postExecutionThread){
+): CompletableUseCase<ArrayList<Any>?>(postExecutionThread) {
 
-    public override fun buildUseCaseCompletable(params: String?): Completable {
-        return domainRepository.postToken(
-            params?:"",
+    override fun buildUseCaseCompletable(params: ArrayList<Any>?): Completable {
+        return domainRepository.postUserData(
+            params?.get(0)?:"",
+            params?.get(1)?:"",
+            params?.get(2)?:"",
+            params?.get(3)?:"",
+            params?.get(4)?:0,
+            params?.get(5)?:""
         )
     }
 

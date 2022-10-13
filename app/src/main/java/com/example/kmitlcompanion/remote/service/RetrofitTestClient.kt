@@ -14,7 +14,16 @@ interface RetrofitTestClient {
     fun createLocationQuery(@Part("latitude") latitude: Double, @Part("longitude") longitude: Double): Completable
 
     @Multipart
-    @POST("checktoken")
-    fun postToken(@Part("token") token:String): Completable
+    @POST("login")
+    fun postLogin(@Part("token") token:String): Observable<Int>
 
+    @Multipart
+    @POST("postuserdata")
+    fun postUserData(@Part("name") name: Any,
+                     @Part("surname") surname:Any,
+                     @Part("faculty") faculty:Any,
+                     @Part("department") department:Any,
+                     @Part("year") year:Any,
+                     @Part("token") token:Any
+    ) : Completable
 }

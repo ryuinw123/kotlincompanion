@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_identityloginFragment"
+            app:destination="@id/identityloginFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -29,9 +32,20 @@
         <action
             android:id="@+id/action_homeFragment_to_mapboxFragment2"
             app:destination="@id/mapboxFragment2" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/createMapboxLocationFragment2"
         android:name="com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment"
         android:label="CreateMapboxLocationFragment" />
+    <fragment
+        android:id="@+id/identityloginFragment"
+        android:name="com.example.kmitlcompanion.ui.auth.IdentityloginFragment"
+        android:label="IdentityloginFragment" >
+        <action
+            android:id="@+id/action_identityloginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

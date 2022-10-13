@@ -2,10 +2,10 @@ package com.example.kmitlcompanion.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -52,15 +52,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
             setupViewObservers()
         }
 
-
-
         viewModel.setActivityContext(requireActivity())
         return binding.root
     }
 
 
     private fun subscribeUi() {
-        //this sets the LifeCycler owner and receiver
         viewModel.startActivityForResultEvent.setEventReceiver(this,this)
     }
 
@@ -70,54 +67,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
     }
 
     private fun FragmentLoginBinding.setupViewObservers(){
-        //lifecycle.addObserver(helper)
-
         this@LoginFragment.viewModel.run {
             loginResponse.observe(viewLifecycleOwner, Observer {
-                Log.d("Login Fragment",loginResponse.value!!)
-                helper.postToken(it!!)
+                helper.postLogin(it!!)
             })
-            signOutResponse.observe(viewLifecycleOwner, Observer {
-                //Log.d("Login Fragment","helper.signOut()")
-                helper.signOut()
+            signOutFailedResponse.observe(viewLifecycleOwner, Observer {
+                helper.signOut_failed()
+            })
+
+            signInHome.observe(viewLifecycleOwner, Observer {
+                helper.signInHome()
+            })
+
+            signInIdentity.observe(viewLifecycleOwner, Observer {
+                helper.signInIdentity()
             })
 
         }
     }
-
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("login_fragment","onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("login_fragment","onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("login_fragment","onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("login_fragment","onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //viewModel.clear()
-        Log.d("login_fragment","onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //viewModel.clear()
-        Log.d("login_fragment","onDestroy")
-    }
-
-
 
 }

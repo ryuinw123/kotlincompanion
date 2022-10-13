@@ -27,9 +27,28 @@ class RemoteDataStore @Inject constructor(
         return remoteRepository.createLocationQuery(latitude,longitude)
     }
 
-    override fun postToken(token: String): Completable {
-        return remoteRepository.postToken(token)
+    override fun postLogin(token: String): Observable<Int> {
+        return remoteRepository.postLogin(token)
     }
+
+    override fun postUserData(
+        name: Any,
+        surname: Any,
+        faculty: Any,
+        department: Any,
+        year: Any,
+        token:Any
+    ): Completable {
+        return remoteRepository.postUserData(name,surname,faculty,department,year,token)
+    }
+
+//    override fun postUserData(name: Any,
+//                              surname : Any,
+//                              faculty : Any,
+//                              department : Any,
+//                              year : Any): Completable{
+//        return remoteRepository.postUserData(name,surname,faculty,department,year)
+//    }
 
 
 }

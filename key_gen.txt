@@ -1,0 +1,4 @@
+keytool -genkey -v -keystore d:\kmitl_key.keystore -alias kmitl_oauth_alias -keyalg RSA -keysize 2048 -validity 10000
+
+all password
+kmitlcomp

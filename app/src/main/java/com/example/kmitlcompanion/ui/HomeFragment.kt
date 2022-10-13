@@ -31,6 +31,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             viewModel = this@HomeFragment.viewModel
         }
 
+        viewModel.setActivityContext(requireActivity())
+
         return binding.root
 
     }

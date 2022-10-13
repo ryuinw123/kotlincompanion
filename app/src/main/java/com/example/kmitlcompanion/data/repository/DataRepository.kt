@@ -13,6 +13,13 @@ interface DataRepository {
 
     fun createLocationQuery(latitude: Double, longitude: Double) : Completable
 
-    fun postToken(token : String) : Completable
+    fun postLogin(token : String) : Observable<Int>
+
+    fun postUserData(name: Any,
+                     surname : Any,
+                     faculty : Any,
+                     department : Any,
+                     year : Any,token : Any
+                    ) : Completable
 
 }
