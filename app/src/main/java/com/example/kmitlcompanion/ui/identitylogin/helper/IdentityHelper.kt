@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.ui.auth.helpers
+package com.example.kmitlcompanion.ui.identitylogin.helper
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.presentation.IdentityloginViewModel

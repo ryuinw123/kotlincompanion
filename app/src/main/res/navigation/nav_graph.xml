@@ -42,7 +42,7 @@
         android:label="CreateMapboxLocationFragment" />
     <fragment
         android:id="@+id/identityloginFragment"
-        android:name="com.example.kmitlcompanion.ui.auth.IdentityloginFragment"
+        android:name="com.example.kmitlcompanion.ui.identitylogin.IdentityloginFragment"
         android:label="IdentityloginFragment" >
         <action
             android:id="@+id/action_identityloginFragment_to_homeFragment"

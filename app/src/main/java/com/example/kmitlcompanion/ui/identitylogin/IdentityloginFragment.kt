@@ -1,10 +1,9 @@
-package com.example.kmitlcompanion.ui.auth
+package com.example.kmitlcompanion.ui.identitylogin
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -12,7 +11,7 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
 import com.example.kmitlcompanion.presentation.IdentityloginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
-import com.example.kmitlcompanion.ui.auth.helpers.IdentityHelper
+import com.example.kmitlcompanion.ui.identitylogin.helper.IdentityHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,7 +32,6 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         helper.setup(viewModel)
 
         (activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
@@ -41,19 +39,10 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
             viewModel = this@IdentityloginFragment.viewModel
             setupViewObservers()
         }
+        viewModel.setActivityBinding(binding,requireActivity())
 
-        val facultyList = arrayListOf<String>("Engineer","Engineer1","Engineer2")
-        val arrayAdapter1 = ArrayAdapter<String>(requireActivity(),R.layout.dropdown_item,facultyList)
-        binding.facultyList.setAdapter(arrayAdapter1)
-
-
-        val departmentList = arrayListOf<String>("CE","EE","CPE")
-        val arrayAdapter2 = ArrayAdapter<String>(requireActivity(),R.layout.dropdown_item,departmentList)
-        binding.departmentList.setAdapter(arrayAdapter2)
-
-        val yearList = arrayListOf<Int>(1,2,3,4,5,6,7,8)
-        val arrayAdapter3 = ArrayAdapter<Int>(requireActivity(),R.layout.dropdown_item,yearList)
-        binding.yearList.setAdapter(arrayAdapter3)
+        viewModel.listFieldAdapter()
+        viewModel.inputListener()
 
         return binding.root
     }
@@ -70,15 +59,5 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
         }
     }
 
-//
-//    companion object {
-//        fun newInstance() = IdentityloginFragment()
-//    }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(IdentityloginViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 
 }
