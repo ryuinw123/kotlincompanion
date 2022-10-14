@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.cache.database.constants
 
-object MapPointTable {
+object NameTable {
     const val MAP_POINT_TABLE = "MapPointTable"
     const val MAP_POINT_ID = "map_point_id"
     const val MAP_POINT_DESCRIPTION = "map_point_description"
@@ -12,4 +12,8 @@ object MapPointTable {
     const val DATA_PROPERTY_ID = "data_property_id"
     const val DATA_PROPERTY_VALUE = "data_property_value"
     const val DATA_LAST_LOCATION_TIMESTAMP_ID = 1L
+
+    const val USER_TABLE = "UserTable"
+    const val USER_EMAIL = "user_email"
+    const val USER_TOKEN = "user_token"
 }

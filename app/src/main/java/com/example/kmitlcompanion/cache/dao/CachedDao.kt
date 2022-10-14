@@ -4,16 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.kmitlcompanion.cache.database.constants.MapPointTable
+import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
+import com.example.kmitlcompanion.cache.entities.User
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
 @Dao
 abstract class CachedDao {
 
-    @Query("SELECT * FROM ${MapPointTable.MAP_POINT_TABLE}")
+    @Query("SELECT * FROM ${NameTable.MAP_POINT_TABLE}")
     abstract fun getMapPoints(): Observable<List<MapPointEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,9 +23,12 @@ abstract class CachedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateProperty(dataProperty: DataProperty): Completable
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateUser(user: User): Completable
+
     @Query(
         """
-        SELECT data_property_value FROM ${MapPointTable.DATA_PROPERTY_TABLE} 
+        SELECT data_property_value FROM ${NameTable.DATA_PROPERTY_TABLE} 
         WHERE data_property_id=(:property)
         """
     )

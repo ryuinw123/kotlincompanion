@@ -1,8 +1,9 @@
 package com.example.kmitlcompanion.cache
 
 import com.example.kmitlcompanion.cache.database.AppDatabase
-import com.example.kmitlcompanion.cache.database.constants.MapPointTable
+import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
+import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.cache.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.repository.CacheRepository
@@ -31,8 +32,17 @@ class RoomRepository @Inject constructor(
     override fun updateLastLocationTimeStamp(timestamp: Long): Completable {
         return database.cachedDao().updateProperty(
             DataProperty(
-                id = MapPointTable.DATA_LAST_LOCATION_TIMESTAMP_ID,
+                id = NameTable.DATA_LAST_LOCATION_TIMESTAMP_ID,
                 property = timestamp.toString()
+            )
+        )
+    }
+
+    override fun updateUser(email: String, token: String): Completable {
+        return database.cachedDao().updateUser(
+            User(
+                email = email,
+                token = token
             )
         )
     }

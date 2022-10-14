@@ -5,11 +5,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 
-@Entity(tableName = NameTable.DATA_PROPERTY_TABLE)
-data class DataProperty(
+@Entity(tableName = NameTable.USER_TABLE)
+data class User(
     @PrimaryKey
-    @ColumnInfo(name = NameTable.DATA_PROPERTY_ID)
-    val id: Long,
-    @ColumnInfo(name = NameTable.DATA_PROPERTY_VALUE)
-    val property: String
+    @ColumnInfo(name = NameTable.USER_EMAIL)
+    val email: String,
+
+    @ColumnInfo(name = NameTable.USER_TOKEN)
+    val token: String,
 )
