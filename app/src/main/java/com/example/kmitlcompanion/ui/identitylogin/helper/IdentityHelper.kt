@@ -12,6 +12,10 @@ class IdentityHelper @Inject constructor() : DefaultLifecycleObserver {
         this.viewModel = viewModel
     }
 
+    fun getUserRoom(arr : ArrayList<Any>){
+        viewModel.getUserRoom(arr)
+    }
+
     fun postUserData(arr : ArrayList<Any>){
         viewModel.postUserData(arr)
     }
@@ -19,5 +23,6 @@ class IdentityHelper @Inject constructor() : DefaultLifecycleObserver {
     fun nextHomePage(){
         viewModel.nextHomePage()
     }
+
 
 }

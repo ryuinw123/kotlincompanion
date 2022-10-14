@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.domain.repository
 
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.MapInformation
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -20,4 +21,7 @@ interface DomainRepository {
                      token : Any
     ): Completable
 
+    fun updateUser(email : String,token : String): Completable
+
+    fun getUser(): Observable<List<UserData>>
 }

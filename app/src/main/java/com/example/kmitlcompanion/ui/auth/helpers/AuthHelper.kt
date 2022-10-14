@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.auth.helpers
 
 import androidx.lifecycle.DefaultLifecycleObserver
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.LoginViewModel
 import javax.inject.Inject
 
@@ -13,6 +14,10 @@ class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
 
     fun setup(viewModel: LoginViewModel){
         this.viewModel = viewModel
+    }
+
+    fun updateUserRoom(userData: UserData){
+        this.viewModel.updateUser(userData)
     }
 
     fun postLogin(token: String){
@@ -30,5 +35,8 @@ class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
     fun signOut_failed(){
         viewModel.signOut()
     }
+
+
+
 
 }

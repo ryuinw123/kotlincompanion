@@ -15,4 +15,5 @@ interface RemoteRepository {
                      year : Any,
                      token : Any
                     ) : Completable
+
 }

@@ -6,7 +6,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.cache.entities.User
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
+import com.example.kmitlcompanion.domain.usecases.getUserRoom
 import com.example.kmitlcompanion.domain.usecases.postUserData
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
@@ -14,17 +17,25 @@ import com.example.kmitlcompanion.ui.identitylogin.IdentityloginFragmentDirectio
 import com.example.kmitlcompanion.ui.identitylogin.DataFacultyDepart
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
+import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
 
 
 @HiltViewModel
 class IdentityloginViewModel @Inject constructor(
-    private val postUserData: postUserData
+    private val postUserData: postUserData,
+    private val getUser: getUserRoom
 ) : BaseViewModel() {
 
+    //get user token
+    private val _getUserRoom = SingleLiveData<ArrayList<Any>>()
+    val getUserRoom: SingleLiveData<ArrayList<Any>> = _getUserRoom
+
+    //save data to db
     private val _saveUserDataResponse = SingleLiveData<ArrayList<Any>>()
     val saveUserDataResponse: SingleLiveData<ArrayList<Any>> = _saveUserDataResponse
 
+    //naviagte to homepage
     private val _nextHomePage = SingleLiveData<Event<Boolean>>()
     val nextHomepage: SingleLiveData<Event<Boolean>> = _nextHomePage
 
@@ -55,11 +66,15 @@ class IdentityloginViewModel @Inject constructor(
         val faculty = faculty.text.toString()
         val department = department.text.toString()
         val year = year.text.toString()
-        val token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk1NTEwNGEzN2ZhOTAzZWQ4MGM1NzE0NWVjOWU4M2VkYjI5YjBjNDUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI1NjM1MDkwMDIwODQtMzVwMjdvZG85anFhcm8yaGRnbzJuZG1vMjE1aWVuajAuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI1NjM1MDkwMDIwODQtYjdtMDVib2lhcXM1bW8wdGhpNGthNTlub2lha2V1czIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTg0MzIwNDk5MTAwMjYyOTA5NjIiLCJoZCI6ImttaXRsLmFjLnRoIiwiZW1haWwiOiI2MjAxMDg5M0BrbWl0bC5hYy50aCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiNjJfMDg5MyBTVVBIQU5VVCBXQU5ERUUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MUVWbHItbm95d3NhRG4tbUZDWGk2SkpkQ3JYOU82b1JaMEVNZz1zOTYtYyIsImdpdmVuX25hbWUiOiI2Ml8wODkzIFNVUEhBTlVUIiwiZmFtaWx5X25hbWUiOiJXQU5ERUUiLCJsb2NhbGUiOiJ0aCIsImlhdCI6MTY2NTc2NjMyOCwiZXhwIjoxNjY1NzY5OTI4fQ.S7U7yPnMnOAdX3HLgqjkmxmj4Ux5j38AJN-OjkVAxQpHIt-bNDSM-bgrTYi_cdA60P-b69p-ePwdbZmHt_0uBXw_BJf7YKf9kPXZ_f8qHV3YmkytES2woty9YbQ8N9_F6BIGOK5YujVncx9BsRI3jddV1PDqnXoEATjHLnY_NhjyA35ucgUIS-9HHrud-ID2KmdcNIIf1XtWnBW3ZbWkqMuxdeJ-ahRvzxPw_qCQaMOR2SSjqLke7b9Vb6yccrNJZOAYly9TZjedKHPFrwYI89gcOxwGfBurenc3s3PxPzCRJ9fbr60O6QyN-TIlpj_dV6nb62A2oILG91mAHLPjxw"
+        val token = ""
         val sendArrayData = arrayListOf<Any>(name,surname,faculty,department,year,token)
         Log.d("sendArrayData",sendArrayData.toString())
 
-        _saveUserDataResponse.value = sendArrayData
+
+        //getUserToken and SendArrayData in oncomplete
+        _getUserRoom.value = sendArrayData
+        //getUserRoom(sendArrayData)
+        //_saveUserDataResponse.value = sendArrayData
 
     }
 
@@ -156,6 +171,24 @@ class IdentityloginViewModel @Inject constructor(
                 Log.d("QUERY DATA",e.toString())
             }
         }, arr)
+    }
+
+    fun getUserRoom(arr : ArrayList<Any>){
+        getUser.execute(object : DisposableObserver<List<UserData>>(){
+            override fun onComplete() {
+                Log.d("getUserRoom","Success !!!")
+            }
+
+            override fun onNext(t: List<UserData>) {
+                arr[5] = t[0].token
+                _saveUserDataResponse.value = arr
+                Log.d("getUserRoom","onNext Success !!!")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("getUserRoom",e.toString())
+            }
+        })
     }
 
 

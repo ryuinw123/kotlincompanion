@@ -68,6 +68,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
 
     private fun FragmentLoginBinding.setupViewObservers(){
         this@LoginFragment.viewModel.run {
+
+            updateUserRoom.observe(viewLifecycleOwner, Observer {
+                helper.updateUserRoom(it!!)
+            })
+
             loginResponse.observe(viewLifecycleOwner, Observer {
                 helper.postLogin(it!!)
             })
