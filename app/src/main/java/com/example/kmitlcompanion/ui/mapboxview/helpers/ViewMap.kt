@@ -1,16 +1,10 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.ui.mapboxview.converter.BitmapConverter
+import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
@@ -24,7 +18,7 @@ import javax.inject.Inject
 
 internal class ViewMap @Inject constructor(
 ) : DefaultLifecycleObserver {
-    @Inject lateinit var bitmapConverter : BitmapConverter
+    @Inject lateinit var bitmapConverter : BitmapUtils
 
 
     private var weakMapView: WeakReference<MapView?>? = null

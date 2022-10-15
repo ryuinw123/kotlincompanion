@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.ui.mapboxview.converter
+package com.example.kmitlcompanion.ui.mapboxview.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,7 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import javax.inject.Inject
 
-class BitmapConverter @Inject constructor(
+class BitmapUtils @Inject constructor(
 
 ) {
     fun bitmapFromDrawableRes(context : Context ,@DrawableRes resourceId: Int) =

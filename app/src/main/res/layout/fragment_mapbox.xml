@@ -3,13 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
         <variable
             name="viewModel"
             type="com.example.kmitlcompanion.presentation.MapboxViewModel" />
     </data>
-
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -22,9 +20,10 @@
             android:layout_height="match_parent"
             app:mapbox_cameraTargetLat="59.31"
             app:mapbox_cameraTargetLng="18.06"
-            app:mapbox_cameraZoom="9.0"
-            >
+            app:mapbox_cameraZoom="9.0">
+
         </com.mapbox.maps.MapView>
+
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
@@ -32,6 +31,68 @@
             android:text="Button"
             android:onClick="@{()->viewModel.goToCreateMapBox()}"
             />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="8dp"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="80dp"
+            app:layout_behavior=".ui.mapboxview.helpers.ViewSlider$AutoCloseBottomSheetBehavior">
+
+            <ImageView
+                android:id="@+id/drag_handle_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_drag_handle_black_24dp"
+                app:tint="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+            <TextView
+                android:id="@+id/current_location_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="5dp"
+                android:text="Current location:"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/drag_handle_iv"
+                tools:ignore="HardcodedText"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/current_location_gps_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="16dp"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/current_location_label_tv"
+                app:layout_constraintTop_toBottomOf="@id/drag_handle_iv"
+                tools:text="Latitude: 45.23 Longitude 51.56"
+                tools:visibility="visible" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
