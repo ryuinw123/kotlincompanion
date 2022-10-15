@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data
 
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.MapInformation
@@ -66,4 +67,11 @@ class DataRepository @Inject constructor(
         return dataStore.getRemoteData(true).postUserData(name,surname,faculty,department,year,token)
     }
 
+    override fun updateUser(email: String, token: String): Completable {
+        return dataStore.getRemoteData(false).updateUser(email,token)
+    }
+
+    override fun getUser(): Observable<List<UserData>> {
+        return dataStore.getRemoteData(false).getUser()
+    }
 }

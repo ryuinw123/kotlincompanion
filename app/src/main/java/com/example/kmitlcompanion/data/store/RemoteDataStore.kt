@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.store
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
 import io.reactivex.rxjava3.core.Completable
@@ -50,5 +51,11 @@ class RemoteDataStore @Inject constructor(
 //        return remoteRepository.postUserData(name,surname,faculty,department,year)
 //    }
 
+    override fun updateUser(email: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 
+    override fun getUser(): Observable<List<UserData>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

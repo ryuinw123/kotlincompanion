@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.store
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
 import io.reactivex.rxjava3.core.Completable
@@ -40,5 +41,13 @@ class CacheDataStore @Inject constructor(
 
     override fun saveMapPoints(list: List<MapPointData>): Completable {
         return cacheRepository.saveMapPoints(list)
+    }
+
+    override fun updateUser(email: String, token: String): Completable {
+        return cacheRepository.updateUser(email,token)
+    }
+
+    override fun getUser(): Observable<List<UserData>> {
+        return cacheRepository.getUser()
     }
 }

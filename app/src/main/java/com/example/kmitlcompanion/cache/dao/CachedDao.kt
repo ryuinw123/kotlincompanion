@@ -8,6 +8,7 @@ import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
 import com.example.kmitlcompanion.cache.entities.User
+import com.example.kmitlcompanion.data.model.UserData
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
@@ -25,6 +26,9 @@ abstract class CachedDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateUser(user: User): Completable
+
+    @Query("SELECT * FROM ${NameTable.USER_TABLE}")
+    abstract fun getUser(): Observable<List<User>>
 
     @Query(
         """

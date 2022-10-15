@@ -47,12 +47,16 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
         return binding.root
     }
 
-
     private fun FragmentIdentityloginBinding.setupViewObservers(){
         this@IdentityloginFragment.viewModel.run {
             saveUserDataResponse.observe(viewLifecycleOwner,{
                 helper.postUserData(it!!)
             })
+
+            getUserRoom.observe(viewLifecycleOwner,{
+                helper.getUserRoom(it!!)
+            })
+
             nextHomepage.observe(viewLifecycleOwner, Observer {
                 helper.nextHomePage()
             })
