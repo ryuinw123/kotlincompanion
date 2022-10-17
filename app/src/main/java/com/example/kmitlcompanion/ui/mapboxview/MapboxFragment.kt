@@ -49,7 +49,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     ): View? {
         binding = FragmentMapboxBinding.inflate(inflater,container,false)
         mapView = binding.mapView
-        helper.map.setup(mapView) {
+        helper.slider.setup(binding.bottomSheet)
+        helper.map.setup(viewModel,mapView) {
             binding.viewModel = this@MapboxFragment.viewModel
             this@MapboxFragment.viewModel.downloadLocations()
         }
@@ -75,6 +76,25 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let { helper.map.updateMap(it,information) }
             })
+            bottomSheetState.observe(viewLifecycleOwner, Observer {
+                helper.slider.setState(it)
+            })
+            currentLocationGps.observe(viewLifecycleOwner, Observer {
+                currentLocationGpsTv.text = it
+            })
+            idLocationLabel.observe(viewLifecycleOwner, Observer {
+                idLocationLabelTv.text = it
+
+            })
+            nameLocationLabel.observe(viewLifecycleOwner, Observer {
+                nameLocationLabelTv.text = it
+            })
+            descriptionLocationLabel.observe(viewLifecycleOwner, Observer {
+                descriptionLocationLabelTv.text = it
+            })
+            positionFlyer.observe(viewLifecycleOwner, Observer {
+                helper.map.flyToLocation(it)
+            })
         }
     }
 
@@ -83,49 +103,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding.mapView?.onLowMemory()
     }
 
-
-    private fun addAnnotationToMap() {
-// Create an instance of the Annotation API and get the PointAnnotationManager.
-        bitmapFromDrawableRes(
-            R.drawable.red_marker
-        )?.let {
-            val annotationApi = mapView?.annotations
-            val pointAnnotationManager = annotationApi?.createPointAnnotationManager()
-// Set options for the resulting symbol layer.
-            val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-// Define a geographic coordinate.
-                .withPoint(Point.fromLngLat(18.06, 59.31))
-// Specify the bitmap you assigned to the point annotation
-// The bitmap will be added to map style automatically.
-                .withIconImage(it)
-// Add the resulting pointAnnotation to the map.
-            pointAnnotationManager?.create(pointAnnotationOptions)
-        }
-    }
-
-    private fun bitmapFromDrawableRes(@DrawableRes resourceId: Int) =
-        convertDrawableToBitmap(context?.let { ContextCompat.getDrawable(it, resourceId) })
-
-    private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
-        if (sourceDrawable == null) {
-            return null
-        }
-        return if (sourceDrawable is BitmapDrawable) {
-            sourceDrawable.bitmap
-        } else {
-// copying drawable object to not manipulate on the same reference
-            val constantState = sourceDrawable.constantState ?: return null
-            val drawable = constantState.newDrawable().mutate()
-            val bitmap: Bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth, drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bitmap
-        }
-    }
 
 
 }

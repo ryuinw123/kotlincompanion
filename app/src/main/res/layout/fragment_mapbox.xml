@@ -57,9 +57,9 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
             <TextView
                 android:id="@+id/current_location_label_tv"
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                 android:paddingEnd="5dp"
                 android:text="Current location:"
                 android:textSize="12sp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/drag_handle_iv"
                 tools:ignore="HardcodedText"
@@ -83,11 +83,55 @@
                 android:maxLines="1"
                 android:paddingEnd="16dp"
                 android:textSize="12sp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/current_location_label_tv"
                 app:layout_constraintTop_toBottomOf="@id/drag_handle_iv"
                 tools:text="Latitude: 45.23 Longitude 51.56"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/id_location_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="5dp"
+                android:text="Current location:"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/current_location_label_tv"
+                tools:ignore="HardcodedText"
+                tools:visibility="visible" />
+            <TextView
+                android:id="@+id/name_location_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="5dp"
+                android:text="Current location:"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/id_location_label_tv"
+                tools:ignore="HardcodedText"
+                tools:visibility="visible" />
+            <TextView
+                android:id="@+id/description_location_label_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingStart="16dp"
+                android:paddingEnd="5dp"
+                android:text="Current location:"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name_location_label_tv"
+                tools:ignore="HardcodedText"
                 tools:visibility="visible" />
 
 

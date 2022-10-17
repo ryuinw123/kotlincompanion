@@ -2,10 +2,10 @@ package com.example.kmitlcompanion.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
+import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
@@ -17,6 +17,26 @@ class MapboxViewModel @Inject constructor(
 
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
     val mapInformationResponse: LiveData<MapInformation> = _mapInformationResponse
+
+    private val _bottomSheetState = MutableLiveData<Int>()
+    val bottomSheetState: LiveData<Int> = _bottomSheetState
+
+    private val _currentLocationGps = MutableLiveData<String?>()
+    val currentLocationGps: LiveData<String?> = _currentLocationGps
+
+    private val _idLocationLabel = MutableLiveData<String?>()
+    val idLocationLabel : LiveData<String?> = _idLocationLabel
+
+    private val _nameLocationLabel = MutableLiveData<String?>()
+    val nameLocationLabel : LiveData<String?> = _nameLocationLabel
+
+    private val _positionFlyer = MutableLiveData<Point>()
+    val positionFlyer: LiveData<Point> = _positionFlyer
+
+    private val _descriptionLocationLabel = MutableLiveData<String?>()
+    val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
+
+
 
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
@@ -35,6 +55,29 @@ class MapboxViewModel @Inject constructor(
             }
 
         })
+    }
+
+    fun updateBottomSheetState(state: Int) {
+        _bottomSheetState.value = state
+    }
+
+    fun updateCurrentLocationGps(point: Point){
+        val lat = point.latitude()
+        val long = point.longitude()
+        _currentLocationGps.value = "Lat: $lat, Long: $long"
+    }
+    fun updateIdLocationLabel(id : String){
+        _idLocationLabel.value = "id = $id"
+    }
+    fun updateNameLocationLabel(name : String){
+        _nameLocationLabel.value = "name = $name"
+    }
+    fun updateDescriptionLocationLabel(description : String) {
+        _descriptionLocationLabel.value = "description = $description"
+    }
+
+    fun updatePositionFlyer(point: Point) {
+        _positionFlyer.value = point
     }
 
     fun goToCreateMapBox(){

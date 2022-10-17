@@ -20,7 +20,7 @@ object RetrofitServiceFactory {
 
     private fun makeRetrofitTestClient(okHttpClient: OkHttpClient, gson: Gson): RetrofitTestClient {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://shitduck.duckdns.org:8000/api/")
+            .baseUrl("http://192.168.2.40:8000/api/")
             //.baseUrl("http://172.24.240.1:8000/api/")
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

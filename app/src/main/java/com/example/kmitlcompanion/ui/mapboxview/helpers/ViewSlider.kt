@@ -1,8 +1,10 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +16,40 @@ import javax.inject.Inject
 internal class ViewSlider @Inject constructor() {
     private var weaksheetBehavior: WeakReference<BottomSheetBehavior<ViewGroup>?>? = null
 
+    @SuppressLint("RestrictedApi")
     fun setup(bottomSheet: ViewGroup){
         weaksheetBehavior = WeakReference(BottomSheetBehavior.from(bottomSheet))
+        sheetBehavior?.setHideableInternal(true)
+        setState(BottomSheetBehavior.STATE_HIDDEN)
         setupBottomSheetListeners()
     }
 
     private fun setupBottomSheetListeners() {
         sheetBehavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                TODO("Not yet implemented")
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN        -> {
+                        //not needed now, intentionally left blank
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED      -> {
+                        //not needed now, intentionally left blank
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED     -> {
+                        //not needed now, intentionally left blank
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING      -> {
+                        //not needed now, intentionally left blank
+                    }
+                    BottomSheetBehavior.STATE_SETTLING      -> {
+                        //not needed now, intentionally left blank
+                    }
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        //not needed now, intentionally left blank
+                    }
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                TODO("Not yet implemented")
             }
         })
     }
