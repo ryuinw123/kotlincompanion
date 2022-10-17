@@ -5,8 +5,9 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
 import com.example.kmitlcompanion.domain.usecases.getUserRoom
@@ -14,7 +15,7 @@ import com.example.kmitlcompanion.domain.usecases.postUserData
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.identitylogin.IdentityloginFragmentDirections
-import com.example.kmitlcompanion.ui.identitylogin.DataFacultyDepart
+import com.example.kmitlcompanion.ui.identitylogin.utils.DataFacultyDepart
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import io.reactivex.rxjava3.observers.DisposableObserver
@@ -39,10 +40,37 @@ class IdentityloginViewModel @Inject constructor(
     private val _nextHomePage = SingleLiveData<Event<Boolean>>()
     val nextHomepage: SingleLiveData<Event<Boolean>> = _nextHomePage
 
+
+    private val _textHintInputName = MutableLiveData<String?>()
+    val textHintInputName: LiveData<String?> = _textHintInputName
+
+    private val _saveDataClickEvent = MutableLiveData<Event<Boolean>>()
+    val saveDataClickEvent : LiveData<Event<Boolean>> = _saveDataClickEvent
+
+
+    private val _textNameValue2 = MutableLiveData<String?>()
+    val textNameValue2 : LiveData<String?> = _textNameValue2
+
+
+
+
     private lateinit var binding: FragmentIdentityloginBinding
     private lateinit var activity:Activity
 
     private val dataFacultyDepart = DataFacultyDepart()
+
+
+    fun updateTextInputNameHelper(helper : String) {
+        _textHintInputName.value = helper
+    }
+
+    fun updateTextInput(text : String) {
+        _textNameValue2.value = text
+    }
+
+    fun onSaveDataClick() {
+        _saveDataClickEvent.value = Event(true)
+    }
 
 
     fun setActivityBinding(binding: FragmentIdentityloginBinding,activity: Activity){
@@ -55,11 +83,6 @@ class IdentityloginViewModel @Inject constructor(
                  faculty : TextView,
                  department : TextView,
                  year : TextView){
-
-        if (!checkAllFieldValid()){
-            Log.d("saveData","InValid Data")
-            return
-        }
 
         val name = name.text.toString()
         val surname = surname.text.toString()

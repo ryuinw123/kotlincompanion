@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
@@ -32,7 +33,9 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        helper.setup(viewModel)
+        helper.api.setup(viewModel)
+        helper.validation.setup(viewModel)
+
 
         (activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
         binding = FragmentIdentityloginBinding.inflate(inflater,container, false).apply{
@@ -44,22 +47,48 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,Identity
         viewModel.listFieldAdapter()
         viewModel.inputListener()
 
+
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.textNameValue.doAfterTextChanged {
+            helper.validation.validate()
+            viewModel.updateTextInput(binding.textNameValue.text.toString())
+            println("จุดแรกใช้ได้")
+        }
+    }
+
 
     private fun FragmentIdentityloginBinding.setupViewObservers(){
         this@IdentityloginFragment.viewModel.run {
             saveUserDataResponse.observe(viewLifecycleOwner,{
-                helper.postUserData(it!!)
+                helper.api.postUserData(it!!)
             })
 
             getUserRoom.observe(viewLifecycleOwner,{
-                helper.getUserRoom(it!!)
+                helper.api.getUserRoom(it!!)
             })
 
             nextHomepage.observe(viewLifecycleOwner, Observer {
-                helper.nextHomePage()
+                helper.api.nextHomePage()
             })
+
+            textNameValue2.observe(viewLifecycleOwner, Observer {
+                textNameValue.setText(textNameValue2.value)
+            })
+
+
+            textHintInputName.observe(viewLifecycleOwner, Observer {
+                textinputName.helperText = textHintInputName.value
+            })
+
+            saveDataClickEvent.observe(viewLifecycleOwner, Observer {
+                helper.validation.inputValidation()
+            })
+
+
         }
     }
 

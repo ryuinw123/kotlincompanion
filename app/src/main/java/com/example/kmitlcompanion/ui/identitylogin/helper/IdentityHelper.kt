@@ -1,28 +1,10 @@
 package com.example.kmitlcompanion.ui.identitylogin.helper
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import com.example.kmitlcompanion.presentation.IdentityloginViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
-class IdentityHelper @Inject constructor() : DefaultLifecycleObserver {
-
-    private lateinit var viewModel: IdentityloginViewModel
-
-    fun setup(viewModel: IdentityloginViewModel){
-        this.viewModel = viewModel
-    }
-
-    fun getUserRoom(arr : ArrayList<Any>){
-        viewModel.getUserRoom(arr)
-    }
-
-    fun postUserData(arr : ArrayList<Any>){
-        viewModel.postUserData(arr)
-    }
-
-    fun nextHomePage(){
-        viewModel.nextHomePage()
-    }
-
-
-}
+@ActivityScoped
+internal class IdentityHelper @Inject constructor(
+    val api: ApiHelper,
+    val validation: ValidatationHelper
+)

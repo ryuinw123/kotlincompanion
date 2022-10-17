@@ -188,7 +188,7 @@
                         android:layout_height="70dp"
                         android:backgroundTint="@color/kmitl_color"
                         android:fontFamily="@font/inter_bold"
-                        android:onClick="@{(view)-> viewModel.saveData(textNameValue,textSurnameValue,facultyList,departmentList,yearList)}"
+                        android:onClick="@{(view)-> viewModel.onSaveDataClick()}"
                         android:text="ยืนยัน"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp"

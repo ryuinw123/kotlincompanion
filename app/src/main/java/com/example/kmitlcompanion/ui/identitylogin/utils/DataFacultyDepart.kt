@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.ui.identitylogin
+package com.example.kmitlcompanion.ui.identitylogin.utils
 
 import javax.inject.Inject
 
