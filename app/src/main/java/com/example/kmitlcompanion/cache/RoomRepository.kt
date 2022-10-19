@@ -43,6 +43,7 @@ class RoomRepository @Inject constructor(
     override fun updateUser(email: String, token: String): Completable {
         return database.cachedDao().updateUser(
             User(
+                id = 0,
                 email = email,
                 token = token
             )
