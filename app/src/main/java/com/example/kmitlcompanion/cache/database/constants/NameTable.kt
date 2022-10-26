@@ -14,6 +14,7 @@ object NameTable {
     const val DATA_LAST_LOCATION_TIMESTAMP_ID = 1L
 
     const val USER_TABLE = "UserTable"
+    const val USER_ID = "user_id"
     const val USER_EMAIL = "user_email"
     const val USER_TOKEN = "user_token"
 }

@@ -8,6 +8,9 @@ import com.example.kmitlcompanion.cache.database.constants.NameTable
 @Entity(tableName = NameTable.USER_TABLE)
 data class User(
     @PrimaryKey
+    @ColumnInfo(name = NameTable.USER_ID)
+    val id: Int,
+
     @ColumnInfo(name = NameTable.USER_EMAIL)
     val email: String,
 
