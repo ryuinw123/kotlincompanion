@@ -6,5 +6,6 @@ import javax.inject.Inject
 @ActivityScoped
 internal class ViewHelper @Inject constructor(
     val map: ViewMap,
+    val list : ViewList,
     val slider: ViewSlider
 )

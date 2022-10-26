@@ -91,7 +91,7 @@ internal class ViewMap @Inject constructor(
                     viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
                     viewModel.updateCurrentLocationGps(point)
                     viewModel.updatePositionFlyer(point)
-                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
                     isClick = true
                 }
             }
@@ -111,7 +111,8 @@ internal class ViewMap @Inject constructor(
     fun flyToLocation(point: Point) {
         weakMapView?.get()?.getMapboxMap()?.flyTo(
             cameraOptions {
-                center(point)
+
+                center(Point.fromLngLat(point.longitude(),point.latitude()+0.01))
                 zoom(12.0)
                 bearing(180.0)
                 pitch(50.0)
