@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.remote
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.remote.service.RetrofitTestClient
 import com.example.kmitlcompanion.data.repository.RemoteRepository
 import io.reactivex.rxjava3.core.Completable
@@ -18,8 +19,8 @@ class RetrofitClient @Inject constructor(
         return retrofitTestClient.createLocationQuery(latitude,longitude)
     }
 
-    override fun postLogin(token: String): Observable<Int> {
-        return retrofitTestClient.postLogin(token)
+    override fun postLogin(authCode: String): Observable<ReturnLoginData> {
+        return retrofitTestClient.postLogin(authCode)
     }
 
     override fun postUserData(

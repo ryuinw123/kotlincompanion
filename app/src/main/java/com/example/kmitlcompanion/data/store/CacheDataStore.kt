@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.store
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
@@ -23,7 +24,7 @@ class CacheDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun postLogin(token: String): Observable<Int> {
+    override fun postLogin(authCode: String): Observable<ReturnLoginData> {
         throw IllegalStateException("Function not currently supported!")
     }
 

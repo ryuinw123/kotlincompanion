@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.domain.usecases
 
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.domain.ObservableUseCase
 import com.example.kmitlcompanion.domain.executor.PostExecutionThread
 import com.example.kmitlcompanion.domain.repository.DomainRepository
@@ -9,9 +10,9 @@ import javax.inject.Inject
 class postLogin @Inject constructor(
     postExecutionThread: PostExecutionThread,
     private val domainRepository: DomainRepository
-): ObservableUseCase<Int,String>(postExecutionThread){
+): ObservableUseCase<ReturnLoginData,String>(postExecutionThread){
 
-    public override fun buildUseCaseObservable(params: String?): Observable<Int> {
+    public override fun buildUseCaseObservable(params: String?): Observable<ReturnLoginData> {
         return domainRepository.postLogin(
             params?:"",
         )

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.usecases.postLogin
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
@@ -28,7 +29,7 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val postLogin: postLogin,
-    private val updateUser: UpdateUser
+    private val updateUser: UpdateUser,
 )
     : BaseViewModel() {
 
@@ -65,9 +66,12 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signIn() {
+        //val profileScope = Scope("https://www.googleapis.com/auth/userinfo.profile")
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(activity.getString(R.string.NewAUTH_ID))
+            //.requestIdToken(activity.getString(R.string.NewAUTH_ID))
             .requestEmail()
+            .requestServerAuthCode(activity.getString(R.string.NewAUTH_ID),false)
+            .requestProfile()
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
@@ -88,12 +92,11 @@ class LoginViewModel @Inject constructor(
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-            Log.d("OAuth",account.idToken!!)
+            //Log.d("OAuth",account.idToken!!)
+            Log.d("OAuth Authorization server",account.serverAuthCode!!)
 
-            _loginResponse.value = account.idToken
-            //_updateUserRoom.value = UserData(email=account.email.toString(),token=account.idToken.toString())
-            _updateUserRoom.value = UserData(id=0,email=account.email.toString(),token=account.idToken.toString())
-            //_loginResponse.value = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImVkMzZjMjU3YzQ3ZWJhYmI0N2I0NTY4MjhhODU4YWE1ZmNkYTEyZGQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI1NjM1MDkwMDIwODQtMzVwMjdvZG85anFhcm8yaGRnbzJuZG1vMjE1aWVuajAuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI1NjM1MDkwMDIwODQtYjdtMDVib2lhcXM1bW8wdGhpNGthNTlub2lha2V1czIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTg0MzIwNDk5MTAwMjYyOTA5NjIiLCJoZCI6ImttaXRsLmFjLnRoIiwiZW1haWwiOiI2MjAxMDg5M0BrbWl0bC5hYy50aCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiNjJfMDg5MyBTVVBIQU5VVCBXQU5ERUUiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUxtNXd1MUVWbHItbm95d3NhRG4tbUZDWGk2SkpkQ3JYOU82b1JaMEVNZz1zOTYtYyIsImdpdmVuX25hbWUiOiI2Ml8wODkzIFNVUEhBTlVUIiwiZmFtaWx5X25hbWUiOiJXQU5ERUUiLCJsb2NhbGUiOiJ0aCIsImlhdCI6MTY2NTMzMDk5NCwiZXhwIjoxNjY1MzM0NTk0fQ.ppgbS5FfMhSQk1J-iu3DVIx0DVaCc3TLbdEcByZ3RAkPkRj8HvPgVjmXVbbENmPpI2WNVP19IVJ-l_H08-f9zgpylCiSRj-jXod4m7IKx9FqfmHZtyQ-YdUl_Sej3XSYNicNJsl9axzXBG-ZUEtRUBHcpmG3Oh9Zl4jmijT53w0BkGoQetn5vLnk_NeRkTApLE6ye04IqOBOsN-dWr7nWsTIKnOZT4TqUCO8MLdRB2DP9qxcJQTLw2nzlWTNIpOLSB5EwtH22X4hVktVZtA3nCfkadCTwOsoT6BpDz28-e_R-CNMoqu4__XEdIqBZ5bKOCk1xzxL-_Jl8D7hFAy0PQ"
+            _loginResponse.value = account.serverAuthCode
+            //_updateUserRoom.value = UserData(id=0,email=account.email.toString(),token=account.serverAuthCode.toString())
             //_loginResponse.postValue(null)
 
         } catch (e: ApiException) {
@@ -104,16 +107,19 @@ class LoginViewModel @Inject constructor(
 
     /************ api ************************/
 
-    fun postLogin(token : String){
-        postLogin.execute(object : DisposableObserver<Int>() {
+    fun postLogin(authCode : String){
+        postLogin.execute(object : DisposableObserver<ReturnLoginData>() {
             override fun onComplete() {
                 Log.d("AUTH","Success")
             }
 
-            override fun onNext(t: Int) {
-                if (t == 1){
+            override fun onNext(t: ReturnLoginData) {
+
+                _updateUserRoom.value = UserData(id=0,email=t.email,token=t.refreshToken)
+
+                if (t.status == 1){
                     _signInHome.value = Event(true)
-                }else if(t == 0){
+                }else if(t.status == 0){
                     _signInIdentity.value = Event(true)
                 }
             }
@@ -122,7 +128,7 @@ class LoginViewModel @Inject constructor(
                 Log.d("AUTH",e.toString())
                 _signOutFailedResponse.value = Event(true)
             }
-        }, token)
+        }, authCode)
     }
 
     /**** save token to data store ****/
@@ -164,6 +170,7 @@ class LoginViewModel @Inject constructor(
             .addOnCompleteListener(activity, OnCompleteListener<Void?> {
                 Log.d("Massage","revokeAccess")
             })
+
     }
 
 

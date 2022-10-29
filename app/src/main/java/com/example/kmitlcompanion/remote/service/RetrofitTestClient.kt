@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.remote.service
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
@@ -15,7 +16,7 @@ interface RetrofitTestClient {
 
     @Multipart
     @POST("login")
-    fun postLogin(@Part("token") token:String): Observable<Int>
+    fun postLogin(@Part("authCode") authCode:String): Observable<ReturnLoginData>
 
     @Multipart
     @POST("postuserdata")

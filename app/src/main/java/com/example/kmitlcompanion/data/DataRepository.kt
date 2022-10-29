@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data
 
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.TimeUtils
@@ -52,8 +53,8 @@ class DataRepository @Inject constructor(
     }
 
 
-    override fun postLogin(token: String): Observable<Int> {
-        return dataStore.getRemoteData(true).postLogin(token)
+    override fun postLogin(authCode: String): Observable<ReturnLoginData> {
+        return dataStore.getRemoteData(true).postLogin(authCode)
     }
 
     override fun postUserData(

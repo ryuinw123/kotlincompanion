@@ -20,8 +20,8 @@ class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
         this.viewModel.updateUser(userData)
     }
 
-    fun postLogin(token: String){
-        viewModel.postLogin(token)
+    fun postLogin(authCode: String){
+        viewModel.postLogin(authCode)
     }
 
     fun signInHome(){

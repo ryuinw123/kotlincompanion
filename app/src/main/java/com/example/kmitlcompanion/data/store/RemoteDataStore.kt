@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.store
 
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
@@ -28,8 +29,8 @@ class RemoteDataStore @Inject constructor(
         return remoteRepository.createLocationQuery(latitude,longitude)
     }
 
-    override fun postLogin(token: String): Observable<Int> {
-        return remoteRepository.postLogin(token)
+    override fun postLogin(authCode: String): Observable<ReturnLoginData> {
+        return remoteRepository.postLogin(authCode)
     }
 
     override fun postUserData(
