@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
@@ -35,6 +36,9 @@ class MapboxViewModel @Inject constructor(
 
     private val _descriptionLocationLabel = MutableLiveData<String?>()
     val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
+
+
+
 
 
 
@@ -80,12 +84,40 @@ class MapboxViewModel @Inject constructor(
         _positionFlyer.value = point
     }
 
+
     fun goToCreateMapBox(){
         navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
     }
 
     fun goBackClicked() {
         navigateBack()
+    }
+
+
+
+
+    //test
+    private val nestedComment = mutableListOf(
+        Comment(5, "15/05/2021 at 12:25", "Anonymous5", "NestedComment1", 2, parentId = 1),
+        Comment(6,"15/05/2021 at 12:26", "Anonymous6", "NestedComment2", 2, parentId = 1)
+    )
+
+    private val _commentList = MutableLiveData(mutableListOf(
+        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1", replies = nestedComment),
+        Comment(2, "15/05/2021 at 12:22", "Anonymous2", "Comment2"),
+        Comment(3, "15/05/2021 at 12:23", "Anonymous3", "Comment3"),
+        Comment(4, "15/05/2021 at 12:24", "Anonymous4", "Comment4"),
+    ))
+    val commentList: LiveData<MutableList<Comment>> = _commentList
+
+    fun addComment(shortComment: Comment) {
+        val newList = _commentList.value ?: mutableListOf()
+        if(shortComment.parentId != null) {
+            newList.find { it.id == shortComment.parentId }?.replies?.add(shortComment)
+        } else {
+            newList.add(shortComment)
+        }
+        _commentList.value = newList
     }
 
 }

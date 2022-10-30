@@ -7,5 +7,6 @@ import javax.inject.Inject
 internal class ViewHelper @Inject constructor(
     val map: ViewMap,
     val list : ViewList,
-    val slider: ViewSlider
+    val slider: ViewSlider,
+    val comment: ViewComment,
 )
