@@ -7,12 +7,10 @@ import com.example.kmitlcompanion.ui.settings.SettingsFragmentDirections
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import com.google.android.gms.tasks.OnCompleteListener
 
-@HiltViewModel
-class HomeViewModel @Inject constructor() : BaseViewModel() {
+class SettingsViewModel @Inject constructor() : BaseViewModel() {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var activity: Activity
@@ -21,8 +19,12 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         activity = act
     }
 
+//    fun gotoMap(){
+//        navigate(HomeFragmentDirections.actionHomeFragmentToMapboxFragment2())
+//    }
 
     fun gotoLogin(){
+        Log.d("Logout","Logout")
         navigate(SettingsFragmentDirections.actionSettingsFragmentToLoginFragment())
     }
 
@@ -53,6 +55,4 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
                 gotoLogin()
             })
     }
-
-
 }

@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentLoginBinding
 import com.example.kmitlcompanion.presentation.utils.ActivityNavigation
 import com.example.kmitlcompanion.presentation.LoginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.auth.helpers.AuthHelper
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -51,6 +54,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
             viewModel = this@LoginFragment.viewModel
             setupViewObservers()
         }
+
+        //hide bottom bar
+        val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
+        bottomNavigationView.visibility = View.GONE
 
         viewModel.setActivityContext(requireActivity())
         return binding.root

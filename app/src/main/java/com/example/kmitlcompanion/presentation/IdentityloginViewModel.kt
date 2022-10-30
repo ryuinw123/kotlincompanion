@@ -194,7 +194,7 @@ class IdentityloginViewModel @Inject constructor(
 
     //Navigation
     fun nextHomePage(){
-        navigate(IdentityloginFragmentDirections.actionIdentityloginFragmentToHomeFragment())
+        navigate(IdentityloginFragmentDirections.actionIdentityloginFragmentToMapboxFragment2())
     }
 
 

@@ -87,8 +87,8 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.42"
 
     //navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
 
     //Mapbox
     implementation 'com.mapbox.maps:android:10.8.0'
@@ -100,6 +100,9 @@ dependencies {
 
     //Material UI
     implementation 'com.google.android.material:material:1.6.1'
+
+    //Coordinator Layout
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
     //Activity Result API
     //implementation 'androidx.activity:activity-ktx:1.6.0'
