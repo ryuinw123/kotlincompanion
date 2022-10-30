@@ -8,34 +8,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
+import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.presentation.MapboxViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentAdapter
+import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentClickListener
+import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     @Inject internal lateinit var helper: ViewHelper
+    @Inject lateinit var dateUtils: DateUtils
     //override lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
-    //private val viewModel: MapboxViewModel by viewModels()
 
     override val viewModel : MapboxViewModel by viewModels()
 
@@ -50,14 +60,37 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapboxBinding.inflate(inflater,container,false)
-        mapView = binding.mapView
-        helper.slider.setup(binding.bottomSheet)
-        helper.map.setup(viewModel,mapView) {
-            binding.viewModel = this@MapboxFragment.viewModel
-            this@MapboxFragment.viewModel.downloadLocations()
+        binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
+            this@MapboxFragment.mapView = mapView
+            helper.slider.setup(bottomSheet)
+            helper.map.setup(this@MapboxFragment.viewModel,mapView) {
+                viewModel = this@MapboxFragment.viewModel
+                this@MapboxFragment.viewModel.downloadLocations()
+            }
+            helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
+
+
+            setupViewObservers()
         }
-        binding.setupViewObservers()
+
+        //test
+        val btnShow = binding.btnComment
+        val btnAddComment = binding.btnAddComment
+        val recyclerView = binding.rvComment
+
+
+        btnShow.text = "Show Comments " + (viewModel.commentList.value?.size ?: 0)
+        btnShow.setOnClickListener {
+            recyclerView.isVisible = !recyclerView.isVisible
+            btnAddComment.isVisible = !btnAddComment.isVisible
+            btnShow.text = if(recyclerView.isVisible) "Hide Comments" else "Show Comments " + (viewModel.commentList.value?.size ?: 0)
+        }
+
+        btnAddComment.setOnClickListener {
+            val id = (viewModel.commentList.value?.size ?: 0) + 1
+            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", "message$id"))
+        }
+
 
         //show bottom bar
         val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
@@ -106,6 +139,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 helper.map.flyToLocation(it)
+            })
+            commentList.observe(viewLifecycleOwner, Observer {
+                helper.comment.update(it.toMutableList())
             })
         }
     }

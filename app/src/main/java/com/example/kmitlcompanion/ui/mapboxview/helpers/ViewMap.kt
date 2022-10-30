@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.ActivePoint
 import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.model.MapPoint
 import com.example.kmitlcompanion.presentation.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
