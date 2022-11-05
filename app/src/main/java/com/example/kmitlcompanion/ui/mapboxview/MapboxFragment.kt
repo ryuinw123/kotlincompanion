@@ -34,6 +34,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -95,6 +96,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         //show bottom bar
         val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
         bottomNavigationView.visibility = View.VISIBLE
+
 
         return binding.root
     }
