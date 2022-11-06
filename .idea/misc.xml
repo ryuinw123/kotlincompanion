@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.17617753623188406" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_home.xml" value="0.15307971014492755" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_identitylogin.xml" value="0.27447916666666666" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_login.xml" value="0.27447916666666666" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_main.xml" value="0.2" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_mapbox.xml" value="0.27447916666666666" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_notification.xml" value="0.1" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_settings.xml" value="0.1334853090172239" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_sign_in.xml" value="0.17617753623188406" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_start_page.xml" value="0.24210526315789474" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33495145631067963" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/button_nav_map.xml" value="0.2" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_dislike.xml" value="0.1175" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_drag_handle_black_24dp.xml" value="0.2495" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_like.xml" value="0.1175" />

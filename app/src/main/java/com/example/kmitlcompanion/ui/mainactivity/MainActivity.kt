@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.mainactivity
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,13 +76,17 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation) as BottomNavigationView
-        //val buttonNavigationMap = findViewById<BottomNavigationView>(R.id.map_button_navigation) as BottomNavigationView
         setupWithNavController(bottomNavigationView,navController)
+
+        val buttonNavigationMap = findViewById<BottomNavigationView>(R.id.botton_map) as BottomNavigationView
+        setupWithNavController(buttonNavigationMap,navController)
 
         val mapButtonFragment = findViewById<FloatingActionButton>(R.id.map_button)
         mapButtonFragment.setOnClickListener {
-            bottomNavigationView.selectedItemId = R.id.mapboxFragment2
+            buttonNavigationMap.selectedItemId = R.id.mapboxFragment2
         }
+
+
 
     }
 

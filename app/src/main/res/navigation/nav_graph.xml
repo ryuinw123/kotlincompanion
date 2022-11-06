@@ -71,4 +71,9 @@
             android:id="@+id/action_startPage_to_mapboxFragment2"
             app:destination="@id/mapboxFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.kmitlcompanion.ui.notification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
 </navigation>

@@ -14,8 +14,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.LoginFragment">
 
-
-
     <Button
         android:id="@+id/signin_button"
         android:layout_width="330dp"
