@@ -10,36 +10,44 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.databinding.DataBindingUtil.bind
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.example.kmitlcompanion.ui.mainactivity.helper.NavHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import androidx.databinding.DataBindingUtil.setContentView as bindingSetContentView
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject lateinit var helper : NavHelper
+
     private lateinit var navController: NavController
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-        bindingSetContentView<ActivityMainBinding>(this, R.layout.activity_main)
-
-        this.appearanceLightNavigationBars()
+        binding = bindingSetContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
+            helper = this@MainActivity.helper
+            this@MainActivity.helper.setup(window,navHostFragment,root, bottomNavigation, bottomMap)
+        }
+        /*this.appearanceLightNavigationBars()
         this.setDrawUIonTop()
         this.setWindowInsetsController()
-        this.drawBottomNavBar()
+        this.drawBottomNavBar()*/
 
     }
 
-    private fun setWindowInsetsController(){
+    /*private fun setWindowInsetsController(){
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val windowInsetsCompat = WindowInsetsControllerCompat(window, window.decorView)
         windowInsetsCompat.hide(WindowInsetsCompat.Type.statusBars())
@@ -73,15 +81,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun drawBottomNavBar(){
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation) as BottomNavigationView
+        navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
+        val bottomNavigationView = binding.bottomNavigation//findViewById<BottomNavigationView>(R.id.bottom_navigation) as BottomNavigationView
         setupWithNavController(bottomNavigationView,navController)
 
-        val buttonNavigationMap = findViewById<BottomNavigationView>(R.id.botton_map) as BottomNavigationView
+        val buttonNavigationMap = binding.bottomMap//findViewById<BottomNavigationView>(R.id.botton_map) as BottomNavigationView
         setupWithNavController(buttonNavigationMap,navController)
 
-        val mapButtonFragment = findViewById<FloatingActionButton>(R.id.map_button)
+        val mapButtonFragment = binding.mapButton//findViewById<FloatingActionButton>(R.id.map_button)
         mapButtonFragment.setOnClickListener {
             buttonNavigationMap.selectedItemId = R.id.mapboxFragment2
         }
@@ -89,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    }
+    }*/
 
 
 }

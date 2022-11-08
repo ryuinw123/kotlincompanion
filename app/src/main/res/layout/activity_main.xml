@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="helper"
+            type="com.example.kmitlcompanion.ui.mainactivity.helper.NavHelper" />
+    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
@@ -49,7 +55,7 @@
 
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/botton_map"
+                    android:id="@+id/bottom_map"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
@@ -65,7 +71,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:backgroundTint="#00AAFF"
-                android:onClick="mapboxFragment2"
+                android:onClick="@{()->helper.navigateToMap()}"
                 android:src="@drawable/map_48px"
                 android:visibility="visible"
                 app:fabCustomSize="70dp"
