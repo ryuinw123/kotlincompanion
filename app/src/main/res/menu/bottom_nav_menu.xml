@@ -6,6 +6,14 @@
             android:icon="@drawable/settings_48px"
             android:title="settings_menu"
             app:showAsAction="ifRoom"/>
+
+        <item
+            android:id="@+id/notificationFragment"
+            android:icon="@drawable/notifications_48px"
+            android:title="noti_menu"
+            app:showAsAction="ifRoom"/>
+
+
         <item
             android:id="@+id/feedFragment"
             android:icon="@drawable/feed_48px"
@@ -22,8 +30,8 @@
             android:title=""
             android:enabled="false"/>
 
-        <item android:id="@+id/mapboxFragment2"
-            android:title="map_menu"
-            android:visible="false"
-            android:enabled="true"/>
+<!--        <item android:id="@+id/mapboxFragment2"-->
+<!--            android:title="map_menu"-->
+<!--            android:visible="false"-->
+<!--            android:enabled="true"/>-->
 </menu>
