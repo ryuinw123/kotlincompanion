@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         mapButtonFragment.setOnClickListener {
             buttonNavigationMap.selectedItemId = R.id.mapboxFragment2
         }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
 
 

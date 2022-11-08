@@ -94,16 +94,8 @@ class MapboxViewModel @Inject constructor(
     }
 
 
-
-
-    //test
-    private val nestedComment = mutableListOf(
-        Comment(5, "15/05/2021 at 12:25", "Anonymous5", "NestedComment1", 2, parentId = 1),
-        Comment(6,"15/05/2021 at 12:26", "Anonymous6", "NestedComment2", 2, parentId = 1)
-    )
-
     private val _commentList = MutableLiveData(mutableListOf(
-        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1", replies = nestedComment),
+        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1"),
         Comment(2, "15/05/2021 at 12:22", "Anonymous2", "Comment2"),
         Comment(3, "15/05/2021 at 12:23", "Anonymous3", "Comment3"),
         Comment(4, "15/05/2021 at 12:24", "Anonymous4", "Comment4"),
@@ -112,11 +104,7 @@ class MapboxViewModel @Inject constructor(
 
     fun addComment(shortComment: Comment) {
         val newList = _commentList.value ?: mutableListOf()
-        if(shortComment.parentId != null) {
-            newList.find { it.id == shortComment.parentId }?.replies?.add(shortComment)
-        } else {
-            newList.add(shortComment)
-        }
+        newList.add(shortComment)
         _commentList.value = newList
     }
 
