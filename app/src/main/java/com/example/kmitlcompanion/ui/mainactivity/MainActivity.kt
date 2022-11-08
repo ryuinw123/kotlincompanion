@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.mainactivity
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.navigation.NavController
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         mapButtonFragment.setOnClickListener {
             bottomNavigationView.selectedItemId = R.id.mapboxFragment2
         }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
     }
 

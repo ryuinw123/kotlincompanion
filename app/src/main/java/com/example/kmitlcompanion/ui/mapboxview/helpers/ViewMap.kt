@@ -39,7 +39,7 @@ internal class ViewMap @Inject constructor(
 
 
         mapView?.getMapboxMap()?.loadStyleUri(
-            Style.MAPBOX_STREETS,
+            "mapbox://styles/ryuinw123/cla16mlr3006715p56830t6xv",
         ) {
             callback(mapView.getMapboxMap())
         }

@@ -13,7 +13,7 @@ class ViewComment @Inject constructor(
     fun setup(viewModel: MapboxViewModel , recyclerView: RecyclerView) {
         val commentClickListener = CommentClickListener { author, message, level, parentId ->
             val id = (viewModel.commentList.value?.size ?: 0) + 1
-            viewModel.addComment(Comment(id,"15/05/2021 at 12:30", author, message, level, parentId = parentId))
+            viewModel.addComment(Comment(id,"15/05/2021 at 12:30", author, message))
         }
         commentAdapter.commentClickListener = commentClickListener
 

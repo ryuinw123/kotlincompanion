@@ -75,20 +75,21 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
         //test
         val btnShow = binding.btnComment
-        val btnAddComment = binding.btnAddComment
+        val btnAddComment = binding.sendCommend
         val recyclerView = binding.rvComment
+        val commend = binding.commend
 
 
         btnShow.text = "Show Comments " + (viewModel.commentList.value?.size ?: 0)
         btnShow.setOnClickListener {
             recyclerView.isVisible = !recyclerView.isVisible
-            btnAddComment.isVisible = !btnAddComment.isVisible
             btnShow.text = if(recyclerView.isVisible) "Hide Comments" else "Show Comments " + (viewModel.commentList.value?.size ?: 0)
         }
 
         btnAddComment.setOnClickListener {
             val id = (viewModel.commentList.value?.size ?: 0) + 1
-            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", "message$id"))
+            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", commend.text.toString()))
+            commend.text.clear()
         }
 
 
