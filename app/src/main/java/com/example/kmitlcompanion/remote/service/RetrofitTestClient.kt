@@ -25,6 +25,6 @@ interface RetrofitTestClient {
                      @Part("faculty") faculty:Any,
                      @Part("department") department:Any,
                      @Part("year") year:Any,
-                     @Part("token") token:Any
+                     @Part("authCode") token:Any
     ) : Completable
 }
