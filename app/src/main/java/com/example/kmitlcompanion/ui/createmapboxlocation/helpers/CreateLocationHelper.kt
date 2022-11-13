@@ -6,6 +6,7 @@ import javax.inject.Inject
 @ActivityScoped
 internal class CreateLocationHelper @Inject constructor(
     val map:CreateLocationMap,
-    val camera:CreateLocationCamera
+    val camera:CreateLocationCamera,
+    val bottomBar : CreateLocationBottomBar
 ){
 }

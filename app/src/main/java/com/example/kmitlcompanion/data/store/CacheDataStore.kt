@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
+import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
@@ -12,6 +13,14 @@ import javax.inject.Inject
 class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
 ) :DataRepository {
+    override fun getLocationQuery(
+        latitude: Double,
+        longitude: Double,
+        token: String
+    ): Observable<LocationQuery> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
     override fun getMapPoints(): Observable<List<MapPointData>> {
         return cacheRepository.getMapPoints()
     }

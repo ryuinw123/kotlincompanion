@@ -15,16 +15,28 @@
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_start_page.xml" value="0.24210526315789474" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33495145631067963" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/button_nav_map.xml" value="0.2" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/bottom_nav.xml" value="0.1975" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/event_48px.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_dislike.xml" value="0.1175" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_drag_handle_black_24dp.xml" value="0.2495" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_drawer.xml" value="0.1975" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_exit.xml" value="0.1975" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_image.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_like.xml" value="0.1175" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_location_blue.xml" value="0.15" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_location_on_red_24dp.xml" value="0.1425" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_location_red.xml" value="0.139" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_reply.xml" value="0.1175" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_report.xml" value="0.1175" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_vector.xml" value="0.1975" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/layout_bg.xml" value="0.1425" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/top_border.xml" value="0.1175" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/chat_comment.xml" value="0.33" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/dialog_comment.xml" value="0.25" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/dropdown_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_createlocation.xml" value="0.25" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_createmapboxlocation.xml" value="0.25" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_home.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_identitylogin.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />

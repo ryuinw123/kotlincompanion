@@ -1,10 +1,12 @@
 package com.example.kmitlcompanion.data.store
 
+import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
+import com.example.kmitlcompanion.domain.model.LocationDetail
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -12,6 +14,13 @@ import javax.inject.Inject
 class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
+    override fun getLocationQuery(
+        latitude: Double,
+        longitude: Double,
+        token: String
+    ): Observable<LocationQuery> {
+        return remoteRepository.getLocationQuery(latitude,longitude,token)
+    }
 
     override fun getMapPoints(): Observable<List<MapPointData>> {
         return remoteRepository.getMapPoints()

@@ -9,19 +9,23 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.example.kmitlcompanion.presentation.MapboxViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 internal class ViewSlider @Inject constructor() {
     private var weaksheetBehavior: WeakReference<BottomSheetBehavior<ViewGroup>?>? = null
+    private lateinit var viewModel: MapboxViewModel
 
     @SuppressLint("RestrictedApi")
-    fun setup(bottomSheet: ViewGroup){
+    fun setup(bottomSheet: ViewGroup,viewModel: MapboxViewModel){
         weaksheetBehavior = WeakReference(BottomSheetBehavior.from(bottomSheet))
         sheetBehavior?.setHideableInternal(true)
         setState(BottomSheetBehavior.STATE_HIDDEN)
         setupBottomSheetListeners()
+        this.viewModel = viewModel
+
     }
 
     private fun setupBottomSheetListeners() {
@@ -29,22 +33,17 @@ internal class ViewSlider @Inject constructor() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN        -> {
-                        //not needed now, intentionally left blank
+                        viewModel.updateBottomSheetState( BottomSheetBehavior.STATE_HIDDEN )
                     }
                     BottomSheetBehavior.STATE_EXPANDED      -> {
-                        //not needed now, intentionally left blank
                     }
                     BottomSheetBehavior.STATE_COLLAPSED     -> {
-                        //not needed now, intentionally left blank
                     }
                     BottomSheetBehavior.STATE_DRAGGING      -> {
-                        //not needed now, intentionally left blank
                     }
                     BottomSheetBehavior.STATE_SETTLING      -> {
-                        //not needed now, intentionally left blank
                     }
                     BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                        //not needed now, intentionally left blank
                     }
                 }
             }

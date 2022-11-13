@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.presentation.MapboxViewModel
+import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentAdapter
@@ -45,10 +47,12 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     @Inject internal lateinit var helper: ViewHelper
     @Inject lateinit var dateUtils: DateUtils
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
     //override lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
 
     override val viewModel : MapboxViewModel by viewModels()
+
 
     override val layoutId :Int = R.layout.fragment_mapbox
 
@@ -63,7 +67,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     ): View? {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
-            helper.slider.setup(bottomSheet)
+            helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
@@ -95,8 +99,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
 
         //show bottom bar
-        val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
-        bottomNavigationView.visibility = View.VISIBLE
+        bottomBarUtils.bottomMap?.visibility = View.VISIBLE
 
 
         return binding.root
@@ -126,6 +129,10 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
+                if (it == 5)
+                    bottomBarUtils.bottomMap?.visibility = View.VISIBLE
+                else
+                    bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
             })
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it

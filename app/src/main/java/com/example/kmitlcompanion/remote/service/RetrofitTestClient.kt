@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.remote.service
 
+import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import io.reactivex.rxjava3.core.Completable
@@ -7,6 +8,10 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
 
 interface RetrofitTestClient {
+    @Multipart
+    @POST("getlocationquery")
+    fun getLocationQuery(@Part("latitude") latitude: Double , @Part("longitude") longitude: Double , @Part("authCode") token:Any): Observable<LocationQuery>
+
     @GET("helloworld")
     fun getMapPoints(): Observable<List<MapPointData>>
 

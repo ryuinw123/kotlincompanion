@@ -1,13 +1,17 @@
 package com.example.kmitlcompanion.data
 
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
+import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.TimeUtils
+import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
 import com.example.kmitlcompanion.domain.repository.DomainRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
@@ -18,6 +22,19 @@ class DataRepository @Inject constructor(
     private val mapper: MapPointMapper
 
 ) : DomainRepository{
+    override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
+
+
+        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,"abc")
+            .map {
+                LocationDetail(
+                    point = Point.fromLngLat(longitude,latitude),
+                    address = it.address,
+                    place = it.place
+                )
+            }
+    }
+
     override fun getMapPoints(): Observable<MapInformation> {
         //println(dataStore.getRemoteData(true).getMapPoints().toString())
         return dataStore.getRemoteData(true).getMapPoints() //ตัวอย่างข้อมูลของ datastore [{"name": "John", "id": 30, "latitude": "13.779677724153272", "longitude": "100.67650630259816", "description": "noob"}, {"name": "Cena", "id": 31, "latitude": "13.779677724153272", "longitude": "100.97650630259816", "description": "noob2"}]
