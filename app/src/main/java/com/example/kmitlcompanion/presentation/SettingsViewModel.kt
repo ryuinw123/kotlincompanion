@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.settings.SettingsFragmentDirections
@@ -25,8 +26,8 @@ class SettingsViewModel @Inject constructor(
 
 
     //update user data in room
-    private val _updateUserRoom = SingleLiveData<UserData>()
-    val updateUserRoom: SingleLiveData<UserData> = _updateUserRoom
+    private val _updateUserRoom = SingleLiveData<DomainUserData>()
+    val updateUserRoom: SingleLiveData<DomainUserData> = _updateUserRoom
 
 
     fun setActivityContext(act: Activity){
@@ -63,12 +64,12 @@ class SettingsViewModel @Inject constructor(
             .addOnCompleteListener(activity, OnCompleteListener<Void?> {
                 Log.d("Massage","revokeAccess")
                 gotoLogin()
-                _updateUserRoom.value = UserData(id=0,email="",token="")
+                _updateUserRoom.value = DomainUserData(id=0,email="",token="")
             })
     }
 
     //room update user
-    fun updateUser(userData: UserData) {
+    fun updateUser(domainUserData: DomainUserData) {
         updateUser.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 Log.d("UpdateUser","Update UserData Complete!!!")
@@ -77,6 +78,6 @@ class SettingsViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.d("UpdateUser",e.toString())
             }
-        },userData)
+        },domainUserData)
     }
 }

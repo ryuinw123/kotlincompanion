@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.cache.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -27,8 +28,8 @@ abstract class CachedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateUser(user: User): Completable
 
-    @Query("SELECT * FROM ${NameTable.USER_TABLE}")
-    abstract fun getUser(): Observable<List<User>>
+    @Query("SELECT * FROM ${NameTable.USER_TABLE} LIMIT 1")
+    abstract fun getUser(): Observable<UserData>
 
     @Query(
         """

@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.repository
 
+import androidx.lifecycle.LiveData
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.LocationDetail
@@ -16,5 +17,5 @@ interface CacheRepository {
 
     fun updateUser(email: String,token: String): Completable
 
-    fun getUser(): Observable<List<UserData>>
+    fun getUser(): Observable<UserData>
 }
