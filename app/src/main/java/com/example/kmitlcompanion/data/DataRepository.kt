@@ -1,13 +1,14 @@
 package com.example.kmitlcompanion.data
 
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
+import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
 import com.example.kmitlcompanion.domain.repository.DomainRepository
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.serialization.descriptors.StructureKind
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -44,5 +45,33 @@ class DataRepository @Inject constructor(
             }
             .flatMap { it }
 
+    }
+
+    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
+        return dataStore.getRemoteData(true).createLocationQuery(latitude,longitude)
+    }
+
+
+    override fun postLogin(token: String): Observable<Int> {
+        return dataStore.getRemoteData(true).postLogin(token)
+    }
+
+    override fun postUserData(
+        name: Any,
+        surname: Any,
+        faculty: Any,
+        department: Any,
+        year: Any,
+        token: Any
+    ): Completable {
+        return dataStore.getRemoteData(true).postUserData(name,surname,faculty,department,year,token)
+    }
+
+    override fun updateUser(email: String, token: String): Completable {
+        return dataStore.getRemoteData(false).updateUser(email,token)
+    }
+
+    override fun getUser(): Observable<List<UserData>> {
+        return dataStore.getRemoteData(false).getUser()
     }
 }

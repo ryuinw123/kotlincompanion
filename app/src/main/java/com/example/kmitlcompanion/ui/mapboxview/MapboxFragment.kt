@@ -8,47 +8,86 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
+import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.presentation.MapboxViewModel
+import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentAdapter
+import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentClickListener
+import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
-import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
-class MapboxFragment : Fragment() {
+class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     @Inject internal lateinit var helper: ViewHelper
-    private lateinit var binding: FragmentMapboxBinding
+    @Inject lateinit var dateUtils: DateUtils
+    //override lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
-    private var mapboxMap: MapboxMap? = null
-    private val viewModel: MapboxViewModel by viewModels()
+
+    override val viewModel : MapboxViewModel by viewModels()
+
+    override val layoutId :Int = R.layout.fragment_mapbox
+
+    override fun onReady(savedInstanceState: Bundle?) {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapboxBinding.inflate(inflater,container,false)
-        mapView = binding.mapView
-        helper.map.setup(mapView) {
-            binding.viewModel = this@MapboxFragment.viewModel
-            mapboxMap = it
-            this@MapboxFragment.viewModel.downloadLocations()
+        binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
+            this@MapboxFragment.mapView = mapView
+            helper.slider.setup(bottomSheet)
+            helper.map.setup(this@MapboxFragment.viewModel,mapView) {
+                viewModel = this@MapboxFragment.viewModel
+                this@MapboxFragment.viewModel.downloadLocations()
+            }
+            helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
 
+
+            setupViewObservers()
         }
-        binding.setupViewObservers()
+
+        //test
+        val btnShow = binding.btnComment
+        val btnAddComment = binding.btnAddComment
+        val recyclerView = binding.rvComment
+
+
+        btnShow.text = "Show Comments " + (viewModel.commentList.value?.size ?: 0)
+        btnShow.setOnClickListener {
+            recyclerView.isVisible = !recyclerView.isVisible
+            btnAddComment.isVisible = !btnAddComment.isVisible
+            btnShow.text = if(recyclerView.isVisible) "Hide Comments" else "Show Comments " + (viewModel.commentList.value?.size ?: 0)
+        }
+
+        btnAddComment.setOnClickListener {
+            val id = (viewModel.commentList.value?.size ?: 0) + 1
+            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", "message$id"))
+        }
+
 
 
 
@@ -56,11 +95,49 @@ class MapboxFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.button2.setOnClickListener {
+            view.findNavController().navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
+        }
+
+    }
+
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
-                this@MapboxFragment.context?.let { helper.map.updateMap(it,information) }
+                this@MapboxFragment.context?.let {
+                    helper.map.updateMap(it,information)
+                    val mock = ArrayList<Int>()
+                    mock.add(R.drawable.red_marker)
+                    mock.add(R.drawable.wave_bar)
+                    mock.add(R.drawable.ic_assistant_navigation_fill0_wght300_grad0_opsz48)
+                    mock.add(R.drawable.ic_launcher_background)
+                    helper.list.setupImageAdapter(viewPager2,mock)
+                }
+            })
+            bottomSheetState.observe(viewLifecycleOwner, Observer {
+                helper.slider.setState(it)
+            })
+            currentLocationGps.observe(viewLifecycleOwner, Observer {
+                currentLocationGpsTv.text = it
+            })
+            idLocationLabel.observe(viewLifecycleOwner, Observer {
+                idLocationLabelTv.text = it
+
+            })
+            nameLocationLabel.observe(viewLifecycleOwner, Observer {
+                nameLocationLabelTv.text = it
+            })
+            descriptionLocationLabel.observe(viewLifecycleOwner, Observer {
+                descriptionLocationLabelTv.text = it
+            })
+            positionFlyer.observe(viewLifecycleOwner, Observer {
+                helper.map.flyToLocation(it)
+            })
+            commentList.observe(viewLifecycleOwner, Observer {
+                helper.comment.update(it.toMutableList())
             })
         }
     }
@@ -71,46 +148,5 @@ class MapboxFragment : Fragment() {
     }
 
 
-    private fun addAnnotationToMap() {
-// Create an instance of the Annotation API and get the PointAnnotationManager.
-        bitmapFromDrawableRes(
-            R.drawable.red_marker
-        )?.let {
-            val annotationApi = mapView?.annotations
-            val pointAnnotationManager = annotationApi?.createPointAnnotationManager()
-// Set options for the resulting symbol layer.
-            val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
-// Define a geographic coordinate.
-                .withPoint(Point.fromLngLat(18.06, 59.31))
-// Specify the bitmap you assigned to the point annotation
-// The bitmap will be added to map style automatically.
-                .withIconImage(it)
-// Add the resulting pointAnnotation to the map.
-            pointAnnotationManager?.create(pointAnnotationOptions)
-        }
-    }
 
-    private fun bitmapFromDrawableRes(@DrawableRes resourceId: Int) =
-        convertDrawableToBitmap(context?.let { ContextCompat.getDrawable(it, resourceId) })
-
-    private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
-        if (sourceDrawable == null) {
-            return null
-        }
-        return if (sourceDrawable is BitmapDrawable) {
-            sourceDrawable.bitmap
-        } else {
-// copying drawable object to not manipulate on the same reference
-            val constantState = sourceDrawable.constantState ?: return null
-            val drawable = constantState.newDrawable().mutate()
-            val bitmap: Bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth, drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bitmap
-        }
-    }
 }

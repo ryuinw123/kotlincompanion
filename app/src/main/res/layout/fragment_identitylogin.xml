@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kmitlcompanion.presentation.IdentityloginViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/kmitl_color"
+            android:paddingTop="80dp"
+            tools:context=".ui.identitylogin.IdentityloginFragment">
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                style="@style/CustomCardViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="800dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="28dp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="ข้อมูลส่วนตัว"
+                        android:textAlignment="viewStart"
+                        android:textColor="#000000"
+                        android:textSize="40sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.131"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinput_name"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="ชื่อ"
+                        app:helperText=""
+                        app:helperTextTextColor="#FF0000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title"
+                        app:layout_constraintVertical_bias="0.100000024">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textNameValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinput_surname"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="นามสกุล"
+                        app:helperText=""
+                        app:helperTextTextColor="#FF0000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textinput_name"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textSurnameValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/faculty"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="คณะ"
+                        app:helperText=""
+                        app:helperTextTextColor="#FF0000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textinput_surname"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/facultyList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/department"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="สาขาวิชา"
+                        app:helperText=""
+                        app:helperTextTextColor="#FF0000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/faculty"
+                        app:layout_constraintVertical_bias="0.0"
+                        android:enabled="false"
+                        >
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/departmentList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/year"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="ชั้นปี"
+                        app:helperText=""
+                        app:helperTextTextColor="#FF0000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/department"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/yearList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/signin_button"
+                        android:layout_width="330dp"
+                        android:layout_height="70dp"
+                        android:backgroundTint="@color/kmitl_color"
+                        android:fontFamily="@font/inter_bold"
+                        android:onClick="@{(view)-> viewModel.saveData(textNameValue,textSurnameValue,facultyList,departmentList,yearList)}"
+                        android:text="ยืนยัน"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:typeface="normal"
+                        app:cornerRadius="50dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.494"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/year"
+                        app:layout_constraintVertical_bias="0.65"
+                        app:strokeColor="#FF5E00" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>
