@@ -1,10 +1,11 @@
-package com.example.kmitlcompanion.presentation
+package com.example.kmitlcompanion.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
+import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +38,9 @@ class MapboxViewModel @Inject constructor(
     private val _descriptionLocationLabel = MutableLiveData<String?>()
     val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
 
+    private val _imageLink = MutableLiveData<List<String>?>()
+    val imageLink : LiveData<List<String>?> = _imageLink
+
 
 
 
@@ -59,6 +63,10 @@ class MapboxViewModel @Inject constructor(
             }
 
         })
+    }
+
+    fun updateImageLink(imageList : List<String>) {
+        _imageLink.value = imageList
     }
 
     fun updateBottomSheetState(state: Int) {

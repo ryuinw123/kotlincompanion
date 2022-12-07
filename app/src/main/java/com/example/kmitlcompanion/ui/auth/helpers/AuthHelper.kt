@@ -2,7 +2,7 @@ package com.example.kmitlcompanion.ui.auth.helpers
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.presentation.LoginViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import javax.inject.Inject
 
 import dagger.hilt.android.scopes.ActivityScoped

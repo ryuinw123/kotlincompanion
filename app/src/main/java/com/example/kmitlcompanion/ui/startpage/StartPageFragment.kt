@@ -1,7 +1,6 @@
 package com.example.kmitlcompanion.ui.startpage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentStartPageBinding
-import com.example.kmitlcompanion.presentation.StartPageViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.startpage.helper.StartPageFragmentHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartPageFragment : BaseFragment<FragmentStartPageBinding,StartPageViewModel>(){
+class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewModel>(){
 
     override val layoutId: Int = R.layout.fragment_start_page
 

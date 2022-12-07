@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentSettingsBinding
-import com.example.kmitlcompanion.presentation.SettingsViewModel
-import com.example.kmitlcompanion.presentation.utils.SingleLiveData
+import com.example.kmitlcompanion.presentation.viewmodel.SettingsViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.settings.helper.SettingHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<FragmentSettingsBinding,SettingsViewModel>() {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>() {
 
     override val layoutId: Int = R.layout.fragment_settings
 

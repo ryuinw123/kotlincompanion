@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kmitlcompanion.presentation.CreateMapboxLocationViewModel" />
+            type="com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationViewModel" />
     </data>
 
 
@@ -58,7 +58,7 @@
                 android:layout_height="37dp"
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="#FF5E00"
-                android:onClick="@{()->viewModel.createLocation()}"
+                android:onClick="@{()->viewModel.goToCreateLocation()}"
                 android:text="เพิ่มสถานที่"
                 android:textSize="11dp"
                 app:cornerRadius="20dp"

@@ -17,7 +17,7 @@ internal class ViewList @Inject constructor(
     private val imageAdapter: ImageAdapter,
     private val dpConverterUtils : DpConverterUtils
 ) {
-    fun setupImageAdapter(viewPager2: ViewPager2 , imageList: ArrayList<Int>) {
+    fun setupImageAdapter(viewPager2: ViewPager2 , imageList: MutableList<String>) {
 
         imageAdapter.imageList = imageList
         imageAdapter.viewPager2 = viewPager2

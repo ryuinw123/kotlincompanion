@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.presentation.FeedViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.FeedViewModel
 
 class FeedFragment : Fragment() {
 

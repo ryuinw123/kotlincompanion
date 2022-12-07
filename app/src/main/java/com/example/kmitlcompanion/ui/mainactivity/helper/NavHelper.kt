@@ -1,10 +1,6 @@
 package com.example.kmitlcompanion.ui.mainactivity.helper
 
-import android.app.Activity
-import android.app.Application
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,15 +8,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.kmitlcompanion.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -88,7 +80,7 @@ class  NavHelper  @Inject constructor(){
     }
 
     fun navigateToMap() {
-        bottomMap?.selectedItemId = R.id.mapboxFragment2
+        bottomMap?.selectedItemId = R.id.mapboxFragment
     }
 
     private val navHostFragment

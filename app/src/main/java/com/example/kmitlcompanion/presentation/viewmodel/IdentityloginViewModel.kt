@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.presentation
+package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.app.Activity
 import android.util.Log
@@ -6,11 +6,11 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
 import com.example.kmitlcompanion.domain.usecases.getUserRoom
 import com.example.kmitlcompanion.domain.usecases.postUserData
+import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.identitylogin.IdentityloginFragmentDirections

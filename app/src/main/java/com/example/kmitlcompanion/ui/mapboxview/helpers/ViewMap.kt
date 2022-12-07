@@ -5,13 +5,12 @@ import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.ActivePoint
 import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.presentation.MapboxViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
-import com.mapbox.maps.Style
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
@@ -32,7 +31,7 @@ internal class ViewMap @Inject constructor(
 
     private var weakMapView: WeakReference<MapView?>? = null
 
-    fun setup(viewModel: MapboxViewModel ,mapView: MapView? , callback: (MapboxMap) -> Unit) {
+    fun setup(viewModel: MapboxViewModel, mapView: MapView?, callback: (MapboxMap) -> Unit) {
 
         this.viewModel = viewModel
         weakMapView = WeakReference(mapView)
@@ -86,11 +85,12 @@ internal class ViewMap @Inject constructor(
                 if (it.pointAnnotation == clickedAnnotation) {
                     val point = Point.fromLngLat(it.mapPoint.longitude,it.mapPoint.latitude)
                     viewModel.updateIdLocationLabel(it.mapPoint.id.toString())
-                    viewModel.updateNameLocationLabel(it.mapPoint.name)
+                    viewModel.updateNameLocationLabel(it.mapPoint.place)
                     viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
                     viewModel.updateCurrentLocationGps(point)
                     viewModel.updatePositionFlyer(point)
                     viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+                    viewModel.updateImageLink(it.mapPoint.imageLink)
                     isClick = true
                 }
             }

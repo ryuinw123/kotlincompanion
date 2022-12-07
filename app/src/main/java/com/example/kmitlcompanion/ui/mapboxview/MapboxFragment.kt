@@ -1,44 +1,23 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.annotation.DrawableRes
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
-import com.example.kmitlcompanion.presentation.MapboxViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentAdapter
-import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentClickListener
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -119,12 +98,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
                     helper.map.updateMap(it,information)
-                    val mock = ArrayList<Int>()
-                    mock.add(R.drawable.red_marker)
-                    mock.add(R.drawable.wave_bar)
-                    mock.add(R.drawable.ic_assistant_navigation_fill0_wght300_grad0_opsz48)
-                    mock.add(R.drawable.ic_launcher_background)
-                    helper.list.setupImageAdapter(viewPager2,mock)
                 }
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
@@ -152,6 +125,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             commentList.observe(viewLifecycleOwner, Observer {
                 helper.comment.update(it.toMutableList())
+            })
+            imageLink.observe(viewLifecycleOwner, Observer {
+                helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
         }
     }

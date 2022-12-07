@@ -1,13 +1,8 @@
 package com.example.kmitlcompanion.ui.createmapboxlocation.helpers
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProvider
-import com.example.kmitlcompanion.presentation.CreateMapboxLocationViewModel
-import com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment
-import com.mapbox.maps.MapView
+import com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationViewModel
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.extension.observable.eventdata.CameraChangedEventData
 import com.mapbox.maps.plugin.delegates.listeners.OnCameraChangeListener
@@ -32,10 +27,6 @@ internal class CreateLocationCamera @Inject constructor(
         viewModel.updateCurrentMapLocation(center)
     }
 
-    fun createLocation() {
-        val location = weakMapboxMap?.get()?.cameraState?.center
-        viewModel.createLocation(location)
-    }
 
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)

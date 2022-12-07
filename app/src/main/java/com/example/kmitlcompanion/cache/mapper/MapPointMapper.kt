@@ -13,7 +13,10 @@ class MapPointMapper @Inject constructor(
             description = it.description,
             latitude = it.latitude,
             longitude = it.longitude,
-            name = it.name
+            place = it.place,
+            address = it.address,
+            imageLink = listOf(),
+            type = it.type
         )
     }
 
@@ -23,7 +26,10 @@ class MapPointMapper @Inject constructor(
             description = it.description,
             latitude = it.latitude,
             longitude = it.longitude,
-            name = it.name
+            place = it.place,
+            address = it.address,
+            imageLink = it.imageLink[0],
+            type = it.type
         )
     }
 }

@@ -1,14 +1,10 @@
 package com.example.kmitlcompanion.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentHomeBinding
-import com.example.kmitlcompanion.presentation.HomeViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.kmitlcompanion.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

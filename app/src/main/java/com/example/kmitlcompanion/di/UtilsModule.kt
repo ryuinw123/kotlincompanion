@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.DpConverterUtils
 import dagger.Module
@@ -35,6 +36,16 @@ abstract class UtilsModule {
             val handlerThread =  HandlerThread("BackgroudThread")
             handlerThread.start()
             return Handler(handlerThread.looper)
+        }
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    object contentResolverUtil{
+        @Singleton
+        @Provides
+        fun providesContextResolver(@ApplicationContext context: Context): ContentResolverUtil {
+            return ContentResolverUtil(context.contentResolver)
         }
     }
 }

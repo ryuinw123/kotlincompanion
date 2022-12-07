@@ -14,10 +14,9 @@ import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentLoginBinding
 import com.example.kmitlcompanion.presentation.utils.ActivityNavigation
-import com.example.kmitlcompanion.presentation.LoginViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.auth.helpers.AuthHelper
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

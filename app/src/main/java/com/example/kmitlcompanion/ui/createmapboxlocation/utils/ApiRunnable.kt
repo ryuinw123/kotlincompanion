@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.ui.createmapboxlocation.utils
 
-import com.example.kmitlcompanion.presentation.CreateMapboxLocationViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationViewModel
 import javax.inject.Inject
 
 class ApiRunnable @Inject constructor(

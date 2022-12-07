@@ -1,7 +1,7 @@
 package com.example.kmitlcompanion.ui.identitylogin.helper
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import com.example.kmitlcompanion.presentation.IdentityloginViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.IdentityloginViewModel
 import javax.inject.Inject
 
 class IdentityHelper @Inject constructor() : DefaultLifecycleObserver {

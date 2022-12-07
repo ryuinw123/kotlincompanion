@@ -6,7 +6,7 @@
     app:startDestination="@id/startPage">
 
     <fragment
-        android:id="@+id/mapboxFragment2"
+        android:id="@+id/mapboxFragment"
         android:name="com.example.kmitlcompanion.ui.mapboxview.MapboxFragment"
         android:label="MapboxFragment" >
         <action
@@ -23,7 +23,7 @@
             app:destination="@id/identityloginFragment" />
         <action
             android:id="@+id/action_loginFragment_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment2" />
+            app:destination="@id/mapboxFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -32,14 +32,18 @@
     <fragment
         android:id="@+id/createMapboxLocationFragment2"
         android:name="com.example.kmitlcompanion.ui.createmapboxlocation.CreateMapboxLocationFragment"
-        android:label="CreateMapboxLocationFragment" />
+        android:label="CreateMapboxLocationFragment" >
+        <action
+            android:id="@+id/action_createMapboxLocationFragment2_to_createLocation"
+            app:destination="@id/createLocation" />
+    </fragment>
     <fragment
         android:id="@+id/identityloginFragment"
         android:name="com.example.kmitlcompanion.ui.identitylogin.IdentityloginFragment"
         android:label="IdentityloginFragment" >
         <action
             android:id="@+id/action_identityloginFragment_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment2" />
+            app:destination="@id/mapboxFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -69,11 +73,22 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_startPage_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment2" />
+            app:destination="@id/mapboxFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.kmitlcompanion.ui.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/createLocation"
+        android:name="com.example.kmitlcompanion.ui.createlocation.CreateLocation"
+        android:label="CreateLocation" >
+        <action
+            android:id="@+id/action_createLocation_to_mapboxFragment2"
+            app:destination="@id/mapboxFragment" />
+        <argument
+            android:name="currentLocation"
+            app:argType="com.example.kmitlcompanion.domain.model.LocationDetail" />
+    </fragment>
 </navigation>

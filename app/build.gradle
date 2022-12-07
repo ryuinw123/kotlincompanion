@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlinx-serialization'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -107,5 +108,11 @@ dependencies {
     //Activity Result API
     //implementation 'androidx.activity:activity-ktx:1.6.0'
     //implementation 'androidx.activity:fragment-ktx:1.5.3'
+
+    //imagePicker
+    implementation 'com.github.dhaval2404:imagepicker:1.8'
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
+
 
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kmitlcompanion.presentation.MapboxViewModel" />
+            type="com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

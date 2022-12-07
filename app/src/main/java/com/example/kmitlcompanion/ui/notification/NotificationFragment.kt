@@ -1,20 +1,18 @@
 package com.example.kmitlcompanion.ui.notification
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentNotificationBinding
-import com.example.kmitlcompanion.presentation.NotificationViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.NotificationViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotificationFragment : BaseFragment<FragmentNotificationBinding,NotificationViewModel>() {
+class NotificationFragment : BaseFragment<FragmentNotificationBinding, NotificationViewModel>() {
 
     override val layoutId: Int = R.layout.fragment_notification
 

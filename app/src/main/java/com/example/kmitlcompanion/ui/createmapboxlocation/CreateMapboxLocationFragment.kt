@@ -9,10 +9,9 @@ import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentCreatemapboxlocationBinding
-import com.example.kmitlcompanion.presentation.CreateMapboxLocationViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationViewModel
 import com.example.kmitlcompanion.ui.createmapboxlocation.helpers.CreateLocationHelper
 import com.example.kmitlcompanion.ui.createmapboxlocation.utils.ApiRunnable
-import com.example.kmitlcompanion.ui.mainactivity.helper.NavHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,13 +56,10 @@ class CreateMapboxLocationFragment : BaseFragment<FragmentCreatemapboxlocationBi
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.camera)
         this@CreateMapboxLocationFragment.viewModel.run {
-            createLocation.observe(viewLifecycleOwner, Observer {
-                helper.camera.createLocation()
-            })
             currentMapLocation.observe(viewLifecycleOwner, Observer {
                 helper.bottomBar.getLocationDetail(apiRunnable)
             })
-            currentLocationName.observe(viewLifecycleOwner, Observer {
+            currentLocation.observe(viewLifecycleOwner, Observer {
                 tvName.text = it.place
                 tvAddress.text = it.address
             })

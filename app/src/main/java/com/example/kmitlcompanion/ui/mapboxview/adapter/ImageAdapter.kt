@@ -6,13 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kmitlcompanion.R
+import com.squareup.picasso.Picasso
 import okhttp3.internal.notify
 import javax.inject.Inject
 
 internal class ImageAdapter @Inject constructor(
     ) : RecyclerView.Adapter<ImageViewHolder>() {
 
-    lateinit var imageList : ArrayList<Int>
+    lateinit var imageList : MutableList<String>
     lateinit var viewPager2: ViewPager2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -27,7 +28,7 @@ internal class ImageAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.imageView.setImageResource(imageList[position])
+        Picasso.get().load(imageList[position]).into(holder.imageView)
         if (position == imageList.size-1) {
             viewPager2.post(runnable)
         }

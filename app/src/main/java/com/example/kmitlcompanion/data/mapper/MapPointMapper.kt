@@ -13,17 +13,11 @@ class MapPointMapper @Inject constructor(
             description = it.description,
             latitude = it.latitude,
             longitude = it.longitude,
-            name = it.name
+            address = it.address,
+            imageLink = it.imageLink,
+            type = it.type,
+            place = it.place
         )
     }
 
-    fun mapToData(it: MapPoint): MapPointData {
-        return MapPointData(
-            id = it.id,
-            description = it.description,
-            latitude = it.latitude,
-            longitude = it.longitude,
-            name = it.name
-        )
-    }
 }

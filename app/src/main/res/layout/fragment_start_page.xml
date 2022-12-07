@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kmitlcompanion.presentation.StartPageViewModel" />
+            type="com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

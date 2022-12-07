@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.presentation.EventPageViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.EventPageViewModel
 
 class EventPageFragment : Fragment() {
 

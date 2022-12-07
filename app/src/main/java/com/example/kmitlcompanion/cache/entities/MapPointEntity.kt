@@ -16,6 +16,12 @@ data class MapPointEntity(
     val latitude: Double,
     @ColumnInfo(name = NameTable.MAP_POINT_LONGITUDE)
     val longitude: Double,
-    @ColumnInfo(name = NameTable.MAP_POINT_NAME)
-    val name: String
+    @ColumnInfo(name = NameTable.MAP_POINT_PLACE)
+    val place: String,
+    @ColumnInfo(name = NameTable.MAP_POINT_ADDRESS)
+    val address : String,
+    @ColumnInfo(name = NameTable.MAP_POINT_TYPE)
+    val type : String,
+    @ColumnInfo(name = NameTable.MAP_POINT_IMAGE)
+    val imageLink : String,
 )

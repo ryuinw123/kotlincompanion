@@ -9,6 +9,9 @@ import com.example.kmitlcompanion.data.repository.RemoteRepository
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import okhttp3.MultipartBody
+import java.io.File
+import java.net.URI
 import javax.inject.Inject
 
 class RemoteDataStore @Inject constructor(
@@ -34,9 +37,18 @@ class RemoteDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
-        return remoteRepository.createLocationQuery(latitude,longitude)
+    override fun createLocationQuery(
+        latitude: Double,
+        longitude: Double,
+        name: String,
+        type: String,
+        detail: String,
+        image : MultipartBody.Part,
+        token: String
+    ): Completable {
+        return remoteRepository.createLocationQuery(latitude,longitude,name,type,detail,image,token)
     }
+
 
     override fun postLogin(authCode: String): Observable<ReturnLoginData> {
         return remoteRepository.postLogin(authCode)

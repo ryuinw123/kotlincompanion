@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.presentation
+package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.util.Log
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -6,6 +6,7 @@ import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.domain.usecases.getUserRoom
 import com.example.kmitlcompanion.domain.usecases.postLogin
+import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.startpage.StartPageFragmentDirections

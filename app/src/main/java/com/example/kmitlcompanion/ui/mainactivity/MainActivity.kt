@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
         binding = bindingSetContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
             helper = this@MainActivity.helper
             this@MainActivity.helper.setup(window,navHostFragment,root, bottomNavigation, bottomMap)
             bottomBarUtils.setup(coordinatorBottomNav)
         }
+        //setContentView(R.layout.activity_main)
     }
 }

@@ -1,10 +1,11 @@
-package com.example.kmitlcompanion.presentation
+package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.app.Activity
 import android.util.Log
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
+import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.settings.SettingsFragmentDirections
 import com.google.android.gms.auth.api.signin.GoogleSignIn

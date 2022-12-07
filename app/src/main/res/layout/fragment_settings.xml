@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kmitlcompanion.presentation.SettingsViewModel" />
+            type="com.example.kmitlcompanion.presentation.viewmodel.SettingsViewModel" />
     </data>
 
 

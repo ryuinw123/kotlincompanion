@@ -2,7 +2,7 @@ package com.example.kmitlcompanion.ui.startpage.helper
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.presentation.StartPageViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 

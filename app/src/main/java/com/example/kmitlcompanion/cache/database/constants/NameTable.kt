@@ -6,7 +6,10 @@ object NameTable {
     const val MAP_POINT_DESCRIPTION = "map_point_description"
     const val MAP_POINT_LATITUDE = "map_point_latitude"
     const val MAP_POINT_LONGITUDE = "map_point_longitude"
-    const val MAP_POINT_NAME = "map_point_name"
+    const val MAP_POINT_PLACE = "map_point_place"
+    const val MAP_POINT_ADDRESS = "map_point_address"
+    const val MAP_POINT_IMAGE = "map_point_image"
+    const val MAP_POINT_TYPE = "map_point_type"
 
     const val DATA_PROPERTY_TABLE = "DataPropertyTable"
     const val DATA_PROPERTY_ID = "data_property_id"

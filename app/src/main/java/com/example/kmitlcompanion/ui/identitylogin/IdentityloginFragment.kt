@@ -9,14 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
-import com.example.kmitlcompanion.presentation.IdentityloginViewModel
+import com.example.kmitlcompanion.presentation.viewmodel.IdentityloginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.identitylogin.helper.IdentityHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding,IdentityloginViewModel>() {
+class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, IdentityloginViewModel>() {
 
     override val layoutId: Int = R.layout.fragment_identitylogin
 
