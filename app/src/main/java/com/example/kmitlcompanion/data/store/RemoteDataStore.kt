@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
+import androidx.lifecycle.LiveData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -77,7 +78,7 @@ class RemoteDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun getUser(): Observable<List<UserData>> {
+    override fun getUser(): Observable<UserData> {
         throw IllegalStateException("Function not currently supported!")
     }
 }

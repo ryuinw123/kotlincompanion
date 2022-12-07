@@ -3,7 +3,9 @@ package com.example.kmitlcompanion.domain.repository
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.model.LocationDetail
+import com.example.kmitlcompanion.domain.model.LoginData
 import com.example.kmitlcompanion.domain.model.MapInformation
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -16,7 +18,7 @@ interface DomainRepository {
 
     fun createLocationQuery(location: LocationData): Completable
 
-    fun postLogin(authCode : String) : Observable<ReturnLoginData>
+    fun postLogin(authCode : String) : Observable<LoginData>
 
     fun postUserData(name: Any,
                      surname : Any,
@@ -28,5 +30,5 @@ interface DomainRepository {
 
     fun updateUser(email : String,token : String): Completable
 
-    fun getUser(): Observable<List<UserData>>
+    fun getUser(): Observable<DomainUserData>
 }

@@ -1,14 +1,17 @@
 package com.example.kmitlcompanion.ui.auth.helpers
 
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
+import com.example.kmitlcompanion.domain.model.DomainUserData
+import com.example.kmitlcompanion.presentation.LoginViewModel
 import javax.inject.Inject
 
 import dagger.hilt.android.scopes.ActivityScoped
 
 @ActivityScoped
-class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
+class AuthHelper @Inject constructor() {
 
     private lateinit var viewModel: LoginViewModel
 
@@ -16,8 +19,9 @@ class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
         this.viewModel = viewModel
     }
 
-    fun updateUserRoom(userData: UserData){
-        this.viewModel.updateUser(userData)
+    fun updateUserRoom(domainUserData: DomainUserData){
+        Log.d("Helper UpdateuserRoom ",domainUserData.toString())
+        this.viewModel.updateUser(domainUserData)
     }
 
     fun postLogin(authCode: String){

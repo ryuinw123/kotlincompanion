@@ -8,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
+import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.usecases.getUserRoom
 import com.example.kmitlcompanion.domain.usecases.postUserData
 import com.example.kmitlcompanion.presentation.BaseViewModel
@@ -174,13 +175,13 @@ class IdentityloginViewModel @Inject constructor(
     }
 
     fun getUserRoom(arr : ArrayList<Any>){
-        getUser.execute(object : DisposableObserver<List<UserData>>(){
+        getUser.execute(object : DisposableObserver<DomainUserData>(){
             override fun onComplete() {
                 Log.d("getUserRoom","Success !!!")
             }
 
-            override fun onNext(t: List<UserData>) {
-                arr[5] = t[0].token
+            override fun onNext(t: DomainUserData) {
+                arr[5] = t.token
                 _saveUserDataResponse.value = arr
                 Log.d("getUserRoom","onNext Success !!!")
             }

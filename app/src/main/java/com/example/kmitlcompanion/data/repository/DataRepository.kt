@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.repository
 
 import android.content.Intent
+import androidx.lifecycle.LiveData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -35,6 +36,6 @@ interface DataRepository {
 
     fun updateUser(email: String,token: String): Completable
 
-    fun getUser(): Observable<List<UserData>>
+    fun getUser(): Observable<UserData>
 
 }

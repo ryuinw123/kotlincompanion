@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.cache
 
+import androidx.lifecycle.LiveData
 import com.example.kmitlcompanion.cache.database.AppDatabase
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
@@ -50,9 +51,10 @@ class RoomRepository @Inject constructor(
         )
     }
 
-    override fun getUser(): Observable<List<UserData>> {
-        return database.cachedDao().getUser().flatMap { list ->
-                Observable.just(list.map { userMapper.mapToData(it) })
-            }
+    override fun getUser(): Observable<UserData> {
+        return database.cachedDao().getUser()
+//        return database.cachedDao().getUser().flatMap { list ->
+//                Observable.just(list.map { userMapper.mapToData(it) })
+//            }
     }
 }

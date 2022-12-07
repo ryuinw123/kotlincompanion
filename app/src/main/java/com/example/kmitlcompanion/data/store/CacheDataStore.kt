@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
+import androidx.lifecycle.LiveData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -69,7 +70,7 @@ class CacheDataStore @Inject constructor(
         return cacheRepository.updateUser(email,token)
     }
 
-    override fun getUser(): Observable<List<UserData>> {
+    override fun getUser(): Observable<UserData> {
         return cacheRepository.getUser()
     }
 }

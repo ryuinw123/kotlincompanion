@@ -8,9 +8,7 @@ import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
-import com.example.kmitlcompanion.domain.model.LocationDetail
-import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.model.Source
+import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
@@ -18,6 +16,8 @@ import io.reactivex.rxjava3.core.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -29,9 +29,9 @@ class DataRepository @Inject constructor(
 
 ) : DomainRepository{
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
-
-
-        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,"abc")
+//        val token = dataStore.getRemoteData(false).getUser().value
+//        Log.d("ttttttttttttttttooooooooooooooooooken",token?.user_email + token?.user_token)
+        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,"")
             .map {
                 LocationDetail(
                     point = Point.fromLngLat(longitude,latitude)?: null,
@@ -90,8 +90,14 @@ class DataRepository @Inject constructor(
     }
 
 
-    override fun postLogin(authCode: String): Observable<ReturnLoginData> {
-        return dataStore.getRemoteData(true).postLogin(authCode)
+    override fun postLogin(authCode: String): Observable<LoginData> {
+        return dataStore.getRemoteData(true).postLogin(authCode).map {
+            LoginData(
+                status = it.status,
+                refreshToken = it.refreshToken,
+                email = it.email
+            )
+        }
     }
 
     override fun postUserData(
@@ -109,7 +115,23 @@ class DataRepository @Inject constructor(
         return dataStore.getRemoteData(false).updateUser(email,token)
     }
 
-    override fun getUser(): Observable<List<UserData>> {
+    override fun getUser(): Observable<DomainUserData> {
+//        val userData = dataStore.getRemoteData(false).getUser()
+//        return Observable.just(DomainUserData(
+//            id = userData.value?.user_id?:0,
+//            email = userData.value?.user_email?:"",
+//            token = userData.value?.user_token?:"",
+//        ))
+
         return dataStore.getRemoteData(false).getUser()
+            .map{
+                DomainUserData(
+                    id = it.user_id?:0 ,
+                    email = it.user_email?:"",
+                    token = it.user_token?:""
+                )
+            }
     }
+
+
 }

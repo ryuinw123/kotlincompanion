@@ -1,7 +1,7 @@
 package com.example.kmitlcompanion.data.model
 
 data class UserData(
-    val id : Int,
-    val email : String,
-    val token: String,
+    val user_id : Int?,
+    val user_email : String?,
+    val user_token: String?,
     )
