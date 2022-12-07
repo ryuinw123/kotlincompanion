@@ -4,7 +4,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import com.example.kmitlcompanion.domain.model.DomainUserData
-import com.example.kmitlcompanion.presentation.StartPageViewModel
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 

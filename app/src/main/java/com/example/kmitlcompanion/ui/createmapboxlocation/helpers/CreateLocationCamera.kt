@@ -27,6 +27,10 @@ internal class CreateLocationCamera @Inject constructor(
         viewModel.updateCurrentMapLocation(center)
     }
 
+    fun createLocation() {
+        val location = weakMapboxMap?.get()?.cameraState?.center
+        viewModel.createLocation(location)
+    }
 
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)

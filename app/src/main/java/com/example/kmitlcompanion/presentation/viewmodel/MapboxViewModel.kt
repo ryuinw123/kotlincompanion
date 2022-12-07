@@ -38,9 +38,6 @@ class MapboxViewModel @Inject constructor(
     private val _descriptionLocationLabel = MutableLiveData<String?>()
     val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
 
-    private val _imageLink = MutableLiveData<List<String>?>()
-    val imageLink : LiveData<List<String>?> = _imageLink
-
 
 
 
@@ -63,10 +60,6 @@ class MapboxViewModel @Inject constructor(
             }
 
         })
-    }
-
-    fun updateImageLink(imageList : List<String>) {
-        _imageLink.value = imageList
     }
 
     fun updateBottomSheetState(state: Int) {

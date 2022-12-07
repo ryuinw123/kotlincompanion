@@ -98,6 +98,12 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
                     helper.map.updateMap(it,information)
+                    val mock = ArrayList<Int>()
+                    mock.add(R.drawable.red_marker)
+                    mock.add(R.drawable.wave_bar)
+                    mock.add(R.drawable.ic_assistant_navigation_fill0_wght300_grad0_opsz48)
+                    mock.add(R.drawable.ic_launcher_background)
+                    helper.list.setupImageAdapter(viewPager2,mock)
                 }
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
@@ -125,9 +131,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             commentList.observe(viewLifecycleOwner, Observer {
                 helper.comment.update(it.toMutableList())
-            })
-            imageLink.observe(viewLifecycleOwner, Observer {
-                helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
         }
     }

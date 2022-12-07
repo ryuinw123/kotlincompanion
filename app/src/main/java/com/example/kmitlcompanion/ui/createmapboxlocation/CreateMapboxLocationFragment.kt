@@ -56,10 +56,13 @@ class CreateMapboxLocationFragment : BaseFragment<FragmentCreatemapboxlocationBi
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.camera)
         this@CreateMapboxLocationFragment.viewModel.run {
+            createLocation.observe(viewLifecycleOwner, Observer {
+                helper.camera.createLocation()
+            })
             currentMapLocation.observe(viewLifecycleOwner, Observer {
                 helper.bottomBar.getLocationDetail(apiRunnable)
             })
-            currentLocation.observe(viewLifecycleOwner, Observer {
+            currentLocationName.observe(viewLifecycleOwner, Observer {
                 tvName.text = it.place
                 tvAddress.text = it.address
             })

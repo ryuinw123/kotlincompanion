@@ -3,7 +3,6 @@ package com.example.kmitlcompanion.presentation.viewmodel
 import android.app.Activity
 import android.util.Log
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.presentation.BaseViewModel

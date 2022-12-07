@@ -6,14 +6,11 @@ import kotlinx.serialization.json.Json
 @Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 data class MapPoint(
-    val description : String,
-    val address : String,
+    val description: String,
     val id: Long,
     val latitude: Double,
-    val longitude : Double,
-    val place: String,
-    val imageLink : List<String>,
-    val type : String
+    val longitude: Double,
+    val name: String
 ){
 
     fun toJson(): String {

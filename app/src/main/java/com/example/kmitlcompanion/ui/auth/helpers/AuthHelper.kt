@@ -5,7 +5,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import com.example.kmitlcompanion.domain.model.DomainUserData
-import com.example.kmitlcompanion.presentation.LoginViewModel
 import javax.inject.Inject
 
 import dagger.hilt.android.scopes.ActivityScoped

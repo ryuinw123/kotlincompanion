@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.domain.repository
 
-import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.DomainUserData
@@ -16,7 +15,7 @@ interface DomainRepository {
 
     fun getMapPoints() : Observable<MapInformation>
 
-    fun createLocationQuery(location: LocationData): Completable
+    fun createLocationQuery(latitude:Double , longitude:Double): Completable
 
     fun postLogin(authCode : String) : Observable<LoginData>
 

@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
 import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.usecases.getUserRoom

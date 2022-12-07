@@ -85,12 +85,11 @@ internal class ViewMap @Inject constructor(
                 if (it.pointAnnotation == clickedAnnotation) {
                     val point = Point.fromLngLat(it.mapPoint.longitude,it.mapPoint.latitude)
                     viewModel.updateIdLocationLabel(it.mapPoint.id.toString())
-                    viewModel.updateNameLocationLabel(it.mapPoint.place)
+                    viewModel.updateNameLocationLabel(it.mapPoint.name)
                     viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
                     viewModel.updateCurrentLocationGps(point)
                     viewModel.updatePositionFlyer(point)
                     viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                    viewModel.updateImageLink(it.mapPoint.imageLink)
                     isClick = true
                 }
             }

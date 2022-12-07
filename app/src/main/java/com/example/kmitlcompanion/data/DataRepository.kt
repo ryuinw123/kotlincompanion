@@ -1,12 +1,11 @@
 package com.example.kmitlcompanion.data
 
-import android.content.Context
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
-import com.example.kmitlcompanion.data.model.LocationData
+import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
-import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
@@ -23,9 +22,7 @@ import javax.inject.Inject
 class DataRepository @Inject constructor(
     private val dataStore: DataStore,
     private val timeUtils: TimeUtils,
-    private val mapper: MapPointMapper,
-    private val contentResolverUtil: ContentResolverUtil,
-
+    private val mapper: MapPointMapper
 
 ) : DomainRepository{
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
@@ -34,9 +31,9 @@ class DataRepository @Inject constructor(
         return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,"")
             .map {
                 LocationDetail(
-                    point = Point.fromLngLat(longitude,latitude)?: null,
-                    address = it?.address,
-                    place = it?.place
+                    point = Point.fromLngLat(longitude,latitude),
+                    address = it.address,
+                    place = it.place
                 )
             }
     }
@@ -71,22 +68,8 @@ class DataRepository @Inject constructor(
 
     }
 
-    override fun createLocationQuery(location: LocationData): Completable {
-
-        val file = location.file
-        val uri = location.uri
-        val requestFile = file.asRequestBody(contentResolverUtil.getMediaType(uri))
-        val image = MultipartBody.Part.createFormData("image",file.name,requestFile)
-
-        return dataStore.getRemoteData(true).createLocationQuery(
-            latitude = location.latitude,
-            longitude = location.longitude,
-            name = location.place,
-            type = location.type,
-            detail = location.address,
-            image = image,
-            token = ""
-        )
+    override fun createLocationQuery(latitude: Double, longitude: Double): Completable {
+        return dataStore.getRemoteData(true).createLocationQuery(latitude,longitude)
     }
 
 

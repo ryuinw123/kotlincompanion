@@ -7,7 +7,6 @@ import com.example.kmitlcompanion.domain.model.DomainUserData
 import com.example.kmitlcompanion.domain.model.LoginData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.domain.usecases.getUserRoom
-import com.example.kmitlcompanion.domain.usecases.postLogin
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.domain.usecases.PostLogin
 import com.example.kmitlcompanion.presentation.eventobserver.Event
