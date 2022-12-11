@@ -45,7 +45,10 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
         binding = FragmentCreatelocationBinding.inflate(inflater,container,false).apply {
             viewModel = this@CreateLocation.viewModel
             helper.image.setup(selectImageView,this@CreateLocation.viewModel)
-            val itemList = arrayListOf<String>("Hi","Mongol","SSS","Pokemon","One for all","All for One","hero","paps")
+            val itemList = arrayListOf<String>(
+                "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
+            )
+
             helper.spinner.setupSpinnerAdaptor(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
             helper.upload.setup(this@CreateLocation.viewModel)
             setupViewObservers()
