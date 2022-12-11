@@ -46,6 +46,7 @@ class CreateLocationViewModel @Inject constructor(
     val detailInput : LiveData<String> = _detailInput
 
 
+
     private val _typeSpinner = MutableLiveData<String>()
     val typeSpinner : LiveData<String> = _typeSpinner
 
@@ -90,7 +91,7 @@ class CreateLocationViewModel @Inject constructor(
         val file = ImagePicker.getFile(imageData.value)
         createLocationQuery.execute(object : DisposableCompletableObserver() {
             override fun onComplete() {
-                Log.d("Upload","Completed")
+                goToMapbox()
             }
 
             override fun onError(e: Throwable) {

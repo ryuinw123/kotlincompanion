@@ -15,6 +15,7 @@ class UploadHelper @Inject constructor(
 
     fun uploadLocation() {
         viewModel.createLocation()
+        viewModel.goToMapbox()
     }
 
 }

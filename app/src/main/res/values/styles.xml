@@ -24,4 +24,9 @@
         <item name="android:popupBackground">#DFFFFFFF</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100%</item>
+    </style>
+
 </resources>
