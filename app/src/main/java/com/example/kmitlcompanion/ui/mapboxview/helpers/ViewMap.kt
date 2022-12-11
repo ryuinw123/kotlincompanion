@@ -59,7 +59,7 @@ internal class ViewMap @Inject constructor(
         val pointList : MutableList<ActivePoint> = mutableListOf()
         bitmapConverter.bitmapFromDrawableRes(
             context,
-            R.drawable.red_marker
+            R.drawable.locationpin_48px
         )?.let {
             information.mapPoints.map { point ->
                 val pointAnnotationOptions = PointAnnotationOptions()
