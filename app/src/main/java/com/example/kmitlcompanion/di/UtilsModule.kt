@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.di
 
+import android.app.Application
 import android.content.Context
 import android.os.Handler
 import android.os.HandlerThread
@@ -7,6 +8,9 @@ import android.os.Looper
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.DpConverterUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.ToasterUtil
+import com.mapbox.android.core.location.LocationEngine
+import com.mapbox.android.core.location.LocationEngineProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,14 +42,14 @@ abstract class UtilsModule {
             return Handler(handlerThread.looper)
         }
     }
-
     @InstallIn(SingletonComponent::class)
     @Module
-    object contentResolverUtil{
-        @Singleton
+    object MapModule {
         @Provides
-        fun providesContextResolver(@ApplicationContext context: Context): ContentResolverUtil {
-            return ContentResolverUtil(context.contentResolver)
+        fun providesLocationEngine(@ApplicationContext context: Context): LocationEngine {
+            return LocationEngineProvider.getBestLocationEngine(context)
         }
     }
+
+
 }

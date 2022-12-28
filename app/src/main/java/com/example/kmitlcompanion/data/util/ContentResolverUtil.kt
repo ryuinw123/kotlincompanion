@@ -8,9 +8,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import javax.inject.Inject
 
 class ContentResolverUtil @Inject constructor(
-   private val contentResolver: ContentResolver
+   private val context: Context
 ) {
     fun getMediaType(uri: Uri) : MediaType? {
-        return contentResolver.getType(uri)?.toMediaTypeOrNull()
+        return context.contentResolver.getType(uri)?.toMediaTypeOrNull()
     }
 }

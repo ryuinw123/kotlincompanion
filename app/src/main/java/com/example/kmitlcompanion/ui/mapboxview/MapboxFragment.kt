@@ -51,6 +51,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
+            helper.location.setup(this@MapboxFragment.viewModel,mapView)
             helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
 
 
@@ -94,6 +95,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
+        lifecycle.addObserver(helper.location)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {

@@ -8,8 +8,8 @@ import androidx.core.widget.doAfterTextChanged
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
-import com.example.kmitlcompanion.domain.usecases.getUserRoom
-import com.example.kmitlcompanion.domain.usecases.postUserData
+import com.example.kmitlcompanion.domain.usecases.GetUserRoom
+import com.example.kmitlcompanion.domain.usecases.PostUserData
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.presentation.utils.SingleLiveData
@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IdentityloginViewModel @Inject constructor(
-    private val postUserData: postUserData,
-    private val getUser: getUserRoom
+    private val postUserData: PostUserData,
+    private val getUser: GetUserRoom
 ) : BaseViewModel() {
 
     //get user token

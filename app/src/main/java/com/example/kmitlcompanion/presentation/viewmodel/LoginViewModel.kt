@@ -6,7 +6,7 @@ import android.util.Log
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.domain.usecases.postLogin
+import com.example.kmitlcompanion.domain.usecases.PostLogin
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
@@ -29,7 +29,7 @@ import io.reactivex.rxjava3.observers.DisposableObserver
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val postLogin: postLogin,
+    private val postLogin: PostLogin,
     private val updateUser: UpdateUser,
 )
     : BaseViewModel() {

@@ -20,6 +20,7 @@
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_start_page.xml" value="0.24210526315789474" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33495145631067963" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/button_nav_map.xml" value="0.2" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/annonymous_background.xml" value="0.243" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/bottom_nav.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/event_48px.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/gradient_spinner.xml" value="0.102" />
@@ -37,6 +38,13 @@
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_spinner_arrow.xml" value="0.102" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/ic_vector.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/layout_bg.xml" value="0.1425" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_info_icon_default.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_bearing_icon.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_icon.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_icon_shadow.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_icon_stale.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_puck_icon.xml" value="0.133" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_stroke_icon.xml" value="0.133" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/top_border.xml" value="0.1175" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/chat_comment.xml" value="0.33" />
@@ -53,6 +61,7 @@
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/layout/test.xml" value="0.10520833333333333" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/menu/button_nav_map.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/mipmap-anydpi-v26/annonymous_round.xml" value="0.243" />
       </map>
     </option>
   </component>

@@ -7,7 +7,7 @@ import com.example.kmitlcompanion.domain.repository.DomainRepository
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
-class getUserRoom @Inject constructor(
+class GetUserRoom @Inject constructor(
     postExecutionThread: PostExecutionThread,
     private val domainRepository: DomainRepository
 ) : ObservableUseCase<List<UserData>, Nothing?>(postExecutionThread){

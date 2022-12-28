@@ -6,7 +6,7 @@ import com.example.kmitlcompanion.domain.repository.DomainRepository
 import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
 
-class postUserData @Inject constructor(
+class PostUserData @Inject constructor(
     postExecutionThread: PostExecutionThread,
     private val domainRepository: DomainRepository
 ): CompletableUseCase<ArrayList<Any>?>(postExecutionThread) {

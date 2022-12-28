@@ -7,7 +7,7 @@ import com.example.kmitlcompanion.domain.repository.DomainRepository
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 
-class postLogin @Inject constructor(
+class PostLogin @Inject constructor(
     postExecutionThread: PostExecutionThread,
     private val domainRepository: DomainRepository
 ): ObservableUseCase<ReturnLoginData,String>(postExecutionThread){
