@@ -14,11 +14,11 @@
             app:showAsAction="ifRoom"/>
 
 
-        <item
-            android:id="@+id/feedFragment"
-            android:icon="@drawable/feed_48px"
-            android:title="feed_menu"
-            app:showAsAction="ifRoom"/>
+<!--        <item-->
+<!--            android:id="@+id/feedFragment"-->
+<!--            android:icon="@drawable/feed_48px"-->
+<!--            android:title="feed_menu"-->
+<!--            app:showAsAction="ifRoom"/>-->
 
         <item
             android:id="@+id/eventPageFragment"
