@@ -1,17 +1,36 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.util.Log
+import androidx.core.view.get
 import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.ActivePoint
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.mapbox.geojson.FeatureCollection
+import com.mapbox.geojson.GeoJson
 import com.mapbox.geojson.Point
-import com.mapbox.maps.MapView
-import com.mapbox.maps.MapboxMap
+import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
+import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
+import com.mapbox.maps.extension.style.expressions.generated.Expression.Companion.exponential
+import com.mapbox.maps.extension.style.image.image
+import com.mapbox.maps.extension.style.layers.addLayer
+import com.mapbox.maps.extension.style.layers.generated.CircleLayer
+import com.mapbox.maps.extension.style.layers.generated.circleLayer
+import com.mapbox.maps.extension.style.layers.generated.fillLayer
+import com.mapbox.maps.extension.style.layers.generated.symbolLayer
+import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
+import com.mapbox.maps.extension.style.sources.addSource
+import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
@@ -21,69 +40,116 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import java.lang.ref.WeakReference
 import javax.inject.Inject
+import kotlin.math.exp
 
 
 internal class ViewMap @Inject constructor(
+    private val mapper: MapperUtils,
+    private val bitmapConverter: BitmapUtils,
 ) : DefaultLifecycleObserver {
-    @Inject lateinit var bitmapConverter : BitmapUtils
 
-    private lateinit var viewModel : MapboxViewModel
+    private lateinit var viewModel: MapboxViewModel
 
     private var weakMapView: WeakReference<MapView?>? = null
+
 
     fun setup(viewModel: MapboxViewModel, mapView: MapView?, callback: (MapboxMap) -> Unit) {
 
         this.viewModel = viewModel
         weakMapView = WeakReference(mapView)
 
-
-        mapView?.getMapboxMap()?.loadStyleUri(
-            "mapbox://styles/ryuinw123/cla16mlr3006715p56830t6xv",
+        mapView?.getMapboxMap()?.loadStyle(
+            styleExtension = style(styleUri = STYLE_ID) {
+                +image(LOCATION) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.red_marker)!!)
+                }
+            }
         ) {
             callback(mapView.getMapboxMap())
         }
+
+
     }
 
     fun updateMap(
-        context : Context,
+        context: Context,
         information: MapInformation
-    )
-    {
-        prepareAnnotationToMap(context,information)
-        addOnclickMapEvent()
+    ) {
+        prepareMarkerToMap(context, information)
     }
 
-    private fun prepareAnnotationToMap(context : Context, information : MapInformation) {
-        val annotationApi = weakMapView?.get()?.annotations
-        val pointAnnotationManager = annotationApi?.createPointAnnotationManager()
-        val pointList : MutableList<ActivePoint> = mutableListOf()
-        bitmapConverter.bitmapFromDrawableRes(
-            context,
-            R.drawable.locationpin_48px
-        )?.let {
-            information.mapPoints.map { point ->
-                val pointAnnotationOptions = PointAnnotationOptions()
-                    .withPoint(Point.fromLngLat(point.longitude, point.latitude))
-                    .withIconImage(it)
-                val pointAnnotation = pointAnnotationManager?.create(pointAnnotationOptions)
-                pointList.add(
-                    ActivePoint(
-                        pointAnnotation = pointAnnotation!!,
-                        mapPoint = point)
-                )
-            }
+    private fun prepareMarkerToMap(context: Context, information: MapInformation) {
+        mapView?.getMapboxMap()?.getStyle {
+            it.addSource(
+                geoJsonSource(SOURCE_ID) {
+                    featureCollection(
+                        mapper.mapToFeatureCollections(information.mapPoints)
+                    )
+                }
+            )
+
+            it.addLayer(
+                symbolLayer(LOCATION_LAYER_ID, SOURCE_ID) {
+                    sourceLayer(SOURCE_LAYER_ID)
+                    iconImage(
+                        literal(LOCATION)
+                    )
+                    iconAllowOverlap(true)
+                    iconAnchor(IconAnchor.BOTTOM)
+                }
+            )
+
+            it.addLayer(
+                fillLayer(AREA_LAYER_ID , SOURCE_ID) {
+
+                }
+            )
+
 
         }
-
-        addPointListener(pointList,pointAnnotationManager!!)
+        addPointListener()
     }
 
-    private fun addPointListener(activePointList: List<ActivePoint> , pointAnnotationManager: PointAnnotationManager) {
-        var isClick = false
+    private fun addPointListener() {
+        val mapboxMap = mapView?.getMapboxMap()
+
+        mapboxMap?.addOnMapClickListener {
+            val screenPoint = mapboxMap.pixelForCoordinate(it)
+            val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
+
+            mapboxMap.queryRenderedFeatures(
+                RenderedQueryGeometry(screenPoint),
+                queryOptions)   { expect ->
+                val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                if (queriedFeature.isNotEmpty()) {
+                   val selectedFeature = queriedFeature[0].feature
+                    val id = selectedFeature.getStringProperty("id")
+                    val place = selectedFeature.getStringProperty("place")
+                    val description = selectedFeature.getStringProperty("description")
+                    val point = selectedFeature.geometry() as Point
+
+
+                    viewModel.updateIdLocationLabel(id)
+                    viewModel.updateNameLocationLabel(place)
+                    viewModel.updateDescriptionLocationLabel(description)
+                    viewModel.updateCurrentLocationGps(point)
+                    viewModel.updatePositionFlyer(point)
+                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+                    //viewModel.updateImageLink(it.mapPoint.imageLink)
+
+                }
+                else{
+                    hiddenBottomSheetState()
+                }
+            }
+            true
+        }
+
+        /*var isClick = false
         pointAnnotationManager?.addClickListener { clickedAnnotation ->
             activePointList.map {
                 if (it.pointAnnotation == clickedAnnotation) {
-                    val point = Point.fromLngLat(it.mapPoint.longitude,it.mapPoint.latitude)
+                    val point = Point.fromLngLat(it.mapPoint.longitude, it.mapPoint.latitude)
                     viewModel.updateIdLocationLabel(it.mapPoint.id.toString())
                     viewModel.updateNameLocationLabel(it.mapPoint.place)
                     viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
@@ -95,23 +161,19 @@ internal class ViewMap @Inject constructor(
                 }
             }
             isClick
-        }
+        }*/
     }
 
-    private fun addOnclickMapEvent() {
-        weakMapView?.get()?.getMapboxMap()?.addOnMapClickListener {
-            println("Hello Drop")
-            viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
-            true
-        }
+    private fun hiddenBottomSheetState() {
+        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
 
     }
 
     fun flyToLocation(point: Point) {
-        weakMapView?.get()?.getMapboxMap()?.flyTo(
+        mapView?.getMapboxMap()?.flyTo(
             cameraOptions {
 
-                center(Point.fromLngLat(point.longitude(),point.latitude()+0.01))
+                center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
                 zoom(12.0)
                 bearing(180.0)
                 pitch(50.0)
@@ -122,7 +184,8 @@ internal class ViewMap @Inject constructor(
         )
     }
 
-
+    private val mapView
+        get() = weakMapView?.get()
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
@@ -146,9 +209,19 @@ internal class ViewMap @Inject constructor(
     }
 
 
+    companion object {
+        const val LAYER_MARKER = "LAYER_MARKER"
+        const val SOURCE_LAYER_ID = "Yosemite_POI-38jhes"
+        const val SOURCE_ID = "SOURCE_ID"
+        const val MARKER_ID = "MARKER_ID"
+        const val STYLE_ID = "mapbox://styles/ryuinw123/cla16mlr3006715p56830t6xv"
+        const val LOCATION_LAYER_ID = "LOCATION_LAYER_ID"
+        const val AREA_LAYER_ID = "AREA_LAYER_ID"
 
 
+        private const val LOCATION = "locations"
 
+    }
 
 
 }

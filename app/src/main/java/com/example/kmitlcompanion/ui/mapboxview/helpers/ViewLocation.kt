@@ -54,6 +54,10 @@ class ViewLocation @Inject constructor(
         mapView?.getMapboxMap()?.setCamera(CameraOptions.Builder().bearing(it).build())
     }
 
+    private val onIndicatorPositionChangedListenerForViewModel = OnIndicatorPositionChangedListener {
+
+    }
+
     private val onMoveListener = object : OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
             onCameraTrackingDismissed()

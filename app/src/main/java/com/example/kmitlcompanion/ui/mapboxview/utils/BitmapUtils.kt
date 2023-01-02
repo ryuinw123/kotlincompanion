@@ -10,9 +10,9 @@ import androidx.core.content.ContextCompat
 import javax.inject.Inject
 
 class BitmapUtils @Inject constructor(
-
+    private val context: Context
 ) {
-    fun bitmapFromDrawableRes(context : Context ,@DrawableRes resourceId: Int) =
+    fun bitmapFromDrawableRes(@DrawableRes resourceId: Int) =
         convertDrawableToBitmap(ContextCompat.getDrawable(context, resourceId))
 
     private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
