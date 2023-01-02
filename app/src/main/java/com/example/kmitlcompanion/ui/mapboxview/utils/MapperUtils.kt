@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.ui.mapboxview.utils
 
-import android.util.Log
 import com.example.kmitlcompanion.domain.model.MapPoint
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
@@ -17,14 +16,17 @@ class MapperUtils @Inject constructor() {
         return FeatureCollection.fromFeatures(points.map { getCircleFeature(it) })
     }
 
-    private fun getCircleFeature(mapPoint : MapPoint) : Feature {
-        val point = Point.fromLngLat(mapPoint.longitude , mapPoint.latitude)
-        val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${createCircleCoordinates(point,1.0)} ] }, "
+    private fun getCircleFeature(mapPoint: MapPoint): Feature {
+        val point = Point.fromLngLat(mapPoint.longitude, mapPoint.latitude)
+        val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
+            createCircleCoordinates(
+                point,
+                1.0
+            )
+        } ] }, "
                 + "properties: {}}")
 
-        val feature = Feature.fromJson(circleJson)
-
-        return feature
+        return Feature.fromJson(circleJson)
 
     }
 
