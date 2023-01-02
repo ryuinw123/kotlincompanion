@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.ui.mapboxview.utils
 
-import android.location.Location
+import android.util.Log
 import com.example.kmitlcompanion.domain.model.MapPoint
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
@@ -13,6 +13,21 @@ class MapperUtils @Inject constructor() {
         return FeatureCollection.fromFeatures(points.map { getFeature(it) })
     }
 
+    fun mapToCircleFeatureCollections(points : List<MapPoint>) : FeatureCollection {
+        return FeatureCollection.fromFeatures(points.map { getCircleFeature(it) })
+    }
+
+    private fun getCircleFeature(mapPoint : MapPoint) : Feature {
+        val point = Point.fromLngLat(mapPoint.longitude , mapPoint.latitude)
+        val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${createCircleCoordinates(point,1.0)} ] }, "
+                + "properties: {}}")
+
+        val feature = Feature.fromJson(circleJson)
+
+        return feature
+
+    }
+
     private fun getFeature(mapPoint: MapPoint): Feature {
         val point = Point.fromLngLat(mapPoint.longitude, mapPoint.latitude)
         val feature = Feature.fromGeometry(point)
@@ -20,6 +35,31 @@ class MapperUtils @Inject constructor() {
         feature.addStringProperty("description", mapPoint.description)
         feature.addNumberProperty("id", mapPoint.id)
         return feature
+    }
+
+    private fun createCircleCoordinates(center : Point, radiusInKm:Double , points : Int = 64) : List<List<Double>> {
+
+
+        val km = radiusInKm
+
+        val ret = mutableListOf<List<Double>>()
+        val distanceX = km / (111.320 * Math.cos(center.latitude() * Math.PI / 180))
+        val distanceY = km / 110.574
+
+
+        var theta: Double
+        var x: Double
+        var y: Double
+        for (i in 0 until points) {
+            theta = (i.toDouble() / points) * (2 * Math.PI)
+            x = distanceX * Math.cos(theta)
+            y = distanceY * Math.sin(theta)
+
+            ret.add(listOf(center.longitude() + x, center.latitude() + y))
+        }
+        ret.add(ret[0])
+
+        return ret
     }
 
 

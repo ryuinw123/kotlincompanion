@@ -80,10 +80,18 @@ internal class ViewMap @Inject constructor(
 
     private fun prepareMarkerToMap(context: Context, information: MapInformation) {
         mapView?.getMapboxMap()?.getStyle {
+
             it.addSource(
                 geoJsonSource(SOURCE_ID) {
                     featureCollection(
                         mapper.mapToFeatureCollections(information.mapPoints)
+                    )
+                }
+            )
+            it.addSource(
+                geoJsonSource(AREA_ID) {
+                    featureCollection(
+                        mapper.mapToCircleFeatureCollections(information.mapPoints)
                     )
                 }
             )
@@ -100,8 +108,9 @@ internal class ViewMap @Inject constructor(
             )
 
             it.addLayer(
-                fillLayer(AREA_LAYER_ID , SOURCE_ID) {
-
+                fillLayer(AREA_LAYER_ID , AREA_ID) {
+                    fillColor("#FF0000")
+                    fillOpacity(0.3)
                 }
             )
 
@@ -123,6 +132,7 @@ internal class ViewMap @Inject constructor(
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
                 if (queriedFeature.isNotEmpty()) {
                    val selectedFeature = queriedFeature[0].feature
+                    Log.d("Selected Feature" , selectedFeature.toString())
                     val id = selectedFeature.getStringProperty("id")
                     val place = selectedFeature.getStringProperty("place")
                     val description = selectedFeature.getStringProperty("description")
@@ -213,6 +223,7 @@ internal class ViewMap @Inject constructor(
         const val LAYER_MARKER = "LAYER_MARKER"
         const val SOURCE_LAYER_ID = "Yosemite_POI-38jhes"
         const val SOURCE_ID = "SOURCE_ID"
+        const val AREA_ID = "AREA_ID"
         const val MARKER_ID = "MARKER_ID"
         const val STYLE_ID = "mapbox://styles/ryuinw123/cla16mlr3006715p56830t6xv"
         const val LOCATION_LAYER_ID = "LOCATION_LAYER_ID"
