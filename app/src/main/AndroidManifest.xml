@@ -11,6 +11,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.NETWORK_STACK" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+
 
     <application
         android:name=".MainApplication"
@@ -37,6 +42,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".foreground.MapService"
+            android:foregroundServiceType="location" />
     </application>
 
 </manifest>

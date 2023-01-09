@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.ui.auth.helpers
 
-import androidx.lifecycle.DefaultLifecycleObserver
+import android.content.Context
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import javax.inject.Inject
@@ -8,7 +8,9 @@ import javax.inject.Inject
 import dagger.hilt.android.scopes.ActivityScoped
 
 @ActivityScoped
-class AuthHelper @Inject constructor() : DefaultLifecycleObserver {
+class AuthHelper @Inject constructor(
+    private val context : Context
+) {
 
     private lateinit var viewModel: LoginViewModel
 

@@ -47,12 +47,13 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
+            helper.location.setup(this@MapboxFragment.viewModel,mapView)
+            helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
-            helper.location.setup(this@MapboxFragment.viewModel,mapView)
-            helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
+
 
 
             setupViewObservers()
@@ -130,6 +131,11 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             imageLink.observe(viewLifecycleOwner, Observer {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
+            })
+            permissionGrand.observe(viewLifecycleOwner , Observer {
+                if (it) {
+                    helper.service.setup()
+                }
             })
         }
     }

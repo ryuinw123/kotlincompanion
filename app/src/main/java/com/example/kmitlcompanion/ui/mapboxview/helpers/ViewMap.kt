@@ -88,11 +88,19 @@ internal class ViewMap @Inject constructor(
                     )
                 }
             )
+
             it.addSource(
                 geoJsonSource(AREA_ID) {
                     featureCollection(
                         mapper.mapToCircleFeatureCollections(information.mapPoints)
                     )
+                }
+            )
+
+            it.addLayer(
+                fillLayer(AREA_LAYER_ID, AREA_ID) {
+                    fillColor("#fff000")
+                    fillOpacity(0.3)
                 }
             )
 
@@ -107,12 +115,6 @@ internal class ViewMap @Inject constructor(
                 }
             )
 
-            it.addLayer(
-                fillLayer(AREA_LAYER_ID , AREA_ID) {
-                    fillColor("#FF0000")
-                    fillOpacity(0.3)
-                }
-            )
 
 
         }

@@ -21,7 +21,7 @@ class MapperUtils @Inject constructor() {
         val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
             createCircleCoordinates(
                 point,
-                1.0
+                5.0
             )
         } ] }, "
                 + "properties: {}}")

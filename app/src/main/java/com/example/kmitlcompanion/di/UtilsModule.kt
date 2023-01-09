@@ -37,17 +37,9 @@ abstract class UtilsModule {
         @Singleton
         @Provides
         fun providesHandler(): android.os.Handler {
-            val handlerThread =  HandlerThread("BackgroudThread")
+            val handlerThread =  HandlerThread("BackgroundThread")
             handlerThread.start()
             return Handler(handlerThread.looper)
-        }
-    }
-    @InstallIn(SingletonComponent::class)
-    @Module
-    object MapModule {
-        @Provides
-        fun providesLocationEngine(@ApplicationContext context: Context): LocationEngine {
-            return LocationEngineProvider.getBestLocationEngine(context)
         }
     }
 

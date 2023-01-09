@@ -41,6 +41,9 @@ class MapboxViewModel @Inject constructor(
     private val _imageLink = MutableLiveData<List<String>?>()
     val imageLink : LiveData<List<String>?> = _imageLink
 
+    private val _permissionGrand = MutableLiveData(false)
+    val permissionGrand : LiveData<Boolean> = _permissionGrand
+
 
 
 
@@ -63,6 +66,10 @@ class MapboxViewModel @Inject constructor(
             }
 
         })
+    }
+
+    fun updatePermission(boolean: Boolean) {
+        _permissionGrand.value = boolean
     }
 
     fun updateImageLink(imageList : List<String>) {
