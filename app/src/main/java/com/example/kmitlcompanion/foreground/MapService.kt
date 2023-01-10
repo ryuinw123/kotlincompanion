@@ -16,6 +16,7 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
 import com.example.kmitlcompanion.foreground.utils.MeasurementUtils
+import com.example.kmitlcompanion.ui.notification.NotificationManagerCalling
 import com.google.android.gms.location.LocationServices
 import com.mapbox.geojson.Point
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,9 @@ class MapService : Service() {
     @Inject
     lateinit var getMapLocations: GetMapLocations
 
+    @Inject
+    lateinit var notificationManagerCalling: NotificationManagerCalling
+
 
 
 
@@ -58,15 +62,16 @@ class MapService : Service() {
                 filterArea(it,value!!)
             }
             //secretMap.filterArea(value!!)
-
         }
 
     private fun filterArea(mapInformation: MapInformation, point: Point) {
         mapInformation.mapPoints.forEach {
             val mapPoint = Point.fromLngLat(it.longitude , it.latitude)
             val distance = measurementUtils.distance(point , mapPoint)
-            if (distance <= 5)
-                Log.d("FilterFound",it.place)
+            if (distance <= 5) {
+                Log.d("FilterFound", it.place)
+                notificationManagerCalling.startNotify()
+            }
         }
     }
 
@@ -77,6 +82,7 @@ class MapService : Service() {
 
         locationHelper = SecretLocation(this )
         locationHelper.run()
+        notificationManagerCalling.createChannel()
 
 
 
@@ -122,10 +128,6 @@ class MapService : Service() {
        return binder
     }
 
-    companion object {
-        const val ACTION_START = "ACTION_START"
-        const val ACTION_STOP = "ACTION_STOP"
-    }
 
 
 }
