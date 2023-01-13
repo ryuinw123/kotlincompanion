@@ -30,6 +30,7 @@ import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.sources.getSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
@@ -79,45 +80,52 @@ internal class ViewMap @Inject constructor(
     }
 
     private fun prepareMarkerToMap(context: Context, information: MapInformation) {
-        mapView?.getMapboxMap()?.getStyle {
 
-            it.addSource(
-                geoJsonSource(SOURCE_ID) {
-                    featureCollection(
-                        mapper.mapToFeatureCollections(information.mapPoints)
-                    )
-                }
-            )
+        //mapView?.getMapboxMap()?.getStyle()?.let {
+            /* in testing */
+            mapView?.getMapboxMap()?.getStyle {
+                //Log.d("add Source", information.mapPoints.toString().length.toString())
+                it.removeStyleLayer(AREA_LAYER_ID)
+                it.removeStyleLayer(LOCATION_LAYER_ID)
+                it.removeStyleSource(SOURCE_ID)
+                it.removeStyleSource(AREA_ID)
+                //Log.d("add Source","Add")
 
-            it.addSource(
-                geoJsonSource(AREA_ID) {
-                    featureCollection(
-                        mapper.mapToCircleFeatureCollections(information.mapPoints)
-                    )
-                }
-            )
+                it.addSource(
+                    geoJsonSource(SOURCE_ID) {
+                        featureCollection(
+                            mapper.mapToFeatureCollections(information.mapPoints)
+                        )
+                    }
+                )
 
-            it.addLayer(
-                fillLayer(AREA_LAYER_ID, AREA_ID) {
-                    fillColor("#fff000")
-                    fillOpacity(0.3)
-                }
-            )
+                it.addSource(
+                    geoJsonSource(AREA_ID) {
+                        featureCollection(
+                            mapper.mapToCircleFeatureCollections(information.mapPoints)
+                        )
+                    }
+                )
 
-            it.addLayer(
-                symbolLayer(LOCATION_LAYER_ID, SOURCE_ID) {
-                    sourceLayer(SOURCE_LAYER_ID)
-                    iconImage(
-                        literal(LOCATION)
-                    )
-                    iconAllowOverlap(true)
-                    iconAnchor(IconAnchor.BOTTOM)
-                }
-            )
+                it.addLayer(
+                    fillLayer(AREA_LAYER_ID, AREA_ID) {
+                        fillColor("#fff000")
+                        fillOpacity(0.3)
+                    }
+                )
 
-
-
-        }
+                it.addLayer(
+                    symbolLayer(LOCATION_LAYER_ID, SOURCE_ID) {
+                        sourceLayer(SOURCE_LAYER_ID)
+                        iconImage(
+                            literal(LOCATION)
+                        )
+                        iconAllowOverlap(true)
+                        iconAnchor(IconAnchor.BOTTOM)
+                    }
+                )
+            }
+        //}
         addPointListener()
     }
 
