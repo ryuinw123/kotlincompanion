@@ -21,6 +21,7 @@ import com.example.kmitlcompanion.ui.mainactivity.helper.NavHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.karumi.dexter.Dexter
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import androidx.databinding.DataBindingUtil.setContentView as bindingSetContentView
@@ -43,4 +44,5 @@ class MainActivity : AppCompatActivity() {
         }
         //setContentView(R.layout.activity_main)
     }
+
 }

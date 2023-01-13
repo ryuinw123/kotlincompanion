@@ -11,7 +11,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.NETWORK_STACK" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
@@ -43,8 +43,12 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <service
-            android:name=".foreground.MapService"
-            android:foregroundServiceType="location" />
+            android:name=".foreground.MainService"
+            android:foregroundServiceType="location"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <receiver android:name=".foreground.GeofenceReceiver" android:exported="true"/>
     </application>
 
 </manifest>

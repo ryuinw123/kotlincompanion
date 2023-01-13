@@ -42,11 +42,4 @@ class LocationPermissionHelper @Inject constructor(
         }
     }
 
-    fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 }

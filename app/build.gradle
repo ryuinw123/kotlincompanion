@@ -106,6 +106,9 @@ dependencies {
     //Coordinator Layout
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
+    //permission
+    implementation 'com.karumi:dexter:6.2.2'
+
 
     //Activity Result API
     //implementation 'androidx.activity:activity-ktx:1.6.0'
