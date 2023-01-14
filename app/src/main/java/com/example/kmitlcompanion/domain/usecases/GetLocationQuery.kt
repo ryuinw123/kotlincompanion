@@ -12,8 +12,8 @@ class GetLocationQuery @Inject constructor(
     private val domainRepository: DomainRepository
 ): ObservableUseCase<LocationDetail,Pair<Double,Double>>(postExecutionThread) {
     override fun buildUseCaseObservable(params: Pair<Double, Double>?): Observable<LocationDetail> {
-        val latitude = String.format("%.3f", params?.first).toDouble()
-        val longitude = String.format("%.3f", params?.second).toDouble()
+        val latitude = String.format("%.8f", params?.first).toDouble()
+        val longitude = String.format("%.8f", params?.second).toDouble()
 
 
 

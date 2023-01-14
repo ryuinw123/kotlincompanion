@@ -13,12 +13,12 @@ interface RetrofitTestClient {
     @POST("getlocationquery")
     fun getLocationQuery(@Part("latitude") latitude: Double , @Part("longitude") longitude: Double , @Part("authCode") token:Any): Observable<LocationQuery>
 
-    @GET("helloworld")
+    @GET("getmappoints")
     fun getMapPoints(): Observable<List<MapPointData>>
 
 
     @Multipart
-    @POST("testpost")
+    @POST("createlocationquery")
     fun createLocationQuery(@Part("latitude") latitude: Double, @Part("longitude") longitude: Double , @Part("name") name : String , @Part("type") type : String , @Part("detail") detail : String ,@Part image:MultipartBody.Part,@Part("authCode") token:String): Completable
 
     @Multipart
