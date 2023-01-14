@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 
 interface CacheRepository {
 
-    fun getMapPoints(): Observable<List<MapPointData>>
+    fun getMapPoints(token: String): Observable<List<MapPointData>>
 
     fun saveMapPoints(list: List<MapPointData>):Completable
 
@@ -17,4 +17,5 @@ interface CacheRepository {
     fun updateUser(email: String,token: String): Completable
 
     fun getUser(): Observable<List<UserData>>
+
 }

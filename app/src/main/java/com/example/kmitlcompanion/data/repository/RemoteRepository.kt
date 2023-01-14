@@ -11,15 +11,18 @@ import java.net.URI
 
 interface RemoteRepository {
     fun getLocationQuery(latitude: Double,longitude: Double,token : String): Observable<LocationQuery>
-    fun getMapPoints(): Observable<List<MapPointData>>
-    fun createLocationQuery(latitude: Double,
+    fun getMapPoints(token:String): Observable<List<MapPointData>>
+    fun createLocationQuery(name: String,
+                            place:String,
+                            address:String,
+                            latitude: Double,
                             longitude: Double,
-                            name: String,
-                            type: String,
                             detail: String,
+                            type: String,
                             image : MultipartBody.Part,
                             token: String
-    ): Completable
+                            ): Completable
+
     fun postLogin(authCode : String) : Observable<ReturnLoginData>
     fun postUserData(name: Any,
                      surname : Any,

@@ -99,9 +99,11 @@ class CreateLocationViewModel @Inject constructor(
             }
 
         },Location(
-            place = nameInput.value,
+            inputName = nameInput.value,
+            description = detailInput.value,
+            place = currentLocation.value!!.place,
             type = typeSpinner.value,
-            address = detailInput.value,
+            address = currentLocation.value!!.address,
             point = currentLocation.value!!.point,
             file = file,
             uri = imageData.value!!.data

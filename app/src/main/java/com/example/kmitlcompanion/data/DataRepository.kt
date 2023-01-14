@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.data
 
-import android.content.Context
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -8,6 +8,7 @@ import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
+import com.example.kmitlcompanion.data.util.TokenUtils
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
@@ -15,7 +16,6 @@ import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import javax.inject.Inject
@@ -25,13 +25,16 @@ class DataRepository @Inject constructor(
     private val timeUtils: TimeUtils,
     private val mapper: MapPointMapper,
     private val contentResolverUtil: ContentResolverUtil,
-
-
+    private val tokenUtils: TokenUtils
 ) : DomainRepository{
+
+    fun getToken(): String{
+        return dataStore.getRemoteData(false).getUser().blockingFirst()[0].token
+    }
+
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
 
-
-        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,"abc")
+        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,tokenUtils.getToken())
             .map {
                 LocationDetail(
                     point = Point.fromLngLat(longitude,latitude)?: null,
@@ -42,8 +45,9 @@ class DataRepository @Inject constructor(
     }
 
     override fun getMapPoints(): Observable<MapInformation> {
-        //println(dataStore.getRemoteData(true).getMapPoints().toString())
-        return dataStore.getRemoteData(true).getMapPoints() //ตัวอย่างข้อมูลของ datastore [{"name": "John", "id": 30, "latitude": "13.779677724153272", "longitude": "100.67650630259816", "description": "noob"}, {"name": "Cena", "id": 31, "latitude": "13.779677724153272", "longitude": "100.97650630259816", "description": "noob2"}]
+        return dataStore.getRemoteData(true).getMapPoints(token=getToken())
+            //token=tokenUtils.getToken())
+            //ตัวอย่างข้อมูลของ datastore [{"name": "John", "id": 30, "latitude": "13.779677724153272", "longitude": "100.67650630259816", "description": "noob"}, {"name": "Cena", "id": 31, "latitude": "13.779677724153272", "longitude": "100.97650630259816", "description": "noob2"}]
             .map { list ->
                 //ตัวอย่างข้อมูลของ list [MapPointData(description=noob, id=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPointData(description=noob2, id=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)]
                 MapInformation(
@@ -79,13 +83,15 @@ class DataRepository @Inject constructor(
         val image = MultipartBody.Part.createFormData("image",file.name,requestFile)
 
         return dataStore.getRemoteData(true).createLocationQuery(
+            name = location.inputName,
+            place = location.place,
+            address = location.address,
             latitude = location.latitude,
             longitude = location.longitude,
-            name = location.place,
             type = location.type,
-            detail = location.address,
+            detail = location.description,
             image = image,
-            token = ""
+            token = tokenUtils.getToken()
         )
     }
 

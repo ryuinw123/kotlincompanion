@@ -8,8 +8,6 @@ import com.example.kmitlcompanion.data.repository.RemoteRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
-import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
 class RetrofitClient @Inject constructor(
@@ -23,20 +21,22 @@ class RetrofitClient @Inject constructor(
         return retrofitTestClient.getLocationQuery(latitude,longitude,token)
     }
 
-    override fun getMapPoints(): Observable<List<MapPointData>> {
-        return retrofitTestClient.getMapPoints()
+    override fun getMapPoints(token: String): Observable<List<MapPointData>> {
+        return retrofitTestClient.getMapPoints(token)
     }
 
     override fun createLocationQuery(
+        name: String,
+        place: String,
+        address: String,
         latitude: Double,
         longitude: Double,
-        name: String,
-        type: String,
         detail: String,
-        image : MultipartBody.Part,
+        type: String,
+        image: MultipartBody.Part,
         token: String
     ): Completable {
-        return retrofitTestClient.createLocationQuery(latitude,longitude,name,type,detail,image,token)
+        return retrofitTestClient.createLocationQuery(name, place, address, latitude, longitude, detail, type, image, token)
     }
 
 

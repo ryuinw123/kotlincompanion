@@ -16,6 +16,8 @@ class CreateLocationQuery @Inject constructor(
     override fun buildUseCaseCompletable(params: Location?): Completable {
         return domainRepository.createLocationQuery(
             location = LocationData(
+                inputName = params!!.inputName!!,
+                description = params!!.description!!,
                 place = params!!.place!!,
                 type = params!!.type!!,
                 address = params!!.address!!,

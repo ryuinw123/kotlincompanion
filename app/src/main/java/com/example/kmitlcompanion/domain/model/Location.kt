@@ -10,6 +10,8 @@ import java.net.URI
 
 @Parcelize
 data class Location(
+    val inputName:String?,
+    val description:String?,
     val place: String?,
     val type: String?,
     val address: String?,

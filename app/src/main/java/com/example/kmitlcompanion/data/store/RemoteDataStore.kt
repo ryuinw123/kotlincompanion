@@ -6,12 +6,9 @@ import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
-import com.example.kmitlcompanion.domain.model.LocationDetail
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
-import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
 class RemoteDataStore @Inject constructor(
@@ -25,8 +22,8 @@ class RemoteDataStore @Inject constructor(
         return remoteRepository.getLocationQuery(latitude,longitude,token)
     }
 
-    override fun getMapPoints(): Observable<List<MapPointData>> {
-        return remoteRepository.getMapPoints()
+    override fun getMapPoints(token: String): Observable<List<MapPointData>> {
+        return remoteRepository.getMapPoints(token)
     }
 
     override fun saveMapPoints(list: List<MapPointData>): Completable {
@@ -38,15 +35,17 @@ class RemoteDataStore @Inject constructor(
     }
 
     override fun createLocationQuery(
+        name: String,
+        place: String,
+        address: String,
         latitude: Double,
         longitude: Double,
-        name: String,
-        type: String,
         detail: String,
-        image : MultipartBody.Part,
+        type: String,
+        image: MultipartBody.Part,
         token: String
     ): Completable {
-        return remoteRepository.createLocationQuery(latitude,longitude,name,type,detail,image,token)
+        return remoteRepository.createLocationQuery(name, place, address, latitude, longitude, detail, type, image, token)
     }
 
 
@@ -80,4 +79,5 @@ class RemoteDataStore @Inject constructor(
     override fun getUser(): Observable<List<UserData>> {
         throw IllegalStateException("Function not currently supported!")
     }
+
 }

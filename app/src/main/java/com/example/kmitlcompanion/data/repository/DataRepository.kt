@@ -15,13 +15,13 @@ import java.net.URI
 interface DataRepository {
     fun getLocationQuery(latitude: Double,longitude: Double , token : String) : Observable<LocationQuery>
 
-    fun getMapPoints(): Observable<List<MapPointData>>
+    fun getMapPoints(token: String): Observable<List<MapPointData>>
 
     fun saveMapPoints(list: List<MapPointData>): Completable
 
     fun updateLastLocationTimeStamp(timestamp: Long): Completable
 
-    fun createLocationQuery(latitude: Double,longitude: Double,name : String, type : String, detail : String, image: MultipartBody.Part ,token: String) : Completable
+    fun createLocationQuery(name : String,place : String,address:String,latitude: Double,longitude: Double,detail : String, type : String,  image: MultipartBody.Part ,token: String) : Completable
 
     fun postLogin(authCode : String) : Observable<ReturnLoginData>
 

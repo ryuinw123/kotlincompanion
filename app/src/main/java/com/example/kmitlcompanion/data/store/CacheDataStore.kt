@@ -9,8 +9,6 @@ import com.example.kmitlcompanion.data.repository.DataRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
-import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
 class CacheDataStore @Inject constructor(
@@ -24,8 +22,8 @@ class CacheDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun getMapPoints(): Observable<List<MapPointData>> {
-        return cacheRepository.getMapPoints()
+    override fun getMapPoints(token: String): Observable<List<MapPointData>> {
+        return cacheRepository.getMapPoints(token)
     }
 
     override fun updateLastLocationTimeStamp(timestamp: Long): Completable {
@@ -33,12 +31,14 @@ class CacheDataStore @Inject constructor(
     }
 
     override fun createLocationQuery(
+        name: String,
+        place: String,
+        address: String,
         latitude: Double,
         longitude: Double,
-        name: String,
-        type: String,
         detail: String,
-        image : MultipartBody.Part,
+        type: String,
+        image: MultipartBody.Part,
         token: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
@@ -72,4 +72,6 @@ class CacheDataStore @Inject constructor(
     override fun getUser(): Observable<List<UserData>> {
         return cacheRepository.getUser()
     }
+
+
 }

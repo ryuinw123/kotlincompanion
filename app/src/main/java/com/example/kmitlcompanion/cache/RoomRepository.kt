@@ -19,7 +19,7 @@ class RoomRepository @Inject constructor(
     private val userMapper: UserMapper
 ) : CacheRepository {
 
-    override fun getMapPoints(): Observable<List<MapPointData>> {
+    override fun getMapPoints(token: String): Observable<List<MapPointData>> {
         return database.cachedDao().getMapPoints()
             .flatMap { list ->
                 Observable.just(list.map { mapPointMapper.mapToData(it) })
@@ -55,4 +55,5 @@ class RoomRepository @Inject constructor(
                 Observable.just(list.map { userMapper.mapToData(it) })
             }
     }
+
 }

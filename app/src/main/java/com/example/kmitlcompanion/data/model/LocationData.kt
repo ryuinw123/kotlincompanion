@@ -6,6 +6,8 @@ import java.io.File
 import java.net.URI
 
 data class LocationData(
+    val inputName:String,
+    val description:String,
     val place: String,
     val type: String,
     val address: String,
