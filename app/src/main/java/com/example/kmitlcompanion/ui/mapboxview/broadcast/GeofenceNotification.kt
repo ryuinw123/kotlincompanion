@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.foreground
+package com.example.kmitlcompanion.ui.mapboxview.broadcast
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -13,10 +13,10 @@ import com.example.kmitlcompanion.ui.mainactivity.MainActivity
 import javax.inject.Inject
 
 class GeofenceNotification @Inject constructor(
-
+    private val context: Context
 ) {
 
-    fun buildNotification(context: Context,locationId: String): Notification {
+    fun buildNotification(locationId: String): Notification {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -37,9 +37,9 @@ class GeofenceNotification @Inject constructor(
             // Add more cases for additional locations
         }
 
-        return NotificationCompat.Builder(context, "channel_id")
+        return NotificationCompat.Builder(context, "1")
             .setSmallIcon(R.drawable.ic_drawer)
-            .setContentTitle("Welcome to $locationName")
+            .setContentTitle("Welcome to $locationId")
             .setContentText("You are now inside the geofence area")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

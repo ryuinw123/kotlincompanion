@@ -102,6 +102,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 this@MapboxFragment.context?.let {
                     helper.map.updateMap(it,information)
                 }
+                helper.service.setup(information)
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
@@ -133,9 +134,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
             permissionGrand.observe(viewLifecycleOwner , Observer {
-                if (it) {
-                    helper.service.setup()
-                }
             })
         }
     }
