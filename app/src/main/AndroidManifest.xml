@@ -43,12 +43,12 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <service
-            android:name=".foreground.MainService"
+            android:name=".foreground.old.MainService"
             android:foregroundServiceType="location"
             android:enabled="true"
             android:exported="true"/>
 
-        <receiver android:name=".foreground.GeofenceReceiver" android:exported="true"/>
+        <receiver android:name=".foreground.old.utils.GeofenceReceiver" android:exported="true"/>
     </application>
 
 </manifest>

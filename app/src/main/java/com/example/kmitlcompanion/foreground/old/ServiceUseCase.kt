@@ -1,11 +1,11 @@
-package com.example.kmitlcompanion.foreground
+package com.example.kmitlcompanion.foreground.old
 
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
 import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
 
-class ServiceUseCase @Inject constructor(
+/*class ServiceUseCase @Inject constructor(
     private val getMapLocations: GetMapLocations
 ) {
     lateinit var mainService: MainService
@@ -30,4 +30,4 @@ class ServiceUseCase @Inject constructor(
         })
 
     }
-}
+}*/

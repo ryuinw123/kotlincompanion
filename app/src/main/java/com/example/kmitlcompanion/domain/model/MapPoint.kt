@@ -6,9 +6,9 @@ import kotlinx.serialization.json.Json
 @Suppress("EXPERIMENTAL_API_USAGE")
 @Serializable
 data class MapPoint(
+    val id: Long,
     val description : String,
     val address : String,
-    val id: Long,
     val latitude: Double,
     val longitude : Double,
     val place: String,
