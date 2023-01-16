@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.background.WorkManagerUtils
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.LocationPermissionHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.ToasterUtil
@@ -25,6 +26,7 @@ class ViewLocation @Inject constructor(
     private val context: Context,
     private val toaster: ToasterUtil,
     private val locationPermissionHelper: LocationPermissionHelper,
+    private val workManagerUtils: WorkManagerUtils
 ) : DefaultLifecycleObserver {
 
     private lateinit var viewModel : MapboxViewModel
@@ -58,19 +60,14 @@ class ViewLocation @Inject constructor(
         this.weakMapView = WeakReference(mapView)
         locationPermissionHelper.checkPermissions {
             onMapReady()
+            workManagerUtils.scheduleLocationWorker()
             viewModel.updatePermission(true)
         }
     }
 
     private fun onMapReady(){
-        mapView?.getMapboxMap()?.setCamera(
-            CameraOptions.Builder()
-                .zoom(14.0)
-                .build()
-        )
         initLocationComponent()
         setupGesturesListener()
-
     }
 
     private fun setupGesturesListener() {

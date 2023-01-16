@@ -74,9 +74,11 @@ internal class ViewMap @Inject constructor(
 
     fun updateMap(
         context: Context,
-        information: MapInformation
+        information: MapInformation,
+        locationId: Long
     ) {
         prepareMarkerToMap(context, information)
+        initialLocation(locationId)
     }
 
     private fun prepareMarkerToMap(context: Context, information: MapInformation) {
@@ -129,6 +131,42 @@ internal class ViewMap @Inject constructor(
         addPointListener()
     }
 
+    private fun initialLocation(locationId : Long) {
+        if (locationId != -1L) {
+            /*val kmitlPoint = Point.fromLngLat(100.7811,13.7310)
+            viewModel.updatePositionFlyer(kmitlPoint)*/
+
+            val mapInformation = viewModel.mapInformationResponse.value
+            val locationList = mapInformation?.mapPoints
+
+            val locationDetail = locationList?.single { location ->
+                location.id == locationId
+            }
+
+            locationDetail?.let {
+
+                val locationPoint = Point.fromLngLat(it.longitude,it.latitude)
+                locationDetail(it.id.toString() , it.place , it.description , locationPoint)
+
+            }
+
+
+
+
+        }
+
+
+    }
+
+    private fun locationDetail(id : String , place : String , description : String , location : Point) {
+        viewModel.updateIdLocationLabel(id)
+        viewModel.updateNameLocationLabel(place)
+        viewModel.updateDescriptionLocationLabel(description)
+        viewModel.updateCurrentLocationGps(location)
+        viewModel.updatePositionFlyer(location)
+        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+    }
+
     private fun addPointListener() {
         val mapboxMap = mapView?.getMapboxMap()
 
@@ -148,14 +186,8 @@ internal class ViewMap @Inject constructor(
                     val description = selectedFeature.getStringProperty("description")
                     val point = selectedFeature.geometry() as Point
 
+                    locationDetail(id , place , description , point)
 
-                    viewModel.updateIdLocationLabel(id)
-                    viewModel.updateNameLocationLabel(place)
-                    viewModel.updateDescriptionLocationLabel(description)
-                    viewModel.updateCurrentLocationGps(point)
-                    viewModel.updatePositionFlyer(point)
-                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                    //viewModel.updateImageLink(it.mapPoint.imageLink)
 
                 }
                 else{

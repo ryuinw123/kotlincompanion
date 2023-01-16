@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.mainactivity
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
@@ -41,7 +42,22 @@ class MainActivity : AppCompatActivity() {
             helper = this@MainActivity.helper
             this@MainActivity.helper.setup(window,navHostFragment,root, bottomNavigation, bottomMap)
             bottomBarUtils.setup(coordinatorBottomNav)
+
         }
+
+
+       val locationId : Long = intent.extras?.getLong("locationId") ?: -1
+
+        Log.d("Geofence" , "LocationId = $locationId")
+
+        if (locationId != -1L) {
+            val bundle = Bundle()
+            bundle.putLong("locationId", locationId)
+            val navController = binding.navHostFragment?.getFragment<NavHostFragment>()?.navController
+            navController?.setGraph(R.navigation.nav_graph,bundle)
+            Log.d("Geofence","Notification LocationId = $locationId")
+        }
+
         //setContentView(R.layout.activity_main)
     }
 

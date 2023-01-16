@@ -49,6 +49,7 @@ class MapboxViewModel @Inject constructor(
 
 
 
+
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
             override fun onComplete() {

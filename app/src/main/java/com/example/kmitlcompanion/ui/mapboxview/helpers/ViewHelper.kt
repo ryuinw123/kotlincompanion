@@ -10,5 +10,6 @@ internal class ViewHelper @Inject constructor(
     val slider: ViewSlider,
     val comment: ViewComment,
     val location : ViewLocation,
-    val service : ViewService,
+    //val service : ViewService,
+    val geofence: ViewGeofence,
 )

@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.foreground
+package com.example.kmitlcompanion.ui.mapboxview.broadcast
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,11 +9,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.domain.model.MapPoint
 import com.example.kmitlcompanion.ui.mainactivity.MainActivity
 import javax.inject.Inject
 
 class GeofenceNotification @Inject constructor(
-
 ) {
 
     fun buildNotification(context: Context,locationId: String): Notification {
@@ -25,8 +25,11 @@ class GeofenceNotification @Inject constructor(
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
+
+
         val intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         var locationName = "test"
