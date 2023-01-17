@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.data
 
-import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -8,7 +7,6 @@ import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
-import com.example.kmitlcompanion.data.util.TokenUtils
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
@@ -25,16 +23,15 @@ class DataRepository @Inject constructor(
     private val timeUtils: TimeUtils,
     private val mapper: MapPointMapper,
     private val contentResolverUtil: ContentResolverUtil,
-    private val tokenUtils: TokenUtils
 ) : DomainRepository{
 
-    fun getToken(): String{
+    private fun getToken(): String{
         return dataStore.getRemoteData(false).getUser().blockingFirst()[0].token
     }
 
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
 
-        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,tokenUtils.getToken())
+        return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,getToken())
             .map {
                 LocationDetail(
                     point = Point.fromLngLat(longitude,latitude)?: null,
@@ -91,7 +88,7 @@ class DataRepository @Inject constructor(
             type = location.type,
             detail = location.description,
             image = image,
-            token = tokenUtils.getToken()
+            token = getToken()
         )
     }
 
