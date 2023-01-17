@@ -12,6 +12,10 @@
         <action
             android:id="@+id/action_mapboxFragment2_to_createMapboxLocationFragment2"
             app:destination="@id/createMapboxLocationFragment2" />
+        <argument
+            android:name="locationId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -23,7 +27,11 @@
             app:destination="@id/identityloginFragment" />
         <action
             android:id="@+id/action_loginFragment_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment" />
+            app:destination="@id/mapboxFragment" >
+            <argument
+                android:name="locationId"
+                android:defaultValue="-1L" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -43,7 +51,11 @@
         android:label="IdentityloginFragment" >
         <action
             android:id="@+id/action_identityloginFragment_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment" />
+            app:destination="@id/mapboxFragment" >
+            <argument
+                android:name="locationId"
+                android:defaultValue="-1L" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -73,7 +85,11 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_startPage_to_mapboxFragment2"
-            app:destination="@id/mapboxFragment" />
+            app:destination="@id/mapboxFragment" >
+            <argument
+                android:name="locationId"
+                android:defaultValue="-1L" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"

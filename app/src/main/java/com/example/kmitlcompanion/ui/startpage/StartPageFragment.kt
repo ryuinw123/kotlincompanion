@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.startpage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +23,18 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
 
     override val viewModel: StartPageViewModel by viewModels()
 
-    override fun onReady(savedInstanceState: Bundle?) {}
 
     @Inject
     internal lateinit var helper: StartPageFragmentHelper
+
+    override fun onReady(savedInstanceState: Bundle?) {
+
+        val locationId = arguments?.getLong("locationId") ?: -1L
+        Log.d("Geofence","locationId From StartFragment = $locationId")
+
+        viewModel.updateLocationId(locationId)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +46,9 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
             setupViewObservers()
         }
 
+
         viewModel.loginWithToken()
+
 
 
         //hide bottom bar
