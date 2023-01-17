@@ -35,9 +35,7 @@ class ViewGeofence @Inject constructor(
     private lateinit var geofencePendingIntent: PendingIntent
 
     fun setup(mapInformation : MapInformation) {
-
         geofencingClient = LocationServices.getGeofencingClient(context)
-
         val intent = Intent(context, GeofenceReceiver::class.java)
         intent.action = "com.example.geofence.TRANSITION"
         val gson = Gson()
@@ -47,7 +45,6 @@ class ViewGeofence @Inject constructor(
         geofencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         notificationUtils.createChannel()
         run(mapInformation.mapPoints)
-
     }
 
     private fun run(mapPoint : List<MapPoint>) {
@@ -81,7 +78,6 @@ class ViewGeofence @Inject constructor(
     }
 
     private fun generateGeofenceLocation(mapInformation : List<MapPoint>) {
-
         val geofenceList =  mutableListOf<Geofence>()
         mapInformation.forEach {
             val locationRadius = 5000f
@@ -91,11 +87,8 @@ class ViewGeofence @Inject constructor(
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                 .build()
-
             geofenceList.add(location)
-
         }
-
         createGeofenceLocation(geofenceList)
     }
 

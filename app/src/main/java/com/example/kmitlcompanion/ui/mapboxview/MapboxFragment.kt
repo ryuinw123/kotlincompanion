@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.background.LocationService
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.domain.model.Comment
@@ -36,8 +38,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     override val viewModel : MapboxViewModel by viewModels()
     private val navArgs by navArgs<MapboxFragmentArgs>()
-
-
     override val layoutId :Int = R.layout.fragment_mapbox
 
     override fun onReady(savedInstanceState: Bundle?) {
@@ -58,8 +58,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
-
-
 
             setupViewObservers()
         }
@@ -141,9 +139,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
             permissionGrand.observe(viewLifecycleOwner , Observer {
-                /*if (it) {
-                    helper.service.setup()
-                }*/
+                if (it) {
+                    context?.startService(Intent(context, LocationService::class.java))
+                }
             })
         }
     }
