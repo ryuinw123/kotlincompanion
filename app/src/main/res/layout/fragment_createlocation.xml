@@ -8,171 +8,417 @@
             type="com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel" />
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/name_helper"
-                app:boxStrokeColor="@color/kmitl_color"
-                app:hintTextColor="@color/kmitl_color"
-                app:boxStrokeWidthFocused="2dp"
-                app:boxStrokeWidth="2dp"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                style="@style/CustomCardViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/name_icon"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2">
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name_input"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="hint" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linearLayoutCompat2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_helper"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="40dp"
+                        app:boxStrokeColor="@color/kmitl_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/name_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="สร้างหมุดบนแผนที่"
-                    android:textColor="@color/kmitl_color"
-                    android:textSize="32dp"
-                    tools:layout_editor_absoluteX="176dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ชื่อปักหมุด" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/linearLayoutCompat2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="สร้างหมุดบนแผนที่"
+                            android:textColor="@color/kmitl_color"
+                            android:textSize="32dp"
+                            tools:layout_editor_absoluteX="176dp"
+                            tools:layout_editor_absoluteY="0dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            <ImageView
-                android:id="@+id/name_icon"
-                android:layout_width="42dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="30dp"
-                app:layout_constraintBottom_toBottomOf="@+id/name_helper"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/name_helper"
-                app:srcCompat="@drawable/ic_drawer"
-                />
+                    <ImageView
+                        android:id="@+id/name_icon"
+                        android:layout_width="42dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="30dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/name_helper"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/name_helper"
+                        app:srcCompat="@drawable/ic_drawer" />
 
-            <Spinner
-                android:id="@+id/type_spinner"
-                android:layout_width="0dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="20dp"
-                style="@style/spinner_style"
-                app:layout_constraintEnd_toEndOf="@+id/name_helper"
-                app:layout_constraintStart_toStartOf="@+id/name_helper"
-                app:layout_constraintTop_toBottomOf="@+id/name_helper" />
+                    <Spinner
+                        android:id="@+id/type_spinner"
+                        style="@style/spinner_style"
+                        android:layout_width="0dp"
+                        android:layout_height="43dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="@+id/name_helper"
+                        app:layout_constraintStart_toStartOf="@+id/name_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/name_helper"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/detail_helper"
-                app:boxStrokeColor="@color/kmitl_color"
-                app:hintTextColor="@color/kmitl_color"
-                app:boxStrokeWidth="2dp"
-                app:boxStrokeWidthFocused="2dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/type_spinner"
-                app:layout_constraintStart_toStartOf="@+id/type_spinner"
-                app:layout_constraintTop_toBottomOf="@+id/type_spinner">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/detail_helper"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:boxStrokeColor="@color/kmitl_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/type_spinner"
+                        app:layout_constraintStart_toStartOf="@+id/type_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/type_spinner">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/detail_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="รายละเอียด"
-                    android:lines="3" />
-            </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/detail_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="รายละเอียด"
+                            android:lines="3" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/detail_icon"
-                android:layout_width="43dp"
-                android:layout_height="41dp"
-                app:layout_constraintStart_toStartOf="@+id/name_icon"
-                app:layout_constraintTop_toTopOf="@+id/detail_helper"
-                app:srcCompat="@drawable/ic_triangle" />
+                    <ImageView
+                        android:id="@+id/detail_icon"
+                        android:layout_width="43dp"
+                        android:layout_height="41dp"
+                        app:layout_constraintStart_toStartOf="@+id/name_icon"
+                        app:layout_constraintTop_toTopOf="@+id/detail_helper"
+                        app:srcCompat="@drawable/ic_triangle" />
 
-            <ImageView
-                android:id="@+id/image_icon"
-                android:layout_width="42dp"
-                android:layout_height="45dp"
-                app:layout_constraintStart_toStartOf="@+id/detail_icon"
-                app:layout_constraintTop_toTopOf="@+id/select_image_view"
-                app:srcCompat="@drawable/ic_image" />
+                    <ImageView
+                        android:id="@+id/image_icon"
+                        android:layout_width="42dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintStart_toStartOf="@+id/detail_icon"
+                        app:layout_constraintTop_toTopOf="@+id/select_image_group1"
+                        app:srcCompat="@drawable/ic_image" />
 
-            <ImageView
-                android:id="@+id/select_image_view"
-                android:layout_width="207dp"
-                android:layout_height="183dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/detail_helper"
-                app:layout_constraintStart_toStartOf="@+id/detail_helper"
-                app:layout_constraintTop_toBottomOf="@+id/detail_helper"
-                tools:srcCompat="@tools:sample/avatars"
-                android:onClick="@{()->viewModel.uploadImage()}"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/select_image_group1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_helper"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/detail_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/detail_helper">
 
-            <TextView
-                android:id="@+id/warning_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="* ปักหมุกของฉัน หมุดจะสามารถเห็นได้คนเดียวเท่านั้น"
-                android:textColor="@color/kmitl_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/select_image_view" />
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/discard_image1"
+                            android:layout_width="40dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="156dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.discardImage()}"
+                            android:src="@drawable/cancel_fill1_wght400_grad200_opsz48"
+                            android:visibility="gone"
+                            app:backgroundTint="#00FFFFFF"
+                            app:elevation="0.0005dp"
+                            app:fabCustomSize="40dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/select_image_view1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.97"
+                            app:layout_constraintStart_toStartOf="@+id/select_image_view1"
+                            app:maxImageSize="40dp"
+                            app:tint="@color/white"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/warning_text2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="* ปักหมุดสาธารณะ หมุดจะต้องถูก อนุมัติ จากผู้ดูแลก่อน ถึงจะแสดงผลแบบสาธารณะ ซึ่งจะมองเห็นได้ทุกคน"
-                android:textColor="@color/kmitl_color"
-                app:layout_constraintEnd_toEndOf="@+id/warning_text"
-                app:layout_constraintStart_toStartOf="@+id/warning_text"
-                app:layout_constraintTop_toBottomOf="@+id/warning_text" />
+                        <ImageView
+                            android:id="@+id/select_image_view1"
+                            android:layout_width="207dp"
+                            android:layout_height="183dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->viewModel.uploadImage()}"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warning_text2">
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:backgroundTint="@color/kmitl_color"
-                    android:text="ปักหมุดของฉัน"
-                    android:onClick="@{()->viewModel.clickPublicUpload()}"
-                    />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/select_image_group2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_helper"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/detail_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group1">
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:backgroundTint="@color/kmitl_color"
-                    android:onClick="@{()->viewModel.clickPrivateUpload()}"
-                    android:text="ปักหมุกสาธารณะ" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/discard_image2"
+                            android:layout_width="40dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="156dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.discardImage()}"
+                            android:src="@drawable/cancel_fill1_wght400_grad200_opsz48"
+                            android:visibility="gone"
+                            app:backgroundTint="#00FFFFFF"
+                            app:elevation="0.0005dp"
+                            app:fabCustomSize="40dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/select_image_view2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.97"
+                            app:layout_constraintStart_toStartOf="@+id/select_image_view2"
+                            app:maxImageSize="40dp"
+                            app:tint="@color/white"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                        <ImageView
+                            android:id="@+id/select_image_view2"
+                            android:layout_width="207dp"
+                            android:layout_height="183dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->viewModel.uploadImage()}"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/select_image_group3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_helper"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/detail_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group2">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/discard_image3"
+                            android:layout_width="40dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="156dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.discardImage()}"
+                            android:src="@drawable/cancel_fill1_wght400_grad200_opsz48"
+                            android:visibility="gone"
+                            app:backgroundTint="#00FFFFFF"
+                            app:elevation="0.0005dp"
+                            app:fabCustomSize="40dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/select_image_view3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.97"
+                            app:layout_constraintStart_toStartOf="@+id/select_image_view3"
+                            app:maxImageSize="40dp"
+                            app:tint="@color/white"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                        <ImageView
+                            android:id="@+id/select_image_view3"
+                            android:layout_width="207dp"
+                            android:layout_height="183dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->viewModel.uploadImage()}"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/select_image_group4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_helper"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/detail_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group3">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/discard_image4"
+                            android:layout_width="40dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="156dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.discardImage()}"
+                            android:src="@drawable/cancel_fill1_wght400_grad200_opsz48"
+                            android:visibility="gone"
+                            app:backgroundTint="#00FFFFFF"
+                            app:elevation="0.0005dp"
+                            app:fabCustomSize="40dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/select_image_view4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.97"
+                            app:layout_constraintStart_toStartOf="@+id/select_image_view4"
+                            app:maxImageSize="40dp"
+                            app:tint="@color/white"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                        <ImageView
+                            android:id="@+id/select_image_view4"
+                            android:layout_width="207dp"
+                            android:layout_height="183dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->viewModel.uploadImage()}"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/select_image_group5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="@+id/detail_helper"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/detail_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group4">
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/discard_image5"
+                            android:layout_width="40dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="156dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.discardImage()}"
+                            android:src="@drawable/cancel_fill1_wght400_grad200_opsz48"
+                            android:visibility="gone"
+                            app:backgroundTint="#00FFFFFF"
+                            app:elevation="0.0005dp"
+                            app:fabCustomSize="40dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/select_image_view5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.97"
+                            app:layout_constraintStart_toStartOf="@+id/select_image_view5"
+                            app:maxImageSize="40dp"
+                            app:tint="@color/white"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                        <ImageView
+                            android:id="@+id/select_image_view5"
+                            android:layout_width="207dp"
+                            android:layout_height="183dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->viewModel.uploadImage()}"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/warning_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="* ปักหมุกของฉัน หมุดจะสามารถเห็นได้คนเดียวเท่านั้น"
+                        android:textColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group5" />
+
+                    <TextView
+                        android:id="@+id/warning_text2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="* ปักหมุดสาธารณะ หมุดจะต้องถูก อนุมัติ จากผู้ดูแลก่อน ถึงจะแสดงผลแบบสาธารณะ ซึ่งจะมองเห็นได้ทุกคน"
+                        android:textColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/warning_text"
+                        app:layout_constraintStart_toStartOf="@+id/warning_text"
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text2">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.clickPublicUpload()}"
+                            android:text="ปักหมุดของฉัน" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{()->viewModel.clickPrivateUpload()}"
+                            android:text="ปักหมุกสาธารณะ" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

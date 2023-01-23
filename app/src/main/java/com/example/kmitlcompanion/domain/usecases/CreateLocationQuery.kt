@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.domain.usecases
 
+import android.util.Log
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.domain.CompletableUseCase
 import com.example.kmitlcompanion.domain.executor.PostExecutionThread
@@ -23,8 +24,8 @@ class CreateLocationQuery @Inject constructor(
                 address = params!!.address!!,
                 latitude = params!!.point!!.latitude(),
                 longitude = params!!.point!!.longitude(),
-                file = params!!.file!!,
-                uri = params!!.uri!!
+                file = params!!.file,
+                uri = params!!.uri
             )
         )
     }

@@ -38,7 +38,7 @@ class CacheDataStore @Inject constructor(
         longitude: Double,
         detail: String,
         type: String,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         token: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")

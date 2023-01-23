@@ -32,11 +32,17 @@ class MapboxViewModel @Inject constructor(
     private val _nameLocationLabel = MutableLiveData<String?>()
     val nameLocationLabel : LiveData<String?> = _nameLocationLabel
 
-    private val _positionFlyer = MutableLiveData<Point>()
-    val positionFlyer: LiveData<Point> = _positionFlyer
+    private val _placeLocationLabel = MutableLiveData<String?>()
+    val placeLocationLabel : LiveData<String?> = _placeLocationLabel
+
+    private val _addressLocationLabel = MutableLiveData<String?>()
+    val addressLocationLabel : LiveData<String?> = _addressLocationLabel
 
     private val _descriptionLocationLabel = MutableLiveData<String?>()
     val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
+
+    private val _positionFlyer = MutableLiveData<Point>()
+    val positionFlyer: LiveData<Point> = _positionFlyer
 
     private val _imageLink = MutableLiveData<List<String>?>()
     val imageLink : LiveData<List<String>?> = _imageLink
@@ -90,10 +96,19 @@ class MapboxViewModel @Inject constructor(
         _idLocationLabel.value = "id = $id"
     }
     fun updateNameLocationLabel(name : String){
-        _nameLocationLabel.value = "name = $name"
+        _nameLocationLabel.value = "$name"
     }
+
+    fun updatePlaceLocationLabel(place : String){
+        _placeLocationLabel.value = "$place"
+    }
+
+    fun updateAddressLocationLabel(address : String){
+        _addressLocationLabel.value = "$address"
+    }
+
     fun updateDescriptionLocationLabel(description : String) {
-        _descriptionLocationLabel.value = "description = $description"
+        _descriptionLocationLabel.value = "$description"
     }
 
     fun updatePositionFlyer(point: Point) {

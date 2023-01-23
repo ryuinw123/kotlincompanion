@@ -16,6 +16,6 @@ data class Location(
     val type: String?,
     val address: String?,
     val point: Point?,
-    val file: File?,
-    val uri: Uri?,
+    val file: List<File?>,
+    val uri: List<Uri?>,
 ) : Parcelable

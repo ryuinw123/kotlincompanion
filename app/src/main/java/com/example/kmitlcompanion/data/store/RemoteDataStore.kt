@@ -42,7 +42,7 @@ class RemoteDataStore @Inject constructor(
         longitude: Double,
         detail: String,
         type: String,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         token: String
     ): Completable {
         return remoteRepository.createLocationQuery(name, place, address, latitude, longitude, detail, type, image, token)

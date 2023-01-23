@@ -9,6 +9,7 @@ class MapPointMapper @Inject constructor(
 ){
     fun mapToDomain(it: MapPointData): MapPoint {
         return MapPoint(
+            name = it.name,
             id = it.id,
             description = it.description,
             latitude = it.latitude,

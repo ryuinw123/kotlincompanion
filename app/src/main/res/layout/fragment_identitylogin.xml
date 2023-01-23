@@ -75,8 +75,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textNameValue"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            />
+                            android:layout_height="wrap_content" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,6 +135,7 @@
                         android:layout_height="85dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginEnd="32dp"
+                        android:enabled="false"
                         android:hint="สาขาวิชา"
                         app:helperText=""
                         app:helperTextTextColor="#FF0000"
@@ -144,16 +144,13 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/faculty"
-                        app:layout_constraintVertical_bias="0.0"
-                        android:enabled="false"
-                        >
+                        app:layout_constraintVertical_bias="0.0">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/departmentList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            />
+                            android:inputType="none" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

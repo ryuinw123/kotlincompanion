@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data
 
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -76,8 +77,20 @@ class DataRepository @Inject constructor(
 
         val file = location.file
         val uri = location.uri
-        val requestFile = file.asRequestBody(contentResolverUtil.getMediaType(uri))
-        val image = MultipartBody.Part.createFormData("image",file.name,requestFile)
+        //var image = MultipartBody.Part.createFormData("image","null_image")
+        var imageList : MutableList<MultipartBody.Part> = mutableListOf()
+
+
+        if (file.isNotEmpty() && uri.isNotEmpty()){
+            for (i in 0 until(file.size) ){
+                val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
+                //image = MultipartBody.Part.createFormData("image",file[0]!!.name,requestFile)
+                imageList.add(MultipartBody.Part.createFormData("image",file[i]!!.name,requestFile))
+            }
+        }
+
+        Log.d("checkarrayimage",imageList.toString())
+
 
         return dataStore.getRemoteData(true).createLocationQuery(
             name = location.inputName,
@@ -87,7 +100,7 @@ class DataRepository @Inject constructor(
             longitude = location.longitude,
             type = location.type,
             detail = location.description,
-            image = image,
+            image = imageList,
             token = getToken()
         )
     }

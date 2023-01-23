@@ -13,6 +13,6 @@ data class LocationData(
     val address: String,
     val latitude: Double,
     val longitude : Double,
-    val file: File,
-    val uri: Uri,
+    val file: List<File?>,
+    val uri: List<Uri?>,
 )

@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.model
 
 data class MapPointData(
+    val name:String,
     val description : String,
     val address : String,
     val id: Long,
