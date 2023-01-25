@@ -10,6 +10,8 @@ data class MapPointEntity(
     @PrimaryKey
     @ColumnInfo(name = NameTable.MAP_POINT_ID)
     val id: Long,
+    @ColumnInfo(name = NameTable.MAP_POINT_NAME)
+    val name: String,
     @ColumnInfo(name = NameTable.MAP_POINT_DESCRIPTION)
     val description: String,
     @ColumnInfo(name = NameTable.MAP_POINT_LATITUDE)

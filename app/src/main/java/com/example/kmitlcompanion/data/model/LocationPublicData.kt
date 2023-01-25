@@ -5,7 +5,7 @@ import com.mapbox.geojson.Point
 import java.io.File
 import java.net.URI
 
-data class LocationData(
+data class LocationPublicData(
     val inputName:String,
     val description:String,
     val place: String,

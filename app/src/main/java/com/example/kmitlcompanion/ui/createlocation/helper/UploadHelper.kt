@@ -13,8 +13,11 @@ class UploadHelper @Inject constructor(
         this.viewModel = viewModel
     }
 
-    fun uploadLocation() {
-        viewModel.createLocation()
+    fun uploadLocation(public : Boolean) {
+        when (public) {
+            true -> viewModel.publicLocation()
+            false -> viewModel.privateLocation()
+        }
         viewModel.goToMapbox()
     }
 

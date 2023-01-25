@@ -30,6 +30,7 @@ class GeofenceReceiver : BroadcastReceiver() {
                 val place = jsonObject.getString("place")
                 val id = jsonObject.getLong("id")
                 locationList.add(MapPoint(
+                    name = "",
                     description = "",
                     address = "",
                     place = place,

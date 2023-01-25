@@ -5,6 +5,7 @@ import java.io.Serializable
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 data class MapPoint(
+    val name:String,
     val description : String,
     val address : String,
     val id: Long,

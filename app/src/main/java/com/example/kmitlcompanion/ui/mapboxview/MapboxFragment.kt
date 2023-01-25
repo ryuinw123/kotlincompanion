@@ -2,32 +2,30 @@ package com.example.kmitlcompanion.ui.mapboxview
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.background.LocationService
-import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.domain.model.Comment
-import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
-import com.example.kmitlcompanion.ui.createlocation.CreateLocationArgs
+import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
+import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.google.android.gms.location.*
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
@@ -123,15 +121,21 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it
             })
+
             idLocationLabel.observe(viewLifecycleOwner, Observer {
                 idLocationLabelTv.text = it
-
             })
             nameLocationLabel.observe(viewLifecycleOwner, Observer {
                 nameLocationLabelTv.text = it
             })
             descriptionLocationLabel.observe(viewLifecycleOwner, Observer {
                 descriptionLocationLabelTv.text = it
+            })
+            placeLocationLabel.observe(viewLifecycleOwner, Observer {
+                placeText.text = it
+            })
+            addressLocationLabel.observe(viewLifecycleOwner, Observer {
+                addressText.text = it
             })
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 helper.map.flyToLocation(it)

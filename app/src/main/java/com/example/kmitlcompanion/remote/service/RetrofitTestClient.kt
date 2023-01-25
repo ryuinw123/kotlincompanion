@@ -19,7 +19,11 @@ interface RetrofitTestClient {
 
     @Multipart
     @POST("createlocationquery")
-    fun createLocationQuery(@Part("name") name : String,@Part("place") place : String,@Part("address") address : String, @Part("latitude") latitude: Double, @Part("longitude") longitude: Double  , @Part("description") detail : String ,@Part("type") type : String ,@Part image:MultipartBody.Part,@Part("token") token:String): Completable
+    fun createLocationQuery(@Part("name") name : String,@Part("place") place : String,@Part("address") address : String, @Part("latitude") latitude: Double, @Part("longitude") longitude: Double  , @Part("description") detail : String ,@Part("type") type : String ,@Part image:List<MultipartBody.Part>,@Part("token") token:String): Completable
+
+    @Multipart
+    @POST("createpubliclocationquery")
+    fun createPublicLocationQuery(@Part("name") name : String,@Part("place") place : String,@Part("address") address : String, @Part("latitude") latitude: Double, @Part("longitude") longitude: Double  , @Part("description") detail : String ,@Part("type") type : String ,@Part image:List<MultipartBody.Part>,@Part("token") token:String): Completable
 
     @Multipart
     @POST("login")

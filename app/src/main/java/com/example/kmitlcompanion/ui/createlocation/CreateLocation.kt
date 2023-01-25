@@ -3,6 +3,7 @@ package com.example.kmitlcompanion.ui.createlocation
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,11 +45,14 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
     ): View? {
         binding = FragmentCreatelocationBinding.inflate(inflater,container,false).apply {
             viewModel = this@CreateLocation.viewModel
-            helper.image.setup(selectImageView,this@CreateLocation.viewModel)
+
+            helper.image.setup(listOf(selectImageView1,selectImageView2,selectImageView3,selectImageView4,selectImageView5),
+                                listOf(discardImage1,discardImage2,discardImage3,discardImage4,discardImage5),
+                                this@CreateLocation.viewModel)
+
             val itemList = arrayListOf<String>(
                 "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
             )
-
             helper.spinner.setupSpinnerAdaptor(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
             helper.upload.setup(this@CreateLocation.viewModel)
             setupViewObservers()
@@ -67,8 +71,8 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
                 //ImagePicker.getFile(data)?.let { doRequest(it,fileUri) } ?: run{ Toast.makeText(applicationContext,"Ops. Something went wrong.",Toast.LENGTH_SHORT)}
             }
         }
-
     }
+
     private fun FragmentCreatelocationBinding.setupViewObservers() {
         this@CreateLocation.viewModel.run {
             currentLocation.observe(viewLifecycleOwner, Observer {
@@ -78,13 +82,26 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
             imageUpload.observe(viewLifecycleOwner, Observer {
                 ImagePicker.with(this@CreateLocation).start(requestGallery)
             })
+            discradImage.observe(viewLifecycleOwner, Observer {
+                helper.image.clearImage(requireContext())
+            })
+
             imageData.observe(viewLifecycleOwner, Observer {
+                //Log.d("nulllcheck",imageData.value?.isNotEmpty().toString())
+                Log.d("nulllcheck","fragment")
+                //if (imageData.value!!.isNotEmpty()){
+                //val fileURI = imageData.value?.last()?.data
                 val fileURI = imageData.value?.data
                 helper.image.setImage(fileURI!!,requireContext())
+               //}
             })
 
             publicUpload.observe(viewLifecycleOwner, Observer {
-                helper.upload.uploadLocation()
+                helper.upload.uploadLocation(public = true)
+            })
+
+            privateUpload.observe(viewLifecycleOwner, Observer {
+                helper.upload.uploadLocation(public = false)
             })
 
         }

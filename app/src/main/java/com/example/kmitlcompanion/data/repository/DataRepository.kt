@@ -21,7 +21,9 @@ interface DataRepository {
 
     fun updateLastLocationTimeStamp(timestamp: Long): Completable
 
-    fun createLocationQuery(name : String,place : String,address:String,latitude: Double,longitude: Double,detail : String, type : String,  image: MultipartBody.Part ,token: String) : Completable
+    fun createLocationQuery(name : String,place : String,address:String,latitude: Double,longitude: Double,detail : String, type : String,  image: List<MultipartBody.Part> ,token: String) : Completable
+
+    fun createPublicLocationQuery(name : String, place : String, address:String, latitude: Double, longitude: Double, detail : String, type : String, image: List<MultipartBody.Part>, token: String) : Completable
 
     fun postLogin(authCode : String) : Observable<ReturnLoginData>
 

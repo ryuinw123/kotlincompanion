@@ -33,12 +33,25 @@ class RetrofitClient @Inject constructor(
         longitude: Double,
         detail: String,
         type: String,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         token: String
     ): Completable {
         return retrofitTestClient.createLocationQuery(name, place, address, latitude, longitude, detail, type, image, token)
     }
 
+    override fun createPublicLocationQuery(
+        name: String,
+        place: String,
+        address: String,
+        latitude: Double,
+        longitude: Double,
+        detail: String,
+        type: String,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        return retrofitTestClient.createPublicLocationQuery(name, place, address, latitude, longitude, detail, type, image, token)
+    }
 
     override fun postLogin(authCode: String): Observable<ReturnLoginData> {
         return retrofitTestClient.postLogin(authCode)

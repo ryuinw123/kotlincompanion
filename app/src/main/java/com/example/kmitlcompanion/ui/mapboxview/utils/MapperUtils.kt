@@ -33,9 +33,12 @@ class MapperUtils @Inject constructor() {
     private fun getFeature(mapPoint: MapPoint): Feature {
         val point = Point.fromLngLat(mapPoint.longitude, mapPoint.latitude)
         val feature = Feature.fromGeometry(point)
+        feature.addStringProperty("name", mapPoint.name)
         feature.addStringProperty("place", mapPoint.place)
+        feature.addStringProperty("address", mapPoint.address)
         feature.addStringProperty("description", mapPoint.description)
         feature.addNumberProperty("id", mapPoint.id)
+        feature.addStringProperty("imageLink",mapPoint.imageLink.toString())
         return feature
     }
 

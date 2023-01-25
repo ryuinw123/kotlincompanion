@@ -129,6 +129,7 @@ internal class ViewMap @Inject constructor(
                 )
             }
         //}
+
         addPointListener()
     }
 
@@ -145,24 +146,38 @@ internal class ViewMap @Inject constructor(
             }
 
             locationDetail?.let {
-
+                Log.d("Selected Feature" , "tod sob")
                 val locationPoint = Point.fromLngLat(it.longitude,it.latitude)
-                locationDetail(it.id.toString() , it.place , it.description , locationPoint)
-
+                locationDetail(
+                    name=it.name,
+                    id=it.id.toString(),
+                    place= it.place,
+                    address = it.address,
+                    location = locationPoint,
+                    description = it.description,
+                    imageList = it.imageLink
+                )
             }
 
         }
 
-
     }
 
-    private fun locationDetail(id : String , place : String , description : String , location : Point) {
+    private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
+
         viewModel.updateIdLocationLabel(id)
-        viewModel.updateNameLocationLabel(place)
-        viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateCurrentLocationGps(location)
         viewModel.updatePositionFlyer(location)
+
+        viewModel.updateNameLocationLabel(name)
+        viewModel.updatePlaceLocationLabel(place)
+        viewModel.updateAddressLocationLabel(address)
+        viewModel.updateDescriptionLocationLabel(description)
+        viewModel.updateImageLink(imageList)
+
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+
+
     }
 
     private fun addPointListener() {
@@ -175,19 +190,29 @@ internal class ViewMap @Inject constructor(
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
 
             mapboxMap.queryRenderedFeatures(
-                RenderedQueryGeometry(screenPoint),
-                queryOptions)   { expect ->
+                RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
                 if (queriedFeature.isNotEmpty()) {
                     //isFound = true
                     val selectedFeature = queriedFeature[0].feature
                     Log.d("Selected Feature" , selectedFeature.toString())
-                    val id = selectedFeature.getStringProperty("id")
-                    val place = selectedFeature.getStringProperty("place")
-                    val description = selectedFeature.getStringProperty("description")
                     val point = selectedFeature.geometry() as Point
+                    val name = selectedFeature.getStringProperty("name")
+                    val place = selectedFeature.getStringProperty("place")
+                    val address = selectedFeature.getStringProperty("address")
+                    val description = selectedFeature.getStringProperty("description")
+                    val id = selectedFeature.getStringProperty("id")
+                    val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
 
-                    locationDetail(id , place , description , point)
+                    locationDetail(
+                        name=name,
+                        id=id,
+                        place= place,
+                        address = address,
+                        location = point,
+                        description = description,
+                        imageList = imageList
+                    )
 
                 }
                 else{

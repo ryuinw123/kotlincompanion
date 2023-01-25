@@ -1,14 +1,18 @@
 package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.content.Intent
+import android.net.Uri
 import android.text.BoringLayout
 import android.util.Log
 import android.widget.Spinner
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.Location
 import com.example.kmitlcompanion.domain.model.LocationDetail
+import com.example.kmitlcompanion.domain.model.LocationPublic
 import com.example.kmitlcompanion.domain.usecases.CreateLocationQuery
+import com.example.kmitlcompanion.domain.usecases.CreatePublicLocationQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.createlocation.CreateLocation
@@ -26,7 +30,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateLocationViewModel @Inject constructor(
-    private val createLocationQuery: CreateLocationQuery
+    private val createLocationQuery: CreateLocationQuery,
+    private val createPublicLocationQuery: CreatePublicLocationQuery
 ) : BaseViewModel(){
 
 
@@ -36,8 +41,13 @@ class CreateLocationViewModel @Inject constructor(
     private val _imageUpload = MutableLiveData<Event<Boolean>>()
     val imageUpload : LiveData<Event<Boolean>> = _imageUpload
 
-    private val _imageData = MutableLiveData<Intent>()
-    val imageData : LiveData<Intent> = _imageData
+    private val _discradImage = MutableLiveData<Event<Boolean>>()
+    val discradImage : LiveData<Event<Boolean>> = _discradImage
+
+    private val _imageData = MutableLiveData<Intent?>()
+    val imageData : LiveData<Intent?> = _imageData
+    private val _storeImageData : MutableList<Intent?> = mutableListOf()
+
 
     private val _nameInput = MutableLiveData<String>()
     val nameInput : LiveData<String> = _nameInput
@@ -64,7 +74,16 @@ class CreateLocationViewModel @Inject constructor(
     }
 
     fun updateImage(intent: Intent) {
+        Log.d("nulllcheck","viewModel")
         _imageData.value = intent
+        _storeImageData.add(_imageData.value)
+        //_imageData.value?.add(intent)
+    }
+
+    fun removeImage(){
+        //_imageData.value!!.removeLast()
+        //_imageData.value = null
+        _storeImageData.removeLast()
     }
 
     fun updateTypeSpinner(type : String) {
@@ -73,6 +92,10 @@ class CreateLocationViewModel @Inject constructor(
 
     fun uploadImage() {
         _imageUpload.value = Event(true)
+    }
+
+    fun discardImage() {
+        _discradImage.value = Event(true)
     }
 
     fun updateCurrentLocation(locationDetail: LocationDetail){
@@ -87,34 +110,61 @@ class CreateLocationViewModel @Inject constructor(
         _publicUpload.value = Event(true)
     }
 
-    fun createLocation() {
-        val file = ImagePicker.getFile(imageData.value)
+    fun privateLocation() {
+        var file : MutableList<File?> = mutableListOf()
+        var uris : MutableList<Uri?> = mutableListOf()
+        _storeImageData.forEach{
+            file.add(ImagePicker.getFile(it))
+            uris.add(it?.data)
+        }
+
         createLocationQuery.execute(object : DisposableCompletableObserver() {
-            override fun onComplete() {
-                goToMapbox()
-            }
-
-            override fun onError(e: Throwable) {
-                Log.d("Upload","Failed")
-            }
-
-        },Location(
-            inputName = nameInput.value,
-            description = detailInput.value,
-            place = currentLocation.value!!.place,
-            type = typeSpinner.value,
-            address = currentLocation.value!!.address,
-            point = currentLocation.value!!.point,
-            file = file,
-            uri = imageData.value!!.data
+                override fun onComplete() {
+                    goToMapbox()
+                }
+                override fun onError(e: Throwable) {
+                    Log.d("image_debug","Failed")
+                }
+            },Location(
+                inputName = nameInput.value,
+                description = detailInput.value,
+                place = currentLocation.value!!.place,
+                type = typeSpinner.value,
+                address = currentLocation.value!!.address,
+                point = currentLocation.value!!.point,
+                file = file,
+                uri = uris
             )
         )
     }
 
+    fun publicLocation(){
+        var file : MutableList<File?> = mutableListOf()
+        var uris : MutableList<Uri?> = mutableListOf()
+        _storeImageData.forEach{
+            file.add(ImagePicker.getFile(it))
+            uris.add(it?.data)
+        }
 
-
-
-
+        createPublicLocationQuery.execute(object : DisposableCompletableObserver() {
+                override fun onComplete() {
+                    goToMapbox()
+                }
+                override fun onError(e: Throwable) {
+                    Log.d("image_debug","Failed")
+                }
+            },LocationPublic(
+                inputName = nameInput.value,
+                description = detailInput.value,
+                place = currentLocation.value!!.place,
+                type = typeSpinner.value,
+                address = currentLocation.value!!.address,
+                point = currentLocation.value!!.point,
+                file = file,
+                uri = uris
+            )
+        )
+    }
 
     //Navigation
     fun goToMapbox() {

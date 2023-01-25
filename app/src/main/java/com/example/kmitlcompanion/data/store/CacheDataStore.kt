@@ -38,12 +38,25 @@ class CacheDataStore @Inject constructor(
         longitude: Double,
         detail: String,
         type: String,
-        image: MultipartBody.Part,
+        image: List<MultipartBody.Part>,
         token: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
 
+    override fun createPublicLocationQuery(
+        name: String,
+        place: String,
+        address: String,
+        latitude: Double,
+        longitude: Double,
+        detail: String,
+        type: String,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 
     override fun postLogin(authCode: String): Observable<ReturnLoginData> {
         throw IllegalStateException("Function not currently supported!")

@@ -9,7 +9,7 @@ import java.io.File
 import java.net.URI
 
 @Parcelize
-data class Location(
+data class LocationPublic(
     val inputName:String?,
     val description:String?,
     val place: String?,

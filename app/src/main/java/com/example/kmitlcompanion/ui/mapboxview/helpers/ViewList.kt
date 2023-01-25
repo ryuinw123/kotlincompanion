@@ -1,5 +1,7 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
+import android.util.Log
+import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +21,18 @@ internal class ViewList @Inject constructor(
 ) {
     fun setupImageAdapter(viewPager2: ViewPager2 , imageList: MutableList<String>) {
 
-        imageAdapter.imageList = imageList
-        imageAdapter.viewPager2 = viewPager2
-        viewPager2.adapter = imageAdapter
-        viewPager2.offscreenPageLimit = 3
-        viewPager2.clipToPadding = false
-        viewPager2.clipChildren = false
-
-
-        setUpTransformer(viewPager2)
+        if (!imageList[0].isNullOrEmpty()) {
+            imageAdapter.imageList = imageList
+            imageAdapter.viewPager2 = viewPager2
+            viewPager2.adapter = imageAdapter
+            viewPager2.offscreenPageLimit = 3
+            viewPager2.clipToPadding = false
+            viewPager2.clipChildren = false
+            viewPager2.visibility = View.VISIBLE
+            setUpTransformer(viewPager2)
+        }else{
+            viewPager2.visibility = View.GONE
+        }
 
     }
 
