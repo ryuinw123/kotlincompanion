@@ -28,24 +28,22 @@ import javax.inject.Inject
 class ViewLocation @Inject constructor(
     private val context: Context,
     private val toaster: ToasterUtil,
-    private val locationPermissionHelper: LocationPermissionHelper,
-    private val workManagerUtils: WorkManagerUtils
+    private val locationPermissionHelper: LocationPermissionHelper
 ) : DefaultLifecycleObserver {
 
     private lateinit var viewModel : MapboxViewModel
     private lateinit var weakMapView : WeakReference<MapView?>
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        mapView?.getMapboxMap()?.setCamera(CameraOptions.Builder().center(it).build())
-        mapView?.gestures?.focalPoint = mapView?.getMapboxMap()?.pixelForCoordinate(it)
+        viewModel.updateUserLocation(it)
     }
 
-    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
+    /*private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
         mapView?.getMapboxMap()?.setCamera(CameraOptions.Builder().bearing(it).build())
-    }
+    }*/
 
 
-    private val onMoveListener = object : OnMoveListener {
+    /*private val onMoveListener = object : OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
             onCameraTrackingDismissed()
         }
@@ -55,7 +53,7 @@ class ViewLocation @Inject constructor(
         }
 
         override fun onMoveEnd(detector: MoveGestureDetector) {}
-    }
+    }*/
 
 
     fun setup(viewModel: MapboxViewModel , mapView : MapView)  {
@@ -69,12 +67,12 @@ class ViewLocation @Inject constructor(
 
     private fun onMapReady(){
         initLocationComponent()
-        setupGesturesListener()
+        //setupGesturesListener()
     }
 
-    private fun setupGesturesListener() {
+    /*private fun setupGesturesListener() {
         mapView?.gestures?.addOnMoveListener(onMoveListener)
-    }
+    }*/
 
     private fun initLocationComponent(){
         val locationComponentPlugin = mapView?.location
@@ -110,14 +108,15 @@ class ViewLocation @Inject constructor(
             )
         }
         locationComponentPlugin?.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        locationComponentPlugin?.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener) }
+        //locationComponentPlugin?.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+    }
 
-    private fun onCameraTrackingDismissed() {
+    /*private fun onCameraTrackingDismissed() {
         toaster.showToast("onCameraTrackingDismissed", Toast.LENGTH_SHORT)
         mapView?.location?.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
-        mapView?.gestures?.removeOnMoveListener(onMoveListener)
-    }
+        //mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        //mapView?.gestures?.removeOnMoveListener(onMoveListener)
+    }*/
 
     private val mapView
         get() = weakMapView?.get()
@@ -125,7 +124,7 @@ class ViewLocation @Inject constructor(
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         mapView?.location?.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
-        mapView?.gestures?.removeOnMoveListener(onMoveListener)
+        //mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        //mapView?.gestures?.removeOnMoveListener(onMoveListener)
     }
 }

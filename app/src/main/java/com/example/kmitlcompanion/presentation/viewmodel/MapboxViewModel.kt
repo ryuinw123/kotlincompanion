@@ -6,6 +6,7 @@ import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
 import com.example.kmitlcompanion.presentation.BaseViewModel
+import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,6 +48,17 @@ class MapboxViewModel @Inject constructor(
 
 
 
+    //For Navigation
+
+    private val _userLocation = MutableLiveData<Point?>()
+    val userLocation : LiveData<Point?> = _userLocation
+
+    private val _navigationEvent = MutableLiveData<Event<Boolean>>()
+    val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
+
+
+
+
 
 
 
@@ -69,8 +81,16 @@ class MapboxViewModel @Inject constructor(
         })
     }
 
+    fun updateUserLocation(point: Point) {
+        _userLocation.value = point
+    }
+
     fun updatePermission(boolean: Boolean) {
         _permissionGrand.value = boolean
+    }
+
+    fun updateNavigationEvent() {
+        _navigationEvent.value = Event(true)
     }
 
     fun updateImageLink(imageList : List<String>) {

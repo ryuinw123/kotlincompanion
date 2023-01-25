@@ -18,6 +18,7 @@ import com.mapbox.geojson.GeoJson
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.style.expressions.dsl.generated.boolean
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
 import com.mapbox.maps.extension.style.expressions.generated.Expression.Companion.exponential
@@ -150,9 +151,6 @@ internal class ViewMap @Inject constructor(
 
             }
 
-
-
-
         }
 
 
@@ -170,6 +168,8 @@ internal class ViewMap @Inject constructor(
     private fun addPointListener() {
         val mapboxMap = mapView?.getMapboxMap()
 
+        //var isFound = false
+
         mapboxMap?.addOnMapClickListener {
             val screenPoint = mapboxMap.pixelForCoordinate(it)
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
@@ -179,7 +179,8 @@ internal class ViewMap @Inject constructor(
                 queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
                 if (queriedFeature.isNotEmpty()) {
-                   val selectedFeature = queriedFeature[0].feature
+                    //isFound = true
+                    val selectedFeature = queriedFeature[0].feature
                     Log.d("Selected Feature" , selectedFeature.toString())
                     val id = selectedFeature.getStringProperty("id")
                     val place = selectedFeature.getStringProperty("place")
@@ -188,13 +189,12 @@ internal class ViewMap @Inject constructor(
 
                     locationDetail(id , place , description , point)
 
-
                 }
                 else{
                     hiddenBottomSheetState()
                 }
             }
-            true
+            false
         }
 
         /*var isClick = false

@@ -23,7 +23,7 @@ class SecretLocation @Inject constructor(
         }
     }
     @SuppressLint("MissingPermission")
-    fun run(context: Context) {
+    fun start(context: Context) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         val locationRequest = LocationRequest.create().apply {
             interval = LOCATION_UPDATE_INTERVAL

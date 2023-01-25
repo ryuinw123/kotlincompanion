@@ -24,7 +24,6 @@ internal class ViewSlider @Inject constructor() {
         setState(BottomSheetBehavior.STATE_HIDDEN)
         setupBottomSheetListeners()
         this.viewModel = viewModel
-
     }
 
     private fun setupBottomSheetListeners() {
