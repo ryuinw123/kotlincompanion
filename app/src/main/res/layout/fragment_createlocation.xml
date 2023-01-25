@@ -400,7 +400,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:backgroundTint="@color/kmitl_color"
-                            android:onClick="@{()->viewModel.clickPublicUpload()}"
+                            android:onClick="@{()->viewModel.clickPrivateUpload()}"
                             android:text="ปักหมุดของฉัน" />
 
                         <Button
@@ -408,7 +408,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:backgroundTint="@color/kmitl_color"
-                            android:onClick="@{()->viewModel.clickPrivateUpload()}"
+                            android:onClick="@{()->viewModel.clickPublicUpload()}"
                             android:text="ปักหมุกสาธารณะ" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

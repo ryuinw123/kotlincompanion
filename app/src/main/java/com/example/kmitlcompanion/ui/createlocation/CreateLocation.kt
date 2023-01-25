@@ -97,7 +97,11 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
             })
 
             publicUpload.observe(viewLifecycleOwner, Observer {
-                helper.upload.uploadLocation()
+                helper.upload.uploadLocation(public = true)
+            })
+
+            privateUpload.observe(viewLifecycleOwner, Observer {
+                helper.upload.uploadLocation(public = false)
             })
 
         }

@@ -3,6 +3,7 @@ package com.example.kmitlcompanion.data
 import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.LocationData
+import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.store.DataStore
@@ -74,24 +75,16 @@ class DataRepository @Inject constructor(
     }
 
     override fun createLocationQuery(location: LocationData): Completable {
-
         val file = location.file
         val uri = location.uri
-        //var image = MultipartBody.Part.createFormData("image","null_image")
         var imageList : MutableList<MultipartBody.Part> = mutableListOf()
-
 
         if (file.isNotEmpty() && uri.isNotEmpty()){
             for (i in 0 until(file.size) ){
                 val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
-                //image = MultipartBody.Part.createFormData("image",file[0]!!.name,requestFile)
                 imageList.add(MultipartBody.Part.createFormData("image",file[i]!!.name,requestFile))
             }
         }
-
-        Log.d("checkarrayimage",imageList.toString())
-
-
         return dataStore.getRemoteData(true).createLocationQuery(
             name = location.inputName,
             place = location.place,
@@ -105,6 +98,29 @@ class DataRepository @Inject constructor(
         )
     }
 
+    override fun createPublicLocationQuery(location: LocationPublicData): Completable {
+        val file = location.file
+        val uri = location.uri
+        var imageList : MutableList<MultipartBody.Part> = mutableListOf()
+
+        if (file.isNotEmpty() && uri.isNotEmpty()){
+            for (i in 0 until(file.size) ){
+                val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
+                imageList.add(MultipartBody.Part.createFormData("image",file[i]!!.name,requestFile))
+            }
+        }
+        return dataStore.getRemoteData(true).createPublicLocationQuery(
+            name = location.inputName,
+            place = location.place,
+            address = location.address,
+            latitude = location.latitude,
+            longitude = location.longitude,
+            type = location.type,
+            detail = location.description,
+            image = imageList,
+            token = getToken()
+        )
+    }
 
     override fun postLogin(authCode: String): Observable<ReturnLoginData> {
         return dataStore.getRemoteData(true).postLogin(authCode)

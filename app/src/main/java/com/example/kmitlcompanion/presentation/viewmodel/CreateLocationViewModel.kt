@@ -10,7 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.Location
 import com.example.kmitlcompanion.domain.model.LocationDetail
+import com.example.kmitlcompanion.domain.model.LocationPublic
 import com.example.kmitlcompanion.domain.usecases.CreateLocationQuery
+import com.example.kmitlcompanion.domain.usecases.CreatePublicLocationQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.createlocation.CreateLocation
@@ -28,7 +30,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateLocationViewModel @Inject constructor(
-    private val createLocationQuery: CreateLocationQuery
+    private val createLocationQuery: CreateLocationQuery,
+    private val createPublicLocationQuery: CreatePublicLocationQuery
 ) : BaseViewModel(){
 
 
@@ -107,38 +110,58 @@ class CreateLocationViewModel @Inject constructor(
         _publicUpload.value = Event(true)
     }
 
-    fun createLocation() {
+    fun privateLocation() {
         var file : MutableList<File?> = mutableListOf()
         var uris : MutableList<Uri?> = mutableListOf()
         _storeImageData.forEach{
             file.add(ImagePicker.getFile(it))
             uris.add(it?.data)
-            //Log.d("image_debug",file.last().toString())
         }
-        Log.d("nulllcheck",file.toString())
-        Log.d("nulllcheck",uris.toString())
-       //val file = ImagePicker.getFile(imageData.value)
-        //Log.d("image_debug",imageData.value.toString())
-
 
         createLocationQuery.execute(object : DisposableCompletableObserver() {
-            override fun onComplete() {
-                goToMapbox()
-            }
+                override fun onComplete() {
+                    goToMapbox()
+                }
+                override fun onError(e: Throwable) {
+                    Log.d("image_debug","Failed")
+                }
+            },Location(
+                inputName = nameInput.value,
+                description = detailInput.value,
+                place = currentLocation.value!!.place,
+                type = typeSpinner.value,
+                address = currentLocation.value!!.address,
+                point = currentLocation.value!!.point,
+                file = file,
+                uri = uris
+            )
+        )
+    }
 
-            override fun onError(e: Throwable) {
-                Log.d("image_debug","Failed")
-            }
+    fun publicLocation(){
+        var file : MutableList<File?> = mutableListOf()
+        var uris : MutableList<Uri?> = mutableListOf()
+        _storeImageData.forEach{
+            file.add(ImagePicker.getFile(it))
+            uris.add(it?.data)
+        }
 
-        },Location(
-            inputName = nameInput.value,
-            description = detailInput.value,
-            place = currentLocation.value!!.place,
-            type = typeSpinner.value,
-            address = currentLocation.value!!.address,
-            point = currentLocation.value!!.point,
-            file = file,
-            uri = uris
+        createPublicLocationQuery.execute(object : DisposableCompletableObserver() {
+                override fun onComplete() {
+                    goToMapbox()
+                }
+                override fun onError(e: Throwable) {
+                    Log.d("image_debug","Failed")
+                }
+            },LocationPublic(
+                inputName = nameInput.value,
+                description = detailInput.value,
+                place = currentLocation.value!!.place,
+                type = typeSpinner.value,
+                address = currentLocation.value!!.address,
+                point = currentLocation.value!!.point,
+                file = file,
+                uri = uris
             )
         )
     }
