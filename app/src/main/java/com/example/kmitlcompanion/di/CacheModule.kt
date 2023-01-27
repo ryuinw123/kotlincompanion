@@ -4,7 +4,6 @@ import android.app.Application
 import com.example.kmitlcompanion.cache.RoomRepository
 import com.example.kmitlcompanion.cache.database.AppDatabase
 import com.example.kmitlcompanion.data.repository.CacheRepository
-import com.example.kmitlcompanion.ui.notification.NotificationFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

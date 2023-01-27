@@ -43,7 +43,7 @@ class ViewGeofence @Inject constructor(
         intent.putExtra("location_list", locationListJson)
         Log.d("Geofence" , mapInformation.mapPoints.toString())
         geofencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        notificationUtils.createChannel()
+        notificationUtils.createChannel(NotificationUtils.GEO_CHANNEL_ID)
         run(mapInformation.mapPoints)
     }
 

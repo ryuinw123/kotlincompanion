@@ -46,7 +46,7 @@ class GeofenceReceiver : BroadcastReceiver() {
                 item.id == locationId
             }
 
-            notificationUtils.sendGeofenceEnteredNotification(locationId , location.place)
+            notificationUtils.sendGeofenceEnteredNotification(locationId , location.place,NotificationUtils.GEO_CHANNEL_ID)
             Log.d("Geofence" , "Transition In")
         }
     }

@@ -70,6 +70,22 @@ class MapboxViewModel @Inject constructor(
     val permissionGrand : LiveData<Boolean> = _permissionGrand
 
 
+
+
+    //For Navigation
+
+    private val _userLocation = MutableLiveData<Point?>()
+    val userLocation : LiveData<Point?> = _userLocation
+
+    private val _navigationEvent = MutableLiveData<Event<Boolean>>()
+    val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
+
+
+
+
+
+
+
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
             override fun onComplete() {
@@ -138,10 +154,19 @@ class MapboxViewModel @Inject constructor(
 
     fun onClickLikeLocationQuery() {
         _onClicklikeLocation.value = Event(true)
+
+    }
+    
+    fun updateUserLocation(point: Point) {
+        _userLocation.value = point
     }
 
     fun updatePermission(boolean: Boolean) {
         _permissionGrand.value = boolean
+    }
+
+    fun updateNavigationEvent() {
+        _navigationEvent.value = Event(true)
     }
 
     fun updateImageLink(imageList : List<String>) {

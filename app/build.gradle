@@ -96,6 +96,8 @@ dependencies {
     implementation 'com.mapbox.maps:android:10.8.0'
     implementation "com.mapbox.navigation:android:2.7.0"
     implementation "com.mapbox.navigation:ui-dropin:2.7.0"
+    implementation "com.mapbox.navigation:ui-app:2.7.0"
+
 
     //OAuth 2.0
     implementation 'com.google.android.gms:play-services-auth:20.3.0'

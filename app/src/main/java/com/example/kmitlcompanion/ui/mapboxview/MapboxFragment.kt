@@ -22,6 +22,8 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.google.android.gms.location.*
+import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -58,6 +60,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
+            helper.route.setup(this@MapboxFragment.viewModel,requireContext(),mapView.getMapboxMap())
 
             setupViewObservers()
         }
@@ -113,6 +116,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
+        lifecycle.addObserver(helper.route)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -157,7 +161,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
-                    context?.startService(Intent(context, LocationService::class.java))
+                    helper.service.setup(requireContext())
                 }
             })
 
@@ -183,6 +187,10 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
+            navigationEvent.observe(viewLifecycleOwner , Observer {
+                val point = Point.fromLngLat(18.04779052,59.293153231)
+                helper.route.findRoute(point)
+            })
         }
     }
 
