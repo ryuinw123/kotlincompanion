@@ -1,12 +1,14 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -20,7 +22,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.gms.location.*
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -97,6 +98,18 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     }
 
+    private fun setClickedColorButton(button: Button){
+        button.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+        button.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+        button.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.white))
+    }
+
+    private fun setDisClickedColorButton(button: Button){
+        button.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+        button.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+        button.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+    }
+
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
@@ -106,7 +119,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     helper.map.updateMap(it,information,navArgs.locationId)
                 }
                 helper.geofence.setup(information)
-
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
@@ -148,6 +160,29 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     context?.startService(Intent(context, LocationService::class.java))
                 }
             })
+
+            likeCoutingUpdate.observe(viewLifecycleOwner, Observer {
+                pinlikeButton.text = it.toString()
+            })
+            onClicklikeLocation.observe(viewLifecycleOwner, Observer {
+                //pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                isLiked.value?.let {
+                    when (it){
+                        false -> addLikeLocationQuery(idLocationLabel.value)
+                        true -> removeLikeLocationQuery(idLocationLabel.value)
+                    }
+                }
+            })
+
+            isLiked.observe(viewLifecycleOwner, Observer {
+                it?.let{
+                    when (it){
+                        true -> setClickedColorButton(pinlikeButton)
+                        false -> setDisClickedColorButton(pinlikeButton)
+                    }
+                }
+            })
+
         }
     }
 

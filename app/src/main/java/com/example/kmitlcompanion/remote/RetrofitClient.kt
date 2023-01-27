@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.remote
 
+import com.example.kmitlcompanion.data.model.LikeData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -68,4 +69,16 @@ class RetrofitClient @Inject constructor(
         return retrofitTestClient.postUserData(name,surname,faculty,department,year,token)
     }
 
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+        return retrofitTestClient.getPinDetailsLocationQuery(id,token)
+    }
+
+
+    override fun addLikeLocationQuery(id: String, token: String): Completable {
+        return retrofitTestClient.addLikeLocationQuery(id,token)
+    }
+
+    override fun removeLikeLocationQuery(id: String, token: String): Completable {
+        return retrofitTestClient.removeLikeLocationQuery(id,token)
+    }
 }

@@ -147,6 +147,7 @@ internal class ViewMap @Inject constructor(
             locationDetail?.let {
                 Log.d("Selected Feature" , "tod sob")
                 val locationPoint = Point.fromLngLat(it.longitude,it.latitude)
+
                 locationDetail(
                     name=it.name,
                     id=it.id.toString(),
@@ -173,6 +174,7 @@ internal class ViewMap @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
+        viewModel.getLikeLocationQuery(id)
 
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
 

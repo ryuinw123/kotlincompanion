@@ -306,13 +306,14 @@
 
                     <Button
                         android:id="@+id/pinlike_button"
-                        android:layout_width="180dp"
+                        android:layout_width="160dp"
                         android:layout_height="70dp"
                         android:layout_marginTop="25dp"
                         android:layout_marginBottom="25dp"
                         android:backgroundTint="#FFFFFF"
                         android:fontFamily="@font/inter_bold"
-                        android:text="905"
+                        android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="#FF5E00"
                         android:textSize="18sp"
@@ -325,6 +326,7 @@
                         app:iconTint="@color/kmitl_color"
                         app:layout_constraintBottom_toTopOf="@+id/comment_zone"
                         app:layout_constraintEnd_toStartOf="@+id/pinlike_button2"
+                        app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/description_location_label_tv"
                         app:strokeColor="#FF5E00"
@@ -332,7 +334,7 @@
 
                     <Button
                         android:id="@+id/pinlike_button2"
-                        android:layout_width="180dp"
+                        android:layout_width="160dp"
                         android:layout_height="70dp"
                         android:layout_marginTop="25dp"
                         android:layout_marginBottom="25dp"
@@ -352,7 +354,7 @@
                         app:iconTint="@color/kmitl_color"
                         app:layout_constraintBottom_toTopOf="@+id/comment_zone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.92"
+                        app:layout_constraintHorizontal_bias="0.88"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/description_location_label_tv"
                         app:strokeColor="#FF5E00"

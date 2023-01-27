@@ -24,7 +24,6 @@ internal class ViewSlider @Inject constructor() {
         setState(BottomSheetBehavior.STATE_HIDDEN)
         setupBottomSheetListeners()
         this.viewModel = viewModel
-
     }
 
     private fun setupBottomSheetListeners() {
@@ -32,7 +31,7 @@ internal class ViewSlider @Inject constructor() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN        -> {
-                        viewModel.updateBottomSheetState( BottomSheetBehavior.STATE_HIDDEN )
+                        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
                     }
                     BottomSheetBehavior.STATE_EXPANDED      -> {
                     }

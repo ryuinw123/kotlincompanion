@@ -4,6 +4,7 @@ import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.domain.model.LikeDetail
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import io.reactivex.rxjava3.core.Completable
@@ -32,4 +33,11 @@ interface DomainRepository {
     fun updateUser(email : String,token : String): Completable
 
     fun getUser(): Observable<List<UserData>>
+
+    fun getPinDetailsLocationQuery(id : String) : Observable<LikeDetail>
+
+    fun addLikeLocationQuery(id : String) : Completable
+
+    fun removeLikeLocationQuery(id : String) : Completable
+
 }

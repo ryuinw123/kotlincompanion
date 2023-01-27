@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.remote.service
 
+import com.example.kmitlcompanion.data.model.LikeData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -38,4 +39,16 @@ interface RetrofitTestClient {
                      @Part("year") year:Any,
                      @Part("authCode") token:Any
     ) : Completable
+
+    @Multipart
+    @POST("getpindetailslocationquery")
+    fun getPinDetailsLocationQuery(@Part("id") id: String, @Part("token") token : String): Observable<LikeData>
+
+    @Multipart
+    @POST("likelocationquery")
+    fun addLikeLocationQuery(@Part("id") id: String, @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("dislikelocationquery")
+    fun removeLikeLocationQuery(@Part("id") id: String, @Part("token") token : String): Completable
 }

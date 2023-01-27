@@ -1,20 +1,30 @@
 package com.example.kmitlcompanion.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.Comment
+import com.example.kmitlcompanion.domain.model.LikeDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.usecases.GetMapLocations
+import com.example.kmitlcompanion.domain.usecases.GetPinDetailsLocationQuery
+import com.example.kmitlcompanion.domain.usecases.addLikeLocationQuery
+import com.example.kmitlcompanion.domain.usecases.removeLikeLocationQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
+import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
 
 @HiltViewModel
 class MapboxViewModel @Inject constructor(
-    private val getMapLocations: GetMapLocations
+    private val getMapLocations: GetMapLocations,
+    private val getPinDetailsLocationQuery: GetPinDetailsLocationQuery,
+    private val addLikeLocationQuery: addLikeLocationQuery,
+    private val removeLikeLocationQuery: removeLikeLocationQuery
 ) : BaseViewModel() {
 
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
@@ -41,6 +51,15 @@ class MapboxViewModel @Inject constructor(
     private val _descriptionLocationLabel = MutableLiveData<String?>()
     val descriptionLocationLabel : LiveData<String?> = _descriptionLocationLabel
 
+    private val _likeCoutingUpdate = MutableLiveData<Int?>()
+    val likeCoutingUpdate : LiveData<Int?> = _likeCoutingUpdate
+
+    private val _onClicklikeLocation = MutableLiveData<Event<Boolean>>()
+    val onClicklikeLocation : LiveData<Event<Boolean>> = _onClicklikeLocation
+
+    private val _isLiked = MutableLiveData<Boolean?>()
+    val isLiked : LiveData<Boolean?> = _isLiked
+
     private val _positionFlyer = MutableLiveData<Point>()
     val positionFlyer: LiveData<Point> = _positionFlyer
 
@@ -49,11 +68,6 @@ class MapboxViewModel @Inject constructor(
 
     private val _permissionGrand = MutableLiveData(false)
     val permissionGrand : LiveData<Boolean> = _permissionGrand
-
-
-
-
-
 
 
     fun downloadLocations() {
@@ -75,6 +89,57 @@ class MapboxViewModel @Inject constructor(
         })
     }
 
+    fun getLikeLocationQuery(id : String?){
+        getPinDetailsLocationQuery.execute(object : DisposableObserver<LikeDetail>() {
+
+            override fun onComplete() {
+                Log.d("GetPinDetailsLocationQuery","complete")
+
+            }
+
+            override fun onNext(t: LikeDetail) {
+                Log.d("GetPinDetailsLocationQuery","onNext")
+                _likeCoutingUpdate.value = t.likeCounting
+                _isLiked.value = t.isLiked
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("GetPinDetailsLocationQuery",e.toString())
+            }
+
+        }, params = id)
+    }
+
+    fun addLikeLocationQuery(id : String?){
+        addLikeLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                _likeCoutingUpdate.value = 1 + _likeCoutingUpdate.value!!
+                _isLiked.value = true
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("addLikeLocationQuery",e.toString())
+            }
+        }, params = id)
+    }
+
+    fun removeLikeLocationQuery(id : String?){
+        removeLikeLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                _likeCoutingUpdate.value = _likeCoutingUpdate.value!! - 1
+                _isLiked.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("addLikeLocationQuery",e.toString())
+            }
+        }, params = id)
+    }
+
+    fun onClickLikeLocationQuery() {
+        _onClicklikeLocation.value = Event(true)
+    }
+
     fun updatePermission(boolean: Boolean) {
         _permissionGrand.value = boolean
     }
@@ -93,7 +158,7 @@ class MapboxViewModel @Inject constructor(
         _currentLocationGps.value = "Lat: $lat, Long: $long"
     }
     fun updateIdLocationLabel(id : String){
-        _idLocationLabel.value = "id = $id"
+        _idLocationLabel.value = "$id"
     }
     fun updateNameLocationLabel(name : String){
         _nameLocationLabel.value = "$name"

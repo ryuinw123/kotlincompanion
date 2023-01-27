@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
-import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
 import io.reactivex.rxjava3.core.Completable
@@ -93,4 +90,15 @@ class RemoteDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+        return remoteRepository.getPinDetailsLocationQuery(id ,token)
+    }
+
+    override fun addLikeLocationQuery(id: String, token: String): Completable {
+        return remoteRepository.addLikeLocationQuery(id,token)
+    }
+
+    override fun removeLikeLocationQuery(id: String, token: String): Completable {
+        return remoteRepository.removeLikeLocationQuery(id,token)
+    }
 }

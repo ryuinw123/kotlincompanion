@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
-import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
 import io.reactivex.rxjava3.core.Completable
@@ -86,5 +83,16 @@ class CacheDataStore @Inject constructor(
         return cacheRepository.getUser()
     }
 
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+        throw IllegalStateException("Function not currently supported!")
+    }
 
+
+    override fun addLikeLocationQuery(id: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun removeLikeLocationQuery(id: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

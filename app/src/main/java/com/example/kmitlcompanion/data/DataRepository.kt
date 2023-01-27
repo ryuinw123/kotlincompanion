@@ -1,14 +1,11 @@
 package com.example.kmitlcompanion.data
 
-import android.util.Log
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
-import com.example.kmitlcompanion.data.model.LocationData
-import com.example.kmitlcompanion.data.model.LocationPublicData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
-import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
+import com.example.kmitlcompanion.domain.model.LikeDetail
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.domain.model.Source
@@ -143,5 +140,27 @@ class DataRepository @Inject constructor(
 
     override fun getUser(): Observable<List<UserData>> {
         return dataStore.getRemoteData(false).getUser()
+    }
+
+
+    override fun getPinDetailsLocationQuery(id: String): Observable<LikeDetail> {
+        return dataStore.getRemoteData(true).getPinDetailsLocationQuery(
+            id,
+            getToken()
+        )
+            .map {
+                LikeDetail(
+                    likeCounting = it.likeCounting,
+                    isLiked = it.isLiked
+                )
+            }
+    }
+
+    override fun addLikeLocationQuery(id: String): Completable {
+        return dataStore.getRemoteData(true).addLikeLocationQuery(id,getToken())
+    }
+
+    override fun removeLikeLocationQuery(id: String): Completable {
+        return dataStore.getRemoteData(true).removeLikeLocationQuery(id,getToken())
     }
 }

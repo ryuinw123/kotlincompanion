@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.repository
 
+import com.example.kmitlcompanion.data.model.LikeData
 import com.example.kmitlcompanion.data.model.LocationQuery
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -42,4 +43,11 @@ interface RemoteRepository {
                      year : Any,
                      token : Any
                     ) : Completable
+
+    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<LikeData>
+
+    fun addLikeLocationQuery(id : String, token : String) : Completable
+
+    fun removeLikeLocationQuery(id : String, token : String) : Completable
+
 }

@@ -1,10 +1,7 @@
 package com.example.kmitlcompanion.data.repository
 
 import android.content.Intent
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
-import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -38,5 +35,11 @@ interface DataRepository {
     fun updateUser(email: String,token: String): Completable
 
     fun getUser(): Observable<List<UserData>>
+
+    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<LikeData>
+
+    fun addLikeLocationQuery(id : String, token : String) : Completable
+
+    fun removeLikeLocationQuery(id : String, token : String) : Completable
 
 }
