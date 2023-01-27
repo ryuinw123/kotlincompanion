@@ -98,19 +98,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding.button2.setOnClickListener {
             view.findNavController().navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
         }
-
-    }
-
-    private fun setClickedColorButton(button: Button){
-        button.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-        button.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-        button.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.white))
-    }
-
-    private fun setDisClickedColorButton(button: Button){
-        button.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
-        button.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-        button.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){
@@ -172,17 +159,23 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 //pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
                 isLiked.value?.let {
                     when (it){
-                        false -> addLikeLocationQuery(idLocationLabel.value)
                         true -> removeLikeLocationQuery(idLocationLabel.value)
+                        false -> addLikeLocationQuery(idLocationLabel.value)
+
                     }
                 }
             })
 
             isLiked.observe(viewLifecycleOwner, Observer {
                 it?.let{
-                    when (it){
-                        true -> setClickedColorButton(pinlikeButton)
-                        false -> setDisClickedColorButton(pinlikeButton)
+                    if (it){
+                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinlikeButton.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                    }else{
+                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinlikeButton.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
                     }
                 }
             })
@@ -198,7 +191,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         super.onLowMemory()
         binding.mapView?.onLowMemory()
     }
-
 
 
 }
