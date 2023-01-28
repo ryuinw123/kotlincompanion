@@ -205,7 +205,7 @@ internal class ViewMap @Inject constructor(
                     hiddenBottomSheetState()
                 }
             }
-            false
+            true
         }
 
         /*var isClick = false
