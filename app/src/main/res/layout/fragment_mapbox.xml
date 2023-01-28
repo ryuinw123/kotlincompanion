@@ -314,6 +314,7 @@
                         android:fontFamily="@font/inter_bold"
                         android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
                         android:text="0"
+
                         android:textAlignment="center"
                         android:textColor="#FF5E00"
                         android:textSize="18sp"
@@ -365,6 +366,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="25dp"
+                        android:background="@drawable/top_border"
                         app:layout_constraintTop_toBottomOf="@+id/pinlike_button"
                         tools:layout_editor_absoluteX="1dp">
 
@@ -372,84 +374,83 @@
                             android:id="@+id/comment_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:text="ความคิดเห็น"
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.1"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/commendArea"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/comment_zone">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardView2"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/commendArea"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            app:cardCornerRadius="1000dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintTop_toBottomOf="@+id/comment_header">
 
-                            <ImageView
-                                android:id="@+id/imageView3"
-                                android:layout_width="31dp"
-                                android:layout_height="32dp"
-                                tools:srcCompat="@tools:sample/avatars" />
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cardView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="50dp"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginBottom="1dp"
+                                app:cardCornerRadius="1000dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.19999999">
 
-                        </androidx.cardview.widget.CardView>
+                                <ImageView
+                                    android:id="@+id/imageView3"
+                                    android:layout_width="31dp"
+                                    android:layout_height="32dp"
+                                    app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
-                        <EditText
-                            android:id="@+id/commend"
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/cardView2"
-                            app:layout_constraintTop_toTopOf="@+id/cardView2"
-                            tools:ignore="SpeakableTextPresentCheck" />
+                            </androidx.cardview.widget.CardView>
 
-                        <Button
-                            android:id="@+id/send_commend"
-                            android:layout_width="86dp"
-                            android:layout_height="48dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:text="Send"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/commend"
-                            app:layout_constraintTop_toBottomOf="@+id/commend" />
+                            <EditText
+                                android:id="@+id/commend"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="50dp"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/cardView2"
+                                app:layout_constraintTop_toTopOf="@+id/cardView2"
+                                tools:ignore="SpeakableTextPresentCheck" />
+
+                            <Button
+                                android:id="@+id/send_commend"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:backgroundTint="@color/kmitl_color"
+                                android:text="โพสต์"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/commend"
+                                app:layout_constraintTop_toBottomOf="@+id/commend" />
 
 
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/commendArea"
+                        app:layout_constraintTop_toBottomOf="@id/comment_zone"
                         tools:layout_editor_absoluteY="514dp">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_comment"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="15dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
