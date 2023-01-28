@@ -61,7 +61,6 @@ internal class ViewMap @Inject constructor(
         information: MapInformation,
         locationId: Long
     ) {
-        Log.d("test_updatemap","updatemap")
         prepareMarkerToMap(context, information)
         initialLocation(locationId)
     }
@@ -149,7 +148,7 @@ internal class ViewMap @Inject constructor(
     }
 
     private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
-        Log.d("test_","locationDetail")
+
         viewModel.updateIdLocationLabel(id)
         viewModel.updateCurrentLocationGps(location)
         viewModel.updatePositionFlyer(location)

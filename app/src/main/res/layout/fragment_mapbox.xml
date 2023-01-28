@@ -314,6 +314,7 @@
                         android:fontFamily="@font/inter_bold"
                         android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
                         android:text="0"
+
                         android:textAlignment="center"
                         android:textColor="#FF5E00"
                         android:textSize="18sp"

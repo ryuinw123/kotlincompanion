@@ -51,7 +51,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("test_oncreate","oncreated")
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
@@ -158,20 +157,20 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 pinlikeButton.text = it.toString()
             })
 
-//            onClicklikeLocation.observe(viewLifecycleOwner, Observer {
-//                //pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-//                Log.d("test_pin_f",isLiked.value.toString())
-//                isLiked.value?.let {
-//                    when (it){
-//                        true -> removeLikeLocationQuery(idLocationLabel.value)
-//                        false -> addLikeLocationQuery(idLocationLabel.value)
-//                    }
-//                }
-//            })
+            onClicklikeLocation.observe(viewLifecycleOwner, Observer {
+                onClicklikeLocation.value?.let { bool ->
+                    if (bool){
+                        when(isLiked.value!!){
+                            true -> removeLikeLocationQuery(idLocationLabel.value)
+                            false -> addLikeLocationQuery(idLocationLabel.value)
+                        }
+                    }
+                }
+            })
 
             isLiked.observe(viewLifecycleOwner, Observer {
-                it?.let{ it ->
-                    if (it){
+                it?.let{ bool ->
+                    if (bool){
                         pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
                         pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
                         pinlikeButton.compoundDrawables[0]?.let { btn ->
@@ -188,10 +187,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
             commentList.observe(viewLifecycleOwner, Observer {
-
                 helper.comment.update(it.toMutableList())
-
-
             })
 
             navigationEvent.observe(viewLifecycleOwner , Observer {

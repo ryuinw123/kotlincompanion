@@ -55,8 +55,8 @@ class MapboxViewModel @Inject constructor(
     private val _likeCoutingUpdate = MutableLiveData<Int?>()
     val likeCoutingUpdate : LiveData<Int?> = _likeCoutingUpdate
 
-    //private val _onClicklikeLocation = MutableLiveData<Event<Boolean?>>()
-    //val onClicklikeLocation : LiveData<Event<Boolean?>> = _onClicklikeLocation
+    private val _onClicklikeLocation = MutableLiveData<Boolean?>()
+    val onClicklikeLocation : LiveData<Boolean?> = _onClicklikeLocation
 
     private val _isLiked = MutableLiveData<Boolean>()
     val isLiked : LiveData<Boolean?> = _isLiked
@@ -90,11 +90,6 @@ class MapboxViewModel @Inject constructor(
     val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
 
 
-
-
-
-
-
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
             override fun onComplete() {
@@ -123,7 +118,7 @@ class MapboxViewModel @Inject constructor(
             }
 
             override fun onNext(t: LikeDetail) {
-                Log.d("GetPinDetailsLocationQuery","onNext")
+                //Log.d("GetPinDetailsLocationQuery","onNext")
                 _likeCoutingUpdate.value = t.likeCounting
                 _isLiked.value = t.isLiked
                 Log.d("test_pin_vm",isLiked.value.toString())
@@ -142,6 +137,7 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun addLikeLocationQuery(id : String?){
+        _onClicklikeLocation.value = false
         addLikeLocationQuery.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 _likeCoutingUpdate.value = 1 + _likeCoutingUpdate.value!!
@@ -155,6 +151,7 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun removeLikeLocationQuery(id : String?){
+        _onClicklikeLocation.value = false
         removeLikeLocationQuery.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 _likeCoutingUpdate.value = _likeCoutingUpdate.value!! - 1
@@ -174,7 +171,8 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun onClickLikeLocationQuery() {
-        //_onClicklikeLocation.value = Event(true)
+        //addLikeLocationQuery()
+        _onClicklikeLocation.value = true
     }
     
     fun updateUserLocation(point: Point) {
