@@ -1,48 +1,31 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.util.Log
-import androidx.core.view.get
 import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.domain.model.ActivePoint
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.mapbox.geojson.FeatureCollection
-import com.mapbox.geojson.GeoJson
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
-import com.mapbox.maps.extension.style.expressions.dsl.generated.boolean
-import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
-import com.mapbox.maps.extension.style.expressions.generated.Expression.Companion.exponential
 import com.mapbox.maps.extension.style.image.image
 import com.mapbox.maps.extension.style.layers.addLayer
-import com.mapbox.maps.extension.style.layers.generated.CircleLayer
-import com.mapbox.maps.extension.style.layers.generated.circleLayer
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
-import com.mapbox.maps.extension.style.sources.getSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
-import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
-import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-import kotlin.math.exp
 
 
 internal class ViewMap @Inject constructor(
@@ -78,6 +61,7 @@ internal class ViewMap @Inject constructor(
         information: MapInformation,
         locationId: Long
     ) {
+        Log.d("test_updatemap","updatemap")
         prepareMarkerToMap(context, information)
         initialLocation(locationId)
     }
@@ -165,7 +149,7 @@ internal class ViewMap @Inject constructor(
     }
 
     private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
-
+        Log.d("test_","locationDetail")
         viewModel.updateIdLocationLabel(id)
         viewModel.updateCurrentLocationGps(location)
         viewModel.updatePositionFlyer(location)
@@ -175,7 +159,7 @@ internal class ViewMap @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
-        viewModel.getLikeLocationQuery(id)
+        viewModel.getDetailsLocationQuery(id)
 
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
 

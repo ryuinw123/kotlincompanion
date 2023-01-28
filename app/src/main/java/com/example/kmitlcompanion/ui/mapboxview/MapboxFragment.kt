@@ -51,6 +51,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("test_oncreate","oncreated")
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
@@ -63,6 +64,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.route.setup(this@MapboxFragment.viewModel,requireContext(),mapView.getMapboxMap())
 
             setupViewObservers()
+
         }
 
 
@@ -70,7 +72,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         //val btnShow = binding.btnComment
         val btnAddComment = binding.sendCommend
         val recyclerView = binding.rvComment
-        val commend = binding.commend
+        //val commend = binding.commend
+        //val cm = binding.b
 
 
         /*btnShow.text = "Show Comments " + (viewModel.commentList.value?.size ?: 0)
@@ -81,8 +84,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
         btnAddComment.setOnClickListener {
             val id = (viewModel.commentList.value?.size ?: 0) + 1
-            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", commend.text.toString()))
-            commend.text.clear()
+            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", binding.commend.text.toString()))
+            binding.commend.text.clear()
         }
 
 
@@ -104,6 +107,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
         lifecycle.addObserver(helper.route)
+
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -140,9 +144,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 helper.map.flyToLocation(it)
             })
-            commentList.observe(viewLifecycleOwner, Observer {
-                helper.comment.update(it.toMutableList())
-            })
+
             imageLink.observe(viewLifecycleOwner, Observer {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
@@ -155,29 +157,41 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             likeCoutingUpdate.observe(viewLifecycleOwner, Observer {
                 pinlikeButton.text = it.toString()
             })
-            onClicklikeLocation.observe(viewLifecycleOwner, Observer {
-                //pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-                isLiked.value?.let {
-                    when (it){
-                        true -> removeLikeLocationQuery(idLocationLabel.value)
-                        false -> addLikeLocationQuery(idLocationLabel.value)
 
+//            onClicklikeLocation.observe(viewLifecycleOwner, Observer {
+//                //pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+//                Log.d("test_pin_f",isLiked.value.toString())
+//                isLiked.value?.let {
+//                    when (it){
+//                        true -> removeLikeLocationQuery(idLocationLabel.value)
+//                        false -> addLikeLocationQuery(idLocationLabel.value)
+//                    }
+//                }
+//            })
+
+            isLiked.observe(viewLifecycleOwner, Observer {
+                it?.let{ it ->
+                    if (it){
+                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinlikeButton.compoundDrawables[0]?.let { btn ->
+                            btn.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                        }
+                    }else{
+                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinlikeButton.compoundDrawables[0]?.let { btn ->
+                            btn.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        }
                     }
                 }
             })
 
-            isLiked.observe(viewLifecycleOwner, Observer {
-                it?.let{
-                    if (it){
-                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-                        pinlikeButton.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.white))
-                    }else{
-                        pinlikeButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
-                        pinlikeButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-                        pinlikeButton.compoundDrawables[0].setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
-                    }
-                }
+            commentList.observe(viewLifecycleOwner, Observer {
+
+                helper.comment.update(it.toMutableList())
+
+
             })
 
             navigationEvent.observe(viewLifecycleOwner , Observer {
