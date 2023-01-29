@@ -27,6 +27,7 @@ class MapboxViewModel @Inject constructor(
     private val removeLikeLocationQuery: removeLikeLocationQuery
 ) : BaseViewModel() {
 
+    //For Marker & Location
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
     val mapInformationResponse: LiveData<MapInformation> = _mapInformationResponse
 
@@ -54,10 +55,10 @@ class MapboxViewModel @Inject constructor(
     private val _likeCoutingUpdate = MutableLiveData<Int?>()
     val likeCoutingUpdate : LiveData<Int?> = _likeCoutingUpdate
 
-    private val _onClicklikeLocation = MutableLiveData<Event<Boolean>>()
-    val onClicklikeLocation : LiveData<Event<Boolean>> = _onClicklikeLocation
+    private val _onClicklikeLocation = MutableLiveData<Boolean?>()
+    val onClicklikeLocation : LiveData<Boolean?> = _onClicklikeLocation
 
-    private val _isLiked = MutableLiveData<Boolean?>()
+    private val _isLiked = MutableLiveData<Boolean>()
     val isLiked : LiveData<Boolean?> = _isLiked
 
     private val _positionFlyer = MutableLiveData<Point>()
@@ -66,6 +67,17 @@ class MapboxViewModel @Inject constructor(
     private val _imageLink = MutableLiveData<List<String>?>()
     val imageLink : LiveData<List<String>?> = _imageLink
 
+    //For Comment
+    private val _commentList = MutableLiveData<MutableList<Comment>>()
+//        MutableLiveData(mutableListOf(
+//        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1"),
+//        Comment(2, "15/05/2021 at 12:22", "Anonymous2", "Comment2"),
+//        Comment(3, "15/05/2021 at 12:23", "Anonymous3", "Comment3"),
+//        Comment(4, "15/05/2021 at 12:24", "Anonymous4", "Comment4"),
+//    ))
+    val commentList: LiveData<MutableList<Comment>> = _commentList
+
+    //For อิหยังนิ
     private val _permissionGrand = MutableLiveData(false)
     val permissionGrand : LiveData<Boolean> = _permissionGrand
 
@@ -114,11 +126,6 @@ class MapboxViewModel @Inject constructor(
     }
 
 
-
-
-
-
-
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
             override fun onComplete() {
@@ -138,7 +145,7 @@ class MapboxViewModel @Inject constructor(
         })
     }
 
-    fun getLikeLocationQuery(id : String?){
+    fun getDetailsLocationQuery(id : String?){
         getPinDetailsLocationQuery.execute(object : DisposableObserver<LikeDetail>() {
 
             override fun onComplete() {
@@ -147,9 +154,15 @@ class MapboxViewModel @Inject constructor(
             }
 
             override fun onNext(t: LikeDetail) {
-                Log.d("GetPinDetailsLocationQuery","onNext")
+                //Log.d("GetPinDetailsLocationQuery","onNext")
                 _likeCoutingUpdate.value = t.likeCounting
                 _isLiked.value = t.isLiked
+                Log.d("test_pin_vm",isLiked.value.toString())
+                _commentList.value = mutableListOf(
+                    Comment(1, "15/05/2021 at 12:22", "Anonymous2", "Comment1"),
+                    Comment(2, "15/05/2021 at 12:23", "Anonymous2", "Comment2"),
+                    Comment(3, "15/05/2021 at 12:24", "Anonymous3", "Comment3"),
+                )
             }
 
             override fun onError(e: Throwable) {
@@ -160,6 +173,7 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun addLikeLocationQuery(id : String?){
+        _onClicklikeLocation.value = false
         addLikeLocationQuery.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 _likeCoutingUpdate.value = 1 + _likeCoutingUpdate.value!!
@@ -173,6 +187,7 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun removeLikeLocationQuery(id : String?){
+        _onClicklikeLocation.value = false
         removeLikeLocationQuery.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 _likeCoutingUpdate.value = _likeCoutingUpdate.value!! - 1
@@ -185,9 +200,15 @@ class MapboxViewModel @Inject constructor(
         }, params = id)
     }
 
-    fun onClickLikeLocationQuery() {
-        _onClicklikeLocation.value = Event(true)
+    fun addComment(shortComment: Comment) {
+        val newList = _commentList.value ?: mutableListOf()
+        newList.add(shortComment)
+        _commentList.value = newList
+    }
 
+    fun onClickLikeLocationQuery() {
+        //addLikeLocationQuery()
+        _onClicklikeLocation.value = true
     }
     
     fun updateUserLocation(point: Point) {
@@ -248,18 +269,5 @@ class MapboxViewModel @Inject constructor(
     }
 
 
-    private val _commentList = MutableLiveData(mutableListOf(
-        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1"),
-        Comment(2, "15/05/2021 at 12:22", "Anonymous2", "Comment2"),
-        Comment(3, "15/05/2021 at 12:23", "Anonymous3", "Comment3"),
-        Comment(4, "15/05/2021 at 12:24", "Anonymous4", "Comment4"),
-    ))
-    val commentList: LiveData<MutableList<Comment>> = _commentList
-
-    fun addComment(shortComment: Comment) {
-        val newList = _commentList.value ?: mutableListOf()
-        newList.add(shortComment)
-        _commentList.value = newList
-    }
 
 }
