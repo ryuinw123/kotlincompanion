@@ -30,6 +30,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tripProgressCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:cardElevation="8dp"
+                    app:cardUseCompatPadding="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.mapbox.navigation.ui.tripprogress.view.MapboxTripProgressView
+                        android:id="@+id/tripProgressView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/stop"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:onClick="@{()->viewModel.updateStopNavigationEvent()}"
+                        android:layout_marginEnd="12dp"
+                        app:srcCompat="@android:drawable/ic_delete" />
+                </androidx.cardview.widget.CardView>
+
+                <com.mapbox.navigation.ui.maneuver.view.MapboxManeuverView
+                    android:id="@+id/maneuverView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.mapbox.navigation.ui.voice.view.MapboxSoundButton
+                    android:id="@+id/soundButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="invisible"
+                    android:onClick="@{()->viewModel.updateSoundEvent()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/maneuverView" />
+
+                <com.mapbox.navigation.ui.maps.camera.view.MapboxRouteOverviewButton
+                    android:id="@+id/routeOverview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{()->viewModel.updateRouteOverviewEvent()}"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/soundButton" />
+
+                <com.mapbox.navigation.ui.maps.camera.view.MapboxRecenterButton
+                    android:id="@+id/recenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="invisible"
+                    android:onClick="@{()->viewModel.updateRecenterEvent()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/routeOverview" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button2"
                     android:layout_width="50dp"
@@ -47,10 +116,26 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
                     tools:ignore="SpeakableTextPresentCheck" />
 
-
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/testnavigation"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="100dp"
+                    android:layout_marginBottom="100dp"
+                    android:backgroundTint="@color/kmitl_color"
+                    android:onClick="@{()->viewModel.updateNavigationEvent()}"
+                    mapbox:icon="@drawable/ic_add_24px"
+                    mapbox:iconGravity="textStart"
+                    mapbox:iconPadding="-2dp"
+                    mapbox:iconSize="24dp"
+                    mapbox:layout_constraintBottom_toBottomOf="parent"
+                    mapbox:layout_constraintEnd_toEndOf="parent"
+                    mapbox:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+                    tools:ignore="SpeakableTextPresentCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.mapbox.maps.MapView>
+
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -311,7 +396,6 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginBottom="25dp"
                         android:backgroundTint="#FFFFFF"
-                        android:fontFamily="@font/inter_bold"
                         android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
                         android:text="0"
                         android:textAlignment="center"
@@ -339,7 +423,6 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginBottom="25dp"
                         android:backgroundTint="#FFFFFF"
-                        android:fontFamily="@font/inter_bold"
                         android:text="เก็บในสถานที่ของฉัน"
                         android:textAlignment="center"
                         android:textAllCaps="false"

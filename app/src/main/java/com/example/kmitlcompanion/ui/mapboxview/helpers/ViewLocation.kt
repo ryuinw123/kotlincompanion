@@ -26,7 +26,6 @@ import javax.inject.Inject
 
 
 class ViewLocation @Inject constructor(
-    private val context: Context,
     private val toaster: ToasterUtil,
     private val locationPermissionHelper: LocationPermissionHelper
 ) : DefaultLifecycleObserver {
@@ -56,17 +55,17 @@ class ViewLocation @Inject constructor(
     }*/
 
 
-    fun setup(viewModel: MapboxViewModel , mapView : MapView)  {
+    fun setup(viewModel: MapboxViewModel ,context: Context, mapView : MapView)  {
         this.viewModel = viewModel
         this.weakMapView = WeakReference(mapView)
         locationPermissionHelper.checkPermissions {
-            onMapReady()
+            onMapReady(context)
             viewModel.updatePermission(true)
         }
     }
 
-    private fun onMapReady(){
-        initLocationComponent()
+    private fun onMapReady(context: Context){
+        initLocationComponent(context)
         //setupGesturesListener()
     }
 
@@ -74,7 +73,43 @@ class ViewLocation @Inject constructor(
         mapView?.gestures?.addOnMoveListener(onMoveListener)
     }*/
 
-    private fun initLocationComponent(){
+    fun updatePuckIcon(context: Context, icon : String) {
+        val locationComponentPlugin = mapView?.location
+        if (icon == MODE_NORMAL) {
+            locationComponentPlugin?.updateSettings {
+                this.locationPuck = LocationPuck2D(
+                    topImage = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.mapbox_user_icon
+                    ),
+                    bearingImage = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.mapbox_user_bearing_icon,
+                    ),
+                    shadowImage = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.mapbox_user_stroke_icon,
+                    )
+                )
+            }
+        }
+        else if (icon == MODE_NAVIGATION) {
+            locationComponentPlugin?.updateSettings {
+                this.locationPuck = LocationPuck2D(
+                    bearingImage = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.mapbox_user_puck_icon,
+                    ),
+                    shadowImage = ContextCompat.getDrawable(
+                        context,
+                        R.drawable.mapbox_user_stroke_icon,
+                    )
+                )
+            }
+        }
+    }
+
+    private fun initLocationComponent(context: Context){
         val locationComponentPlugin = mapView?.location
 
         locationComponentPlugin?.updateSettings {
@@ -121,6 +156,10 @@ class ViewLocation @Inject constructor(
     private val mapView
         get() = weakMapView?.get()
 
+    companion object {
+        val MODE_NAVIGATION = "Navigation"
+        val MODE_NORMAL = "Map"
+    }
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         mapView?.location?.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)

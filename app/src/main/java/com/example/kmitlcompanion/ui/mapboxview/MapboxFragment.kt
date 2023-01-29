@@ -54,14 +54,13 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
-            helper.location.setup(this@MapboxFragment.viewModel,mapView)
+            helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
             helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
-            helper.route.setup(this@MapboxFragment.viewModel,requireContext(),mapView.getMapboxMap())
-
+            helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             setupViewObservers()
         }
 
@@ -103,7 +102,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
-        lifecycle.addObserver(helper.route)
+        lifecycle.addObserver(helper.navigation)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -181,8 +180,29 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
             navigationEvent.observe(viewLifecycleOwner , Observer {
-                val point = Point.fromLngLat(18.04779052,59.293153231)
-                helper.route.findRoute(point)
+                val point = Point.fromLngLat(-122.4194,37.7749)
+                Log.d("Navigation" , "Event True")
+                helper.navigation.startNavigation(requireContext(),point)
+            })
+
+            stopNavigationEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.stopNavigationEvent()
+            })
+
+            recenterEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.recenterEvent()
+            })
+
+            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
+                helper.navigation.routeOverviewEvent()
+            })
+
+            soundEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.soundEvent()
+            })
+
+            locationIcon.observe(viewLifecycleOwner, Observer {
+                helper.location.updatePuckIcon(requireContext(),it)
             })
         }
     }

@@ -69,6 +69,9 @@ class MapboxViewModel @Inject constructor(
     private val _permissionGrand = MutableLiveData(false)
     val permissionGrand : LiveData<Boolean> = _permissionGrand
 
+    private val _locationIcon = MutableLiveData<String>()
+    val locationIcon : LiveData<String> = _locationIcon
+
 
 
 
@@ -79,6 +82,36 @@ class MapboxViewModel @Inject constructor(
 
     private val _navigationEvent = MutableLiveData<Event<Boolean>>()
     val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
+
+    private val _stopNavigationEvent =  MutableLiveData<Event<Boolean>>()
+    val stopNavigationEvent : LiveData<Event<Boolean>> = _stopNavigationEvent
+
+    private val _recenterEvent = MutableLiveData<Event<Boolean>>()
+    val recenterEvent : LiveData<Event<Boolean>> = _recenterEvent
+
+    private val _routeOverviewEvent = MutableLiveData<Event<Boolean>>()
+    val routeOverViewEvent : LiveData<Event<Boolean>> = _routeOverviewEvent
+
+    private val _soundEvent = MutableLiveData<Event<Boolean>>()
+    val soundEvent : LiveData<Event<Boolean>> = _soundEvent
+
+
+    fun updateStopNavigationEvent() {
+        _stopNavigationEvent.value = Event(true)
+    }
+    fun updateRecenterEvent() {
+        _recenterEvent.value = Event(true)
+    }
+    fun updateRouteOverviewEvent() {
+        _routeOverviewEvent.value = Event(true)
+    }
+    fun updateSoundEvent() {
+        _soundEvent.value = Event(true)
+    }
+
+    fun updateLocationIcon(icon : String) {
+        _locationIcon.value = icon
+    }
 
 
 
