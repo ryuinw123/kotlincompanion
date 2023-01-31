@@ -82,13 +82,45 @@ class MapboxViewModel @Inject constructor(
     private val _permissionGrand = MutableLiveData(false)
     val permissionGrand : LiveData<Boolean> = _permissionGrand
 
+    private val _locationIcon = MutableLiveData<String>()
+    val locationIcon : LiveData<String> = _locationIcon
+
+
+
+
     //For Navigation
 
     private val _userLocation = MutableLiveData<Point?>()
     val userLocation : LiveData<Point?> = _userLocation
 
-    private val _navigationEvent = MutableLiveData<Event<Boolean>>()
-    val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
+    private val _applicationMode = MutableLiveData<Int>()
+    val applicationMode : LiveData<Int> = _applicationMode
+
+
+
+    private val _recenterEvent = MutableLiveData<Event<Boolean>>()
+    val recenterEvent : LiveData<Event<Boolean>> = _recenterEvent
+
+    private val _routeOverviewEvent = MutableLiveData<Event<Boolean>>()
+    val routeOverViewEvent : LiveData<Event<Boolean>> = _routeOverviewEvent
+
+    private val _soundEvent = MutableLiveData<Event<Boolean>>()
+    val soundEvent : LiveData<Event<Boolean>> = _soundEvent
+
+
+    fun updateRecenterEvent() {
+        _recenterEvent.value = Event(true)
+    }
+    fun updateRouteOverviewEvent() {
+        _routeOverviewEvent.value = Event(true)
+    }
+    fun updateSoundEvent() {
+        _soundEvent.value = Event(true)
+    }
+
+    fun updateLocationIcon(icon : String) {
+        _locationIcon.value = icon
+    }
 
 
     fun downloadLocations() {
@@ -222,7 +254,6 @@ class MapboxViewModel @Inject constructor(
                 Log.d("editCommentLocationQuery",e.toString())
             }
         }, params = Pair(_editComment.value?.id.toString() , textComment))
-
     }
 
     fun deleteCommentUpdate(commentId : String, position: Int){
@@ -266,8 +297,8 @@ class MapboxViewModel @Inject constructor(
         _permissionGrand.value = boolean
     }
 
-    fun updateNavigationEvent() {
-        _navigationEvent.value = Event(true)
+    fun updateApplicationMode(mode : Int) {
+        _applicationMode.value = mode
     }
 
     fun updateImageLink(imageList : List<String>) {

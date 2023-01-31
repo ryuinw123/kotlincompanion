@@ -54,15 +54,14 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
-            helper.location.setup(this@MapboxFragment.viewModel,mapView)
             helper.comment.setup(this@MapboxFragment.viewModel,rvComment,requireContext(),AlertDialog.Builder(requireContext()))
             //helper.bottomComment.setup(bottomSheetMenu,this@MapboxFragment.viewModel)
+            helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
-            helper.route.setup(this@MapboxFragment.viewModel,requireContext(),mapView.getMapboxMap())
-
+            helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             setupViewObservers()
 
         }
@@ -125,8 +124,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
-        lifecycle.addObserver(helper.route)
-
+        lifecycle.addObserver(helper.navigation)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -136,10 +134,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
-                if (it == 5)
-                    bottomBarUtils.bottomMap?.visibility = View.VISIBLE
-                else
-                    bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
+                Log.d("Navigation" , "BottomSheet state change to $it")
+                bottomBarUtils.sliderState = it
             })
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it
@@ -233,9 +229,33 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
 
             //For ???
-            navigationEvent.observe(viewLifecycleOwner , Observer {
-                val point = Point.fromLngLat(18.04779052,59.293153231)
-                helper.route.findRoute(point)
+            applicationMode.observe(viewLifecycleOwner , Observer {
+                bottomBarUtils.applicationMode = it
+                if (it == 0) {
+                    Log.d("Navigation" ,"End Navigation")
+                    helper.navigation.stopNavigationEvent()
+                }
+                else if (it == 1) {
+                    Log.d("Navigation","Enter ApplicationMode 1")
+                    helper.navigation.startNavigation(requireContext())
+                }
+            })
+
+
+            recenterEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.recenterEvent()
+            })
+
+            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
+                helper.navigation.routeOverviewEvent()
+            })
+
+            soundEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.soundEvent()
+            })
+
+            locationIcon.observe(viewLifecycleOwner, Observer {
+                helper.location.updatePuckIcon(requireContext(),it)
             })
         }
     }

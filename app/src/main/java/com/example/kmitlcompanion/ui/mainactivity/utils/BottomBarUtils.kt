@@ -12,6 +12,31 @@ class BottomBarUtils @Inject constructor() {
     private lateinit var weakBottomNavigationView: WeakReference<CoordinatorLayout>
     var number = String()
 
+    var applicationMode = 0
+        set(value) {
+            field = value
+            bottomStateBehavior()
+        }
+    var sliderState = 0
+        set(value) {
+            field = value
+            bottomStateBehavior()
+        }
+
+    fun bottomStateBehavior() {
+        if (applicationMode == 1) {
+            bottomMap?.visibility = View.INVISIBLE
+        }
+        else {
+            if (sliderState == 5) {
+                bottomMap?.visibility = View.VISIBLE
+            }
+            else {
+                bottomMap?.visibility = View.INVISIBLE
+            }
+        }
+    }
+
     fun setup(bottomNavigationView : CoordinatorLayout) {
         this.weakBottomNavigationView = WeakReference(bottomNavigationView)
         number = "2"

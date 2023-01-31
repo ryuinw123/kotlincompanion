@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
-internal class ViewMap @Inject constructor(
+class ViewMap @Inject constructor(
     private val mapper: MapperUtils,
     private val bitmapConverter: BitmapUtils,
 ) : DefaultLifecycleObserver {
@@ -280,6 +280,7 @@ internal class ViewMap @Inject constructor(
         const val STYLE_ID = "mapbox://styles/ryuinw123/cla16mlr3006715p56830t6xv"
         const val LOCATION_LAYER_ID = "LOCATION_LAYER_ID"
         const val AREA_LAYER_ID = "AREA_LAYER_ID"
+
 
 
         private const val LOCATION = "locations"
