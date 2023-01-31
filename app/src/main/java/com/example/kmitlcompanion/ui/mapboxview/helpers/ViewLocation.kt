@@ -37,12 +37,12 @@ class ViewLocation @Inject constructor(
         viewModel.updateUserLocation(it)
     }
 
-    /*private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
+    private val onIndicatorBearingChangedListener = OnIndicatorBearingChangedListener {
         mapView?.getMapboxMap()?.setCamera(CameraOptions.Builder().bearing(it).build())
-    }*/
+    }
 
 
-    /*private val onMoveListener = object : OnMoveListener {
+    private val onMoveListener = object : OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
             onCameraTrackingDismissed()
         }
@@ -52,7 +52,7 @@ class ViewLocation @Inject constructor(
         }
 
         override fun onMoveEnd(detector: MoveGestureDetector) {}
-    }*/
+    }
 
 
     fun setup(viewModel: MapboxViewModel ,context: Context, mapView : MapView)  {
@@ -96,7 +96,7 @@ class ViewLocation @Inject constructor(
         else if (icon == MODE_NAVIGATION) {
             locationComponentPlugin?.updateSettings {
                 this.locationPuck = LocationPuck2D(
-                    bearingImage = ContextCompat.getDrawable(
+                    topImage = ContextCompat.getDrawable(
                         context,
                         R.drawable.mapbox_user_puck_icon,
                     ),
@@ -146,24 +146,26 @@ class ViewLocation @Inject constructor(
         //locationComponentPlugin?.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
     }
 
-    /*private fun onCameraTrackingDismissed() {
+    private fun onCameraTrackingDismissed() {
         toaster.showToast("onCameraTrackingDismissed", Toast.LENGTH_SHORT)
         mapView?.location?.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        //mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
-        //mapView?.gestures?.removeOnMoveListener(onMoveListener)
-    }*/
+        mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        mapView?.gestures?.removeOnMoveListener(onMoveListener)
+    }
 
     private val mapView
         get() = weakMapView?.get()
 
-    companion object {
-        val MODE_NAVIGATION = "Navigation"
-        val MODE_NORMAL = "Map"
-    }
+
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         mapView?.location?.removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        //mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
-        //mapView?.gestures?.removeOnMoveListener(onMoveListener)
+        mapView?.location?.removeOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        mapView?.gestures?.removeOnMoveListener(onMoveListener)
+    }
+
+    companion object {
+        const val MODE_NAVIGATION = "Navigation"
+        const val MODE_NORMAL = "Map"
     }
 }

@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel" />
+
+        <variable
+            name="viewMap"
+            type="com.example.kmitlcompanion.ui.mapboxview.helpers.ViewMap" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -44,14 +48,15 @@
                     <com.mapbox.navigation.ui.tripprogress.view.MapboxTripProgressView
                         android:id="@+id/tripProgressView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        />
 
                     <ImageView
                         android:id="@+id/stop"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="end|center_vertical"
-                        android:onClick="@{()->viewModel.updateStopNavigationEvent()}"
+                        android:onClick="@{()->viewModel.updateApplicationMode(0)}"
                         android:layout_marginEnd="12dp"
                         app:srcCompat="@android:drawable/ic_delete" />
                 </androidx.cardview.widget.CardView>
@@ -116,22 +121,6 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
                     tools:ignore="SpeakableTextPresentCheck" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/testnavigation"
-                    android:layout_width="50dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_marginBottom="100dp"
-                    android:backgroundTint="@color/kmitl_color"
-                    android:onClick="@{()->viewModel.updateNavigationEvent()}"
-                    mapbox:icon="@drawable/ic_add_24px"
-                    mapbox:iconGravity="textStart"
-                    mapbox:iconPadding="-2dp"
-                    mapbox:iconSize="24dp"
-                    mapbox:layout_constraintBottom_toBottomOf="parent"
-                    mapbox:layout_constraintEnd_toEndOf="parent"
-                    mapbox:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
-                    tools:ignore="SpeakableTextPresentCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.mapbox.maps.MapView>
@@ -388,6 +377,15 @@
                         app:layout_constraintTop_toBottomOf="@+id/id_location_label_tv"
                         tools:ignore="HardcodedText"
                         tools:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/navigation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Button"
+                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/address_text" />
 
                     <Button
                         android:id="@+id/pinlike_button"

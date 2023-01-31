@@ -92,11 +92,10 @@ class MapboxViewModel @Inject constructor(
     private val _userLocation = MutableLiveData<Point?>()
     val userLocation : LiveData<Point?> = _userLocation
 
-    private val _navigationEvent = MutableLiveData<Event<Boolean>>()
-    val navigationEvent : LiveData<Event<Boolean>> = _navigationEvent
+    private val _applicationMode = MutableLiveData<Int>()
+    val applicationMode : LiveData<Int> = _applicationMode
 
-    private val _stopNavigationEvent =  MutableLiveData<Event<Boolean>>()
-    val stopNavigationEvent : LiveData<Event<Boolean>> = _stopNavigationEvent
+
 
     private val _recenterEvent = MutableLiveData<Event<Boolean>>()
     val recenterEvent : LiveData<Event<Boolean>> = _recenterEvent
@@ -108,9 +107,6 @@ class MapboxViewModel @Inject constructor(
     val soundEvent : LiveData<Event<Boolean>> = _soundEvent
 
 
-    fun updateStopNavigationEvent() {
-        _stopNavigationEvent.value = Event(true)
-    }
     fun updateRecenterEvent() {
         _recenterEvent.value = Event(true)
     }
@@ -210,7 +206,7 @@ class MapboxViewModel @Inject constructor(
         //addLikeLocationQuery()
         _onClicklikeLocation.value = true
     }
-    
+
     fun updateUserLocation(point: Point) {
         _userLocation.value = point
     }
@@ -219,8 +215,8 @@ class MapboxViewModel @Inject constructor(
         _permissionGrand.value = boolean
     }
 
-    fun updateNavigationEvent() {
-        _navigationEvent.value = Event(true)
+    fun updateApplicationMode(mode : Int) {
+        _applicationMode.value = mode
     }
 
     fun updateImageLink(imageList : List<String>) {

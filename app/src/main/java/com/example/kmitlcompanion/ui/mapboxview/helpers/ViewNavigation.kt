@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.location.Location
 import android.support.v4.os.IResultReceiver.Default
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,7 +17,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
+import com.example.kmitlcompanion.ui.mapboxview.utils.LocationUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.ToasterUtil
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.Bearing
 import com.mapbox.api.directions.v5.models.DirectionsRoute
@@ -37,8 +40,11 @@ import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.base.route.RouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
 import com.mapbox.navigation.base.route.RouterOrigin
+import com.mapbox.navigation.base.trip.model.RouteLegProgress
+import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.MapboxNavigationProvider
+import com.mapbox.navigation.core.arrival.ArrivalObserver
 import com.mapbox.navigation.core.directions.session.RoutesObserver
 import com.mapbox.navigation.core.formatter.MapboxDistanceFormatter
 import com.mapbox.navigation.core.replay.MapboxReplayer
@@ -84,7 +90,8 @@ import javax.inject.Inject
 
 class ViewNavigation @Inject constructor(
     private val toasterUtil: ToasterUtil,
-    private val applicationContext : Context
+    private val applicationContext : Context,
+    private val locationUtils: LocationUtils
 ) : DefaultLifecycleObserver {
 
     private companion object {
@@ -238,8 +245,10 @@ class ViewNavigation @Inject constructor(
                 toasterUtil.showToast(error.errorMessage,Toast.LENGTH_SHORT)
             },
             {
-                maneuverView?.visibility = View.VISIBLE
-                maneuverView!!.renderManeuvers(maneuvers)
+                if (viewModel.applicationMode.value == 1) {
+                    maneuverView?.visibility = View.VISIBLE
+                    maneuverView!!.renderManeuvers(maneuvers)
+                }
             }
         )
 
@@ -276,6 +285,24 @@ class ViewNavigation @Inject constructor(
                 }
                 routeArrowView.render(style, routeArrowApi.clearArrows())
             }
+        }
+    }
+
+    private val arrivalObserver = object : ArrivalObserver {
+
+        override fun onWaypointArrival(routeProgress: RouteProgress) {
+            // do something when the user arrives at a waypoint
+            Log.d("Navigation", "WayPoint Arrive")
+        }
+
+        override fun onNextRouteLegStart(routeLegProgress: RouteLegProgress) {
+            // do something when the user starts a new leg
+            Log.d("Navigation", "Next Arrive")
+        }
+
+        override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
+            Log.d("Navigation", "Final Arrive")
+            viewModel.updateApplicationMode(0)
         }
     }
 
@@ -397,6 +424,7 @@ class ViewNavigation @Inject constructor(
     }
 
     fun stopNavigationEvent() {
+        viewModel.updateLocationIcon(ViewLocation.MODE_NORMAL)
         clearRouteAndStopNavigation()
     }
 
@@ -412,6 +440,7 @@ class ViewNavigation @Inject constructor(
         mapboxNavigation.registerLocationObserver(locationObserver)
         mapboxNavigation.registerVoiceInstructionsObserver(voiceInstructionsObserver)
         mapboxNavigation.registerRouteProgressObserver(replayProgressObserver)
+        mapboxNavigation.registerArrivalObserver(arrivalObserver)
 
         if (mapboxNavigation.getRoutes().isEmpty()) {
 // if simulation is enabled (ReplayLocationEngine set to NavigationOptions)
@@ -421,7 +450,7 @@ class ViewNavigation @Inject constructor(
                 listOf(
                     ReplayRouteMapper.mapToUpdateLocation(
                         eventTimestamp = 0.0,
-                        point = Point.fromLngLat(-122.39726512303575, 37.785128345296805)
+                        point = Point.fromLngLat( 100.77889748563068,13.730149446823802)
                     )
                 )
             )
@@ -436,6 +465,7 @@ class ViewNavigation @Inject constructor(
         mapboxNavigation.unregisterLocationObserver(locationObserver)
         mapboxNavigation.unregisterVoiceInstructionsObserver(voiceInstructionsObserver)
         mapboxNavigation.unregisterRouteProgressObserver(replayProgressObserver)
+        mapboxNavigation.unregisterArrivalObserver(arrivalObserver)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
@@ -449,9 +479,17 @@ class ViewNavigation @Inject constructor(
         voiceInstructionsPlayer.shutdown()
     }
 
-    fun startNavigation(context: Context , destination: Point) {
+    fun startNavigation(context: Context) {
         viewModel.updateLocationIcon(ViewLocation.MODE_NAVIGATION)
-        findRoute(context,destination)
+        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
+        val locationId = viewModel.idLocationLabel.value?.toLong()
+        val locationLst = viewModel.mapInformationResponse.value?.mapPoints
+        Log.d("Navigation" , "locationId = $locationId , locationLst = $locationLst")
+        locationId?.let { locationLst?.let { it1 ->
+            val destination = locationUtils.queryLocation(it, it1)
+            val point = Point.fromLngLat(destination!!.longitude,destination!!.latitude)
+            findRoute(context,point)
+        } }
     }
 
     private fun findRoute(context: Context,destination: Point) {
@@ -535,6 +573,7 @@ class ViewNavigation @Inject constructor(
         maneuverView?.visibility = View.INVISIBLE
         routeOverview?.visibility = View.INVISIBLE
         tripProgressCard?.visibility = View.INVISIBLE
+
     }
 
     private fun startSimulation(route: DirectionsRoute) {

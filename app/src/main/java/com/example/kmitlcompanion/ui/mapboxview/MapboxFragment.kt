@@ -114,10 +114,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
-                if (it == 5)
-                    bottomBarUtils.bottomMap?.visibility = View.VISIBLE
-                else
-                    bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
+                Log.d("Navigation" , "BottomSheet state change to $it")
+                bottomBarUtils.sliderState = it
             })
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it
@@ -188,15 +186,19 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 helper.comment.update(it.toMutableList())
             })
 
-            navigationEvent.observe(viewLifecycleOwner , Observer {
-                val point = Point.fromLngLat(-122.4194,37.7749)
-                Log.d("Navigation" , "Event True")
-                helper.navigation.startNavigation(requireContext(),point)
+
+            applicationMode.observe(viewLifecycleOwner , Observer {
+                bottomBarUtils.applicationMode = it
+                if (it == 0) {
+                    Log.d("Navigation" ,"End Navigation")
+                    helper.navigation.stopNavigationEvent()
+                }
+                else if (it == 1) {
+                    Log.d("Navigation","Enter ApplicationMode 1")
+                    helper.navigation.startNavigation(requireContext())
+                }
             })
 
-            stopNavigationEvent.observe(viewLifecycleOwner, Observer {
-                helper.navigation.stopNavigationEvent()
-            })
 
             recenterEvent.observe(viewLifecycleOwner, Observer {
                 helper.navigation.recenterEvent()
