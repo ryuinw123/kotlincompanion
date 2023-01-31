@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.data.repository
 
-import com.example.kmitlcompanion.data.model.LikeData
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
+import com.example.kmitlcompanion.data.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -44,10 +41,21 @@ interface RemoteRepository {
                      token : Any
                     ) : Completable
 
-    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<LikeData>
+    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<PinData>
 
     fun addLikeLocationQuery(id : String, token : String) : Completable
 
     fun removeLikeLocationQuery(id : String, token : String) : Completable
+
+    fun addCommentMarkerLocationQuery(markerId : String, message : String, token : String) : Observable<ReturnAddCommentData>
+
+    fun editCommentLocationQuery(commentId : String,newMessage : String, token : String) : Completable
+
+    fun deleteCommentLocationQuery(commentId : String,token : String) : Completable
+
+    fun likeDislikeCommentLocationQuery(commentId : String,
+                                        isLikedComment : Int,
+                                        isDisLikedComment : Int,
+                                        token : String) : Completable
 
 }

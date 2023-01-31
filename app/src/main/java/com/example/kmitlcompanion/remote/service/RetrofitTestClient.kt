@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.remote.service
 
-import com.example.kmitlcompanion.data.model.LikeData
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
+import com.example.kmitlcompanion.data.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -42,7 +39,7 @@ interface RetrofitTestClient {
 
     @Multipart
     @POST("getpindetailslocationquery")
-    fun getPinDetailsLocationQuery(@Part("id") id: String, @Part("token") token : String): Observable<LikeData>
+    fun getPinDetailsLocationQuery(@Part("id") id: String, @Part("token") token : String): Observable<PinData>
 
     @Multipart
     @POST("likelocationquery")
@@ -51,4 +48,28 @@ interface RetrofitTestClient {
     @Multipart
     @POST("dislikelocationquery")
     fun removeLikeLocationQuery(@Part("id") id: String, @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("addcommentmarkerlocationquery")
+    fun addCommentMarkerLocationQuery(@Part("id") markerId: String,
+                                      @Part("message") message : String,
+                                      @Part("token") token : String): Observable<ReturnAddCommentData>
+
+    @Multipart
+    @POST("editcommentmarkerlocationquery")
+    fun editCommentMarkerLocationQuery(@Part("id") markerId: String,
+                                       @Part("newmessage") newMessage : String,
+                                       @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("deletecommentmarkerlocationquery")
+    fun deleteCommentMarkerLocationQuery(@Part("id") commentId: String, @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("likedislikecommentmarkerlocationquery")
+    fun likeDislikeCommentMarkerLocationQuery(@Part("id") commentId: String,
+                                              @Part("isLikedComment") isLikedComment : Int ,
+                                              @Part("isDisLikedComment") isDisLikedComment : Int ,
+                                              @Part("token") token : String): Completable
+
 }

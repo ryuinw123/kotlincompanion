@@ -1,20 +1,18 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
-import android.content.Context
-import android.content.Intent
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.background.LocationService
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
@@ -22,7 +20,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.gms.location.*
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,12 +32,15 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     @Inject internal lateinit var helper: ViewHelper
     @Inject lateinit var dateUtils: DateUtils
     @Inject lateinit var bottomBarUtils: BottomBarUtils
+
     //override lateinit var binding: FragmentMapboxBinding
     private var mapView: MapView? = null
 
     override val viewModel : MapboxViewModel by viewModels()
     private val navArgs by navArgs<MapboxFragmentArgs>()
     override val layoutId :Int = R.layout.fragment_mapbox
+
+
 
     override fun onReady(savedInstanceState: Bundle?) {
         Log.d("Geofence","LocationId from MapboxFragment = ${navArgs.locationId}")
@@ -54,8 +54,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
+            helper.comment.setup(this@MapboxFragment.viewModel,rvComment,requireContext(),AlertDialog.Builder(requireContext()))
+            //helper.bottomComment.setup(bottomSheetMenu,this@MapboxFragment.viewModel)
             helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
-            helper.comment.setup(this@MapboxFragment.viewModel,rvComment)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
@@ -65,32 +66,50 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
         }
 
-
-        //test
-        //val btnShow = binding.btnComment
         val btnAddComment = binding.sendCommend
         val recyclerView = binding.rvComment
-        //val commend = binding.commend
-        //val cm = binding.b
 
+        binding.commend.doAfterTextChanged {
+            var checkValid = (it.toString().replace(Regex("[\\s\\n]+"), "") != "")
+            binding.sendCommend.isEnabled = checkValid
+            binding.editCommentBtn.isEnabled = checkValid
+        }
 
-        /*btnShow.text = "Show Comments " + (viewModel.commentList.value?.size ?: 0)
-        btnShow.setOnClickListener {
-            recyclerView.isVisible = !recyclerView.isVisible
-            btnShow.text = if(recyclerView.isVisible) "Hide Comments" else "Show Comments " + (viewModel.commentList.value?.size ?: 0)
-        }*/
-
-        btnAddComment.setOnClickListener {
-            val id = (viewModel.commentList.value?.size ?: 0) + 1
-            viewModel.addComment(Comment(id, dateUtils.getTime(), "test", binding.commend.text.toString()))
+        binding.sendCommend.setOnClickListener {
+            //val commentId = (viewModel.commentList.value?.size ?: 0) + 1
+            viewModel.addComment(Comment(
+                0,
+                dateUtils.shinGetTime(),
+                "",
+                binding.commend.text.toString(),
+                0,
+                0,
+                false,
+                false,
+                true
+            ))
             binding.commend.text.clear()
         }
 
+        binding.editCommentBtn.setOnClickListener {
+            viewModel.editCommentUpdate(binding.commend.text.toString())
+            binding.editCommentBtn.visibility = View.GONE
+            binding.cancelEditCommentBtn.visibility = View.GONE
+            binding.sendCommend.visibility = View.VISIBLE
+            binding.commend.text.clear()
+            binding.commend.clearFocus()
+        }
+
+        binding.cancelEditCommentBtn.setOnClickListener {
+            binding.editCommentBtn.visibility = View.GONE
+            binding.cancelEditCommentBtn.visibility = View.GONE
+            binding.sendCommend.visibility = View.VISIBLE
+            binding.commend.text.clear()
+            binding.commend.clearFocus()
+        }
 
         //show bottom bar
         bottomBarUtils.bottomMap?.visibility = View.VISIBLE
-
-
         return binding.root
     }
 
@@ -99,6 +118,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding.button2.setOnClickListener {
             view.findNavController().navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
         }
+
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){
@@ -182,11 +202,33 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
+            //For Comment
             commentList.observe(viewLifecycleOwner, Observer {
+                binding.editCommentBtn.visibility = View.GONE
+                binding.cancelEditCommentBtn.visibility = View.GONE
+                binding.sendCommend.visibility = View.VISIBLE
+                binding.commend.text.clear()
+                binding.commend.clearFocus()
                 helper.comment.update(it.toMutableList())
+            })
+            editComment.observe(viewLifecycleOwner, Observer {
+                Log.d("test_bm","hello gon")
+                binding.commend.clearFocus()
+                editComment?.value?.let {
+                    editCommentBtn.visibility = View.VISIBLE
+                    cancelEditCommentBtn.visibility = View.VISIBLE
+                    sendCommend.visibility = View.GONE
+                    if (editComment.value?.message != ""){
+                        binding.commend.setText(editComment.value?.message)
+                    }
+//                    nestedScrollView.post {
+//                        nestedScrollView.smoothScrollTo(0,requireView().top - commendArea.top)
+//                    }
+                }
             })
 
 
+            //For ???
             applicationMode.observe(viewLifecycleOwner , Observer {
                 bottomBarUtils.applicationMode = it
                 if (it == 0) {

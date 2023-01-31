@@ -15,7 +15,7 @@
 
 
 <!--        <item-->
-<!--            android:id="@+id/feedFragment"-->
+<!--            android:commentId="@+commentId/feedFragment"-->
 <!--            android:icon="@drawable/feed_48px"-->
 <!--            android:title="feed_menu"-->
 <!--            app:showAsAction="ifRoom"/>-->
@@ -30,7 +30,7 @@
             android:title=""
             android:enabled="false"/>
 
-<!--        <item android:id="@+id/mapboxFragment2"-->
+<!--        <item android:commentId="@+commentId/mapboxFragment2"-->
 <!--            android:title="map_menu"-->
 <!--            android:visible="false"-->
 <!--            android:enabled="true"/>-->

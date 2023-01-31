@@ -90,7 +90,7 @@ class RemoteDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
-    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<PinData> {
         return remoteRepository.getPinDetailsLocationQuery(id ,token)
     }
 
@@ -100,5 +100,31 @@ class RemoteDataStore @Inject constructor(
 
     override fun removeLikeLocationQuery(id: String, token: String): Completable {
         return remoteRepository.removeLikeLocationQuery(id,token)
+    }
+
+    override fun addCommentMarkerLocationQuery(
+        markerId: String,
+        message: String,
+        token: String
+    ): Observable<ReturnAddCommentData> {
+        return remoteRepository.addCommentMarkerLocationQuery(markerId,message,token)
+    }
+
+    override fun editCommentLocationQuery(commentId: String, newMessage: String, token: String): Completable {
+        return remoteRepository.editCommentLocationQuery(commentId,newMessage,token)
+    }
+
+    override fun deleteCommentLocationQuery(commentId: String, token: String): Completable {
+        return remoteRepository.deleteCommentLocationQuery(commentId,token)
+    }
+
+
+    override fun likeDislikeCommentLocationQuery(
+        commentId: String,
+        isLikedComment: Int,
+        isDisLikedComment: Int,
+        token: String
+    ): Completable {
+        return remoteRepository.likeDislikeCommentLocationQuery(commentId,isLikedComment,isDisLikedComment,token)
     }
 }

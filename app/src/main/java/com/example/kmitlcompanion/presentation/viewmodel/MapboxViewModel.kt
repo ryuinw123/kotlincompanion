@@ -3,16 +3,12 @@ package com.example.kmitlcompanion.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.kmitlcompanion.domain.model.Comment
-import com.example.kmitlcompanion.domain.model.LikeDetail
-import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.usecases.GetMapLocations
-import com.example.kmitlcompanion.domain.usecases.GetPinDetailsLocationQuery
-import com.example.kmitlcompanion.domain.usecases.addLikeLocationQuery
-import com.example.kmitlcompanion.domain.usecases.removeLikeLocationQuery
+import com.example.kmitlcompanion.domain.model.*
+import com.example.kmitlcompanion.domain.usecases.*
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
+import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
@@ -22,9 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MapboxViewModel @Inject constructor(
     private val getMapLocations: GetMapLocations,
+    private val dateUtils: DateUtils,
     private val getPinDetailsLocationQuery: GetPinDetailsLocationQuery,
     private val addLikeLocationQuery: addLikeLocationQuery,
-    private val removeLikeLocationQuery: removeLikeLocationQuery
+    private val removeLikeLocationQuery: removeLikeLocationQuery,
+    private val addCommentMarkerLocationQuery: AddCommentMarkerLocationQuery,
+    private val editCommentLocationQuery: EditCommentLocationQuery,
+    private val deleteCommentLocationQuery: DeleteCommentLocationQuery,
+    private val likeDislikeCommentLocationQuery: LikeDislikeCommentLocationQuery
 ) : BaseViewModel() {
 
     //For Marker & Location
@@ -69,13 +70,13 @@ class MapboxViewModel @Inject constructor(
 
     //For Comment
     private val _commentList = MutableLiveData<MutableList<Comment>>()
-//        MutableLiveData(mutableListOf(
-//        Comment(1, "15/05/2021 at 12:20", "Anonymous1", "Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1Comment1"),
-//        Comment(2, "15/05/2021 at 12:22", "Anonymous2", "Comment2"),
-//        Comment(3, "15/05/2021 at 12:23", "Anonymous3", "Comment3"),
-//        Comment(4, "15/05/2021 at 12:24", "Anonymous4", "Comment4"),
-//    ))
     val commentList: LiveData<MutableList<Comment>> = _commentList
+
+    private val _editComment =  MutableLiveData<Comment>()
+    val editComment: MutableLiveData<Comment> = _editComment
+
+    private val _editCommentPosition =  MutableLiveData<Int>()
+    //val editCommentPosition: MutableLiveData<Int> = _editCommentPosition
 
     //For อิหยังนิ
     private val _permissionGrand = MutableLiveData(false)
@@ -142,23 +143,17 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun getDetailsLocationQuery(id : String?){
-        getPinDetailsLocationQuery.execute(object : DisposableObserver<LikeDetail>() {
-
+        getPinDetailsLocationQuery.execute(object : DisposableObserver<PinDetail>() {
             override fun onComplete() {
                 Log.d("GetPinDetailsLocationQuery","complete")
 
             }
-
-            override fun onNext(t: LikeDetail) {
-                //Log.d("GetPinDetailsLocationQuery","onNext")
+            override fun onNext(t: PinDetail) {
                 _likeCoutingUpdate.value = t.likeCounting
                 _isLiked.value = t.isLiked
-                Log.d("test_pin_vm",isLiked.value.toString())
-                _commentList.value = mutableListOf(
-                    Comment(1, "15/05/2021 at 12:22", "Anonymous2", "Comment1"),
-                    Comment(2, "15/05/2021 at 12:23", "Anonymous2", "Comment2"),
-                    Comment(3, "15/05/2021 at 12:24", "Anonymous3", "Comment3"),
-                )
+                _commentList.value = t.comment
+                //Log.d("test_pin_vm",t.comment.toString())
+
             }
 
             override fun onError(e: Throwable) {
@@ -196,17 +191,104 @@ class MapboxViewModel @Inject constructor(
         }, params = id)
     }
 
-    fun addComment(shortComment: Comment) {
-        val newList = _commentList.value ?: mutableListOf()
-        newList.add(shortComment)
-        _commentList.value = newList
-    }
-
     fun onClickLikeLocationQuery() {
-        //addLikeLocationQuery()
         _onClicklikeLocation.value = true
     }
 
+    //For Comment
+    fun addComment(shortComment: Comment) {
+        addCommentMarkerLocationQuery.execute(object : DisposableObserver<ReturnAddComment>(){
+            override fun onComplete() {
+                Log.d("addCommentMarkerLocationQuery","onComplete")
+            }
+            override fun onNext(t: ReturnAddComment) {
+                Log.d("test_addCommentMarkerLocationQuery", "$t onNext")
+                val newList = _commentList.value ?: mutableListOf()
+                newList.add(0,Comment(
+                    id = t.commentId,
+                    date = shortComment.date,
+                    author = t.author,
+                    message = shortComment.message,
+                    like = shortComment.like,
+                    dislike = shortComment.dislike,
+                    isLikedComment = shortComment.isLikedComment,
+                    isDisLikedComment = shortComment.isDisLikedComment,
+                    myComment = shortComment.myComment
+                ))
+                _commentList.value = newList
+            }
+            override fun onError(e: Throwable) {
+                Log.d("addCommentMarkerLocationQuery",e.toString())
+            }
+        }, params = AddCommentDetail(markerId = _idLocationLabel.value, message = shortComment.message) )
+    }
+
+    fun editCommentForm(comment: Comment,position : Int){
+        _editCommentPosition.value = position
+        _editComment.value = comment
+    }
+
+    fun editCommentUpdate(textComment : String){
+        //call api
+        editCommentLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                Log.d("test_editSubmit",_editComment.value?.id.toString() + " " + textComment)
+                var newList = _commentList.value ?: mutableListOf()
+                var editCommentList = newList[_editCommentPosition.value!!]
+                var newComment = Comment(
+                    id = editCommentList.id,
+                    date = dateUtils.shinGetTime(),
+                    author = editCommentList.author,
+                    message = textComment,
+                    like = editCommentList.like,
+                    dislike = editCommentList.dislike,
+                    isLikedComment = editCommentList.isLikedComment,
+                    isDisLikedComment = editCommentList.isDisLikedComment,
+                    myComment = editCommentList.myComment
+                )
+                newList.removeAt(_editCommentPosition.value!!)
+                newList.add(0,newComment)
+                _commentList.value = newList
+            }
+            override fun onError(e: Throwable) {
+                Log.d("editCommentLocationQuery",e.toString())
+            }
+        }, params = Pair(_editComment.value?.id.toString() , textComment))
+    }
+
+    fun deleteCommentUpdate(commentId : String, position: Int){
+        deleteCommentLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                Log.d("test_deleteSubmit",commentId)
+                var newList = _commentList.value ?: mutableListOf()
+                newList.removeAt(position)
+                _commentList.value = newList
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("deleteCommentLocationQuery",e.toString())
+            }
+        }, params = commentId)
+    }
+
+    fun likeDisLikeCommentUpdate(comment: Comment,position: Int){
+        //commentid
+        //isLikedComment
+        //isDisLikedComment
+        likeDislikeCommentLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                var newList = _commentList.value ?: mutableListOf()
+                newList[position] = comment
+                _commentList.value = newList
+                Log.d("test_likedislike",newList.toString())
+            }
+            override fun onError(e: Throwable) {
+                Log.d("likeDislikeCommentLocationQuery",e.toString())
+            }
+        }, params = Triple(comment.id.toString(),comment.isLikedComment,comment.isDisLikedComment))
+    }
+
+    //For ??
     fun updateUserLocation(point: Point) {
         _userLocation.value = point
     }
@@ -263,7 +345,6 @@ class MapboxViewModel @Inject constructor(
     fun goBackClicked() {
         navigateBack()
     }
-
 
 
 }

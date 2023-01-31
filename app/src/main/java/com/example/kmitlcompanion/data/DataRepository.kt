@@ -1,14 +1,12 @@
 package com.example.kmitlcompanion.data
 
+import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
-import com.example.kmitlcompanion.domain.model.LikeDetail
-import com.example.kmitlcompanion.domain.model.LocationDetail
-import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.model.Source
+import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
@@ -21,6 +19,7 @@ class DataRepository @Inject constructor(
     private val dataStore: DataStore,
     private val timeUtils: TimeUtils,
     private val mapper: MapPointMapper,
+    private val commentMapper : CommentMapper,
     private val contentResolverUtil: ContentResolverUtil,
 ) : DomainRepository{
 
@@ -43,18 +42,18 @@ class DataRepository @Inject constructor(
     override fun getMapPoints(): Observable<MapInformation> {
         return dataStore.getRemoteData(true).getMapPoints(token=getToken())
             //token=tokenUtils.getToken())
-            //ตัวอย่างข้อมูลของ datastore [{"name": "John", "id": 30, "latitude": "13.779677724153272", "longitude": "100.67650630259816", "description": "noob"}, {"name": "Cena", "id": 31, "latitude": "13.779677724153272", "longitude": "100.97650630259816", "description": "noob2"}]
+            //ตัวอย่างข้อมูลของ datastore [{"name": "John", "commentId": 30, "latitude": "13.779677724153272", "longitude": "100.67650630259816", "description": "noob"}, {"name": "Cena", "commentId": 31, "latitude": "13.779677724153272", "longitude": "100.97650630259816", "description": "noob2"}]
             .map { list ->
-                //ตัวอย่างข้อมูลของ list [MapPointData(description=noob, id=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPointData(description=noob2, id=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)]
+                //ตัวอย่างข้อมูลของ list [MapPointData(description=noob, commentId=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPointData(description=noob2, commentId=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)]
                 MapInformation(
                     mapPoints = list.map { mapper.mapToDomain(it) },
                     source = Source.REMOTE,
                     timeStamp = timeUtils.currentTime
                 )
-                //ตัวอย่างข้อมูลที่ออกมา MapInformation(mapPoints=[MapPoint(description=noob, id=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPoint(description=noob2, id=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)], source=REMOTE, timeStamp=1664528459529)
+                //ตัวอย่างข้อมูลที่ออกมา MapInformation(mapPoints=[MapPoint(description=noob, commentId=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPoint(description=noob2, commentId=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)], source=REMOTE, timeStamp=1664528459529)
             }
             .map { information ->
-                //ตัวอย่างข้อมูลของ information MapInformation(mapPoints=[MapPoint(description=noob, id=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPoint(description=noob2, id=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)], source=REMOTE, timeStamp=1664529846636)
+                //ตัวอย่างข้อมูลของ information MapInformation(mapPoints=[MapPoint(description=noob, commentId=30, latitude=13.779677724153272, longitude=100.67650630259816, name=John), MapPoint(description=noob2, commentId=31, latitude=13.779677724153272, longitude=100.97650630259815, name=Cena)], source=REMOTE, timeStamp=1664529846636)
                 //val list = information.mapPoints.map { mapper.mapToData(it) }
 
                 /*val updateLastLocationTimeStamp = dataStore.getRemoteData(false)
@@ -143,16 +142,17 @@ class DataRepository @Inject constructor(
     }
 
 
-    override fun getPinDetailsLocationQuery(id: String): Observable<LikeDetail> {
+    override fun getPinDetailsLocationQuery(id: String): Observable<PinDetail> {
         return dataStore.getRemoteData(true).getPinDetailsLocationQuery(
             id,
             getToken()
         )
-            .map {
-                LikeDetail(
-                    likeCounting = it.likeCounting,
-                    isLiked = it.isLiked
-                )
+            .map { data ->
+                PinDetail(
+                    likeCounting = data.likeCounting,
+                    isLiked = data.isLiked,
+                    comment = data.comment.map{ commentMapper.mapToDomain(it)} as MutableList<Comment>
+                )  //list.map { commentMapper.mapToDomain(it.comment) }
             }
     }
 
@@ -162,5 +162,34 @@ class DataRepository @Inject constructor(
 
     override fun removeLikeLocationQuery(id: String): Completable {
         return dataStore.getRemoteData(true).removeLikeLocationQuery(id,getToken())
+    }
+
+    override fun addCommentMarkerLocationQuery(
+        markerId: String,
+        message: String
+    ): Observable<ReturnAddComment> {
+        return dataStore.getRemoteData(true).addCommentMarkerLocationQuery(markerId,message,getToken()).map {
+            ReturnAddComment(
+                commentId = it.commentId,
+                author = it.author
+            )
+        }
+    }
+
+    override fun editCommentLocationQuery(commentId: String, newMessage: String): Completable {
+        return dataStore.getRemoteData(true).editCommentLocationQuery(commentId, newMessage,getToken())
+    }
+
+    override fun deleteCommentLocationQuery(commentId: String): Completable {
+        return dataStore.getRemoteData(true).deleteCommentLocationQuery(commentId,getToken())
+    }
+
+    override fun likeDislikeCommentLocationQuery(
+        commentId: String,
+        isLikedComment: Int,
+        isDisLikedComment: Int
+    ): Completable {
+        return dataStore.getRemoteData(true)
+            .likeDislikeCommentLocationQuery(commentId,isLikedComment,isDisLikedComment,getToken())
     }
 }

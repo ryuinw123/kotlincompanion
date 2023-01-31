@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.remote
 
-import com.example.kmitlcompanion.data.model.LikeData
-import com.example.kmitlcompanion.data.model.LocationQuery
-import com.example.kmitlcompanion.data.model.MapPointData
-import com.example.kmitlcompanion.data.model.ReturnLoginData
+import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.remote.service.RetrofitTestClient
 import com.example.kmitlcompanion.data.repository.RemoteRepository
 import io.reactivex.rxjava3.core.Completable
@@ -69,7 +66,7 @@ class RetrofitClient @Inject constructor(
         return retrofitTestClient.postUserData(name,surname,faculty,department,year,token)
     }
 
-    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<PinData> {
         return retrofitTestClient.getPinDetailsLocationQuery(id,token)
     }
 
@@ -80,5 +77,34 @@ class RetrofitClient @Inject constructor(
 
     override fun removeLikeLocationQuery(id: String, token: String): Completable {
         return retrofitTestClient.removeLikeLocationQuery(id,token)
+    }
+
+    override fun addCommentMarkerLocationQuery(
+        markerId: String,
+        message: String,
+        token: String
+    ): Observable<ReturnAddCommentData> {
+        return retrofitTestClient.addCommentMarkerLocationQuery(markerId,message,token)
+    }
+
+    override fun editCommentLocationQuery(
+        commentId: String,
+        newMessage: String,
+        token: String
+    ): Completable {
+        return retrofitTestClient.editCommentMarkerLocationQuery(commentId,newMessage,token)
+    }
+
+    override fun deleteCommentLocationQuery(commentId: String, token: String): Completable {
+        return retrofitTestClient.deleteCommentMarkerLocationQuery(commentId,token)
+    }
+
+    override fun likeDislikeCommentLocationQuery(
+        commentId: String,
+        isLikedComment: Int,
+        isDisLikedComment: Int,
+        token: String
+    ): Completable {
+        return retrofitTestClient.likeDislikeCommentMarkerLocationQuery(commentId,isLikedComment,isDisLikedComment,token)
     }
 }
