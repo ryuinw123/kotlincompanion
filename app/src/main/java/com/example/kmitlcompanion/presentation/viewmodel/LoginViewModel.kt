@@ -97,7 +97,7 @@ class LoginViewModel @Inject constructor(
             Log.d("OAuth Authorization server",account.serverAuthCode!!)
 
             _loginResponse.value = account.serverAuthCode
-            //_updateUserRoom.value = UserData(id=0,email=account.email.toString(),token=account.serverAuthCode.toString())
+            //_updateUserRoom.value = UserData(commentId=0,email=account.email.toString(),token=account.serverAuthCode.toString())
             //_loginResponse.postValue(null)
 
         } catch (e: ApiException) {

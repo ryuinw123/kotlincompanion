@@ -83,7 +83,7 @@ class CacheDataStore @Inject constructor(
         return cacheRepository.getUser()
     }
 
-    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<LikeData> {
+    override fun getPinDetailsLocationQuery(id: String, token: String): Observable<PinData> {
         throw IllegalStateException("Function not currently supported!")
     }
 
@@ -93,6 +93,31 @@ class CacheDataStore @Inject constructor(
     }
 
     override fun removeLikeLocationQuery(id: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun addCommentMarkerLocationQuery(
+        markerId: String,
+        message: String,
+        token: String
+    ): Observable<ReturnAddCommentData> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun editCommentLocationQuery(commentId: String, newMessage: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun deleteCommentLocationQuery(commentId: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun likeDislikeCommentLocationQuery(
+        commentId: String,
+        isLikedComment: Int,
+        isDisLikedComment: Int,
+        token: String
+    ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
 }

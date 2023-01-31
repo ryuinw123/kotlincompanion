@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 //        viewModel.setActivityContext(requireActivity())
 //
 //        //show bottom nav bar
-//        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+//        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.commentId.bottom_navigation)
 //        bottomNavigationView.visibility = View.VISIBLE
 //
 //        return binding.root

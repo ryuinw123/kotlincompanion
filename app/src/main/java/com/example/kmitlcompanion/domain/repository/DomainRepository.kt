@@ -4,9 +4,10 @@ import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.domain.model.LikeDetail
+import com.example.kmitlcompanion.domain.model.PinDetail
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.MapInformation
+import com.example.kmitlcompanion.domain.model.ReturnAddComment
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
@@ -34,10 +35,20 @@ interface DomainRepository {
 
     fun getUser(): Observable<List<UserData>>
 
-    fun getPinDetailsLocationQuery(id : String) : Observable<LikeDetail>
+    fun getPinDetailsLocationQuery(id : String) : Observable<PinDetail>
 
     fun addLikeLocationQuery(id : String) : Completable
 
     fun removeLikeLocationQuery(id : String) : Completable
+
+    fun addCommentMarkerLocationQuery(markerId : String, message : String) : Observable<ReturnAddComment>
+
+    fun editCommentLocationQuery(commentId : String,newMessage : String) : Completable
+
+    fun deleteCommentLocationQuery(commentId : String) : Completable
+
+    fun likeDislikeCommentLocationQuery(commentId : String,
+                                        isLikedComment : Int,
+                                        isDisLikedComment : Int) : Completable
 
 }

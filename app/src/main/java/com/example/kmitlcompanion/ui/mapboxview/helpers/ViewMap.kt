@@ -212,7 +212,7 @@ internal class ViewMap @Inject constructor(
             activePointList.map {
                 if (it.pointAnnotation == clickedAnnotation) {
                     val point = Point.fromLngLat(it.mapPoint.longitude, it.mapPoint.latitude)
-                    viewModel.updateIdLocationLabel(it.mapPoint.id.toString())
+                    viewModel.updateIdLocationLabel(it.mapPoint.commentId.toString())
                     viewModel.updateNameLocationLabel(it.mapPoint.place)
                     viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
                     viewModel.updateCurrentLocationGps(point)

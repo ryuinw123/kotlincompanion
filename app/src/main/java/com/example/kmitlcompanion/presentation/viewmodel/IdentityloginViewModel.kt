@@ -57,7 +57,7 @@ class IdentityloginViewModel @Inject constructor(
                  year : TextView){
 
         if (!checkAllFieldValid()){
-            Log.d("saveData","InValid Data")
+            Log.d("saveData","InValid PinData")
             return
         }
 

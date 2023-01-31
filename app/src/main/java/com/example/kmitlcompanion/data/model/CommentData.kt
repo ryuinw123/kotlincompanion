@@ -1,10 +1,10 @@
-package com.example.kmitlcompanion.domain.model
+package com.example.kmitlcompanion.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Comment(
+data class CommentData(
     val id: Int,
     val date: String,
     val author: String,

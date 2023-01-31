@@ -14,7 +14,7 @@ class WorkManagerUtils @Inject constructor(
 
         /*val locationListJson = Gson().toJson(mapInformation)
 
-           val data = Data.Builder()
+           val data = PinData.Builder()
                 .putString("location_list", locationListJson)
                 .build()*/
 

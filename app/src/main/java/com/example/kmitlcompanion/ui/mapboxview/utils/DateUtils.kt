@@ -10,4 +10,9 @@ class DateUtils @Inject constructor() {
         val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
         return formatter.format(calendar)
     }
+    fun shinGetTime() : String {
+        val calendar = Calendar.getInstance(Locale.ROOT).time
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+        return formatter.format(calendar)
+    }
 }

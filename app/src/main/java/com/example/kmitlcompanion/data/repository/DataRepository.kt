@@ -36,10 +36,22 @@ interface DataRepository {
 
     fun getUser(): Observable<List<UserData>>
 
-    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<LikeData>
+    fun getPinDetailsLocationQuery(id : String, token : String) : Observable<PinData>
 
     fun addLikeLocationQuery(id : String, token : String) : Completable
 
     fun removeLikeLocationQuery(id : String, token : String) : Completable
+
+    fun addCommentMarkerLocationQuery(markerId : String, message : String, token : String) : Observable<ReturnAddCommentData>
+
+    fun editCommentLocationQuery(commentId : String,newMessage : String,token : String) : Completable
+
+    fun deleteCommentLocationQuery(commentId : String,token : String) : Completable
+
+    fun likeDislikeCommentLocationQuery(commentId : String,
+                                        isLikedComment : Int,
+                                        isDisLikedComment : Int,
+                                        token : String) : Completable
+
 
 }

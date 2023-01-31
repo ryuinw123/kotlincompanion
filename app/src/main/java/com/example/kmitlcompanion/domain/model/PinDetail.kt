@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class LikeDetail(
+data class PinDetail(
     val likeCounting : Int,
-    val isLiked : Boolean
+    val isLiked : Boolean,
+    val comment : MutableList<Comment>
 ) : Parcelable

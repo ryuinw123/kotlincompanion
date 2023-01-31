@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             mapbox:mapbox_locationComponentEnabled = "true"
             mapbox:mapbox_locationComponentPuckBearingSource = "heading"
-            app:mapbox_cameraTargetLat="59.31"
-            app:mapbox_cameraTargetLng="18.06"
+            app:mapbox_cameraTargetLat="13.7563"
+            app:mapbox_cameraTargetLng="100.5018"
             app:mapbox_cameraZoom="9.0"
             >
 
@@ -62,6 +62,7 @@
             android:elevation="8dp"
             android:orientation="vertical"
             android:paddingBottom="8dp"
+            android:visibility="visible"
             app:behavior_hideable="false"
             app:behavior_peekHeight="80dp"
             app:layout_behavior=".ui.mapboxview.helpers.ViewSlider$AutoCloseBottomSheetBehavior">
@@ -140,7 +141,6 @@
                                 tools:ignore="HardcodedText"
                                 tools:visibility="visible" />
                         </HorizontalScrollView>
-
 
 
                         <TextView
@@ -418,6 +418,8 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="50dp"
                                 android:textSize="15sp"
+                                android:inputType="text"
+                                android:focusableInTouchMode="true"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/cardView2"
                                 app:layout_constraintTop_toTopOf="@+id/cardView2"
@@ -430,10 +432,46 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="15dp"
                                 android:backgroundTint="@color/kmitl_color"
+                                android:enabled="false"
                                 android:text="โพสต์"
+                                android:visibility="visible"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="@+id/commend"
                                 app:layout_constraintTop_toBottomOf="@+id/commend" />
+
+                            <Button
+                                android:id="@+id/edit_comment_btn"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="15dp"
+                                android:backgroundTint="@color/kmitl_color"
+                                android:enabled="false"
+                                android:text="แก้ไข"
+                                android:visibility="gone"
+                                mapbox:layout_constraintBottom_toBottomOf="parent"
+                                mapbox:layout_constraintEnd_toEndOf="@+id/commend"
+                                mapbox:layout_constraintTop_toBottomOf="@+id/commend" />
+
+                            <Button
+                                android:id="@+id/cancel_edit_comment_btn"
+                                android:layout_width="100dp"
+                                android:layout_height="48dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="30dp"
+                                android:layout_marginBottom="15dp"
+                                android:backgroundTint="@color/white"
+                                android:enabled="true"
+                                android:text="ยกเลิก"
+                                android:textColor="#FF5722"
+                                android:visibility="gone"
+                                app:layout_constraintEnd_toStartOf="@+id/edit_comment_btn"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:strokeColor="#FF5722"
+                                app:strokeWidth="2dp"
+                                mapbox:layout_constraintBottom_toBottomOf="parent"
+                                mapbox:layout_constraintEnd_toEndOf="@+id/commend"
+                                mapbox:layout_constraintTop_toBottomOf="@+id/commend" />
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -463,8 +501,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

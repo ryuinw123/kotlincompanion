@@ -2,23 +2,37 @@ package com.example.kmitlcompanion.ui.mapboxview.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.ChatCommentBinding
+import com.example.kmitlcompanion.databinding.CommentMenuBinding
 import com.example.kmitlcompanion.domain.model.Comment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
 
 class CommentAdapter @Inject constructor()
     : ListAdapter<Comment, CommentViewHolder>(ShortCommentDiffUtil) {
     lateinit var commentClickListener: CommentClickListener
 
+    private lateinit var likeListener: OnButtonClickListener
+    private lateinit var disLikeListener: OnButtonClickListener
+    private lateinit var menuListener: OnMenuClickListener
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        return CommentViewHolder(ChatCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false),commentClickListener)
+
+        //bottomSheetDialog = BottomSheetDialog(parent.context)
+        //bottomSheetDialog.setContentView(CommentMenuBinding.inflate(LayoutInflater.from(parent.context)).root)
+
+        return CommentViewHolder(
+            ChatCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            CommentMenuBinding.inflate(LayoutInflater.from(parent.context)),
+            commentClickListener,
+            BottomSheetDialog(parent.context),
+            likeListener,
+            disLikeListener,
+            menuListener
+        )
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
@@ -35,6 +49,18 @@ class CommentAdapter @Inject constructor()
         override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
             return oldItem == newItem
         }
+    }
+
+    fun setOnLikeClickListener(listener: OnButtonClickListener){
+        likeListener = listener
+    }
+
+    fun setOnDisLikeClickListener(listener: OnButtonClickListener){
+        disLikeListener = listener
+    }
+
+    fun setOnMenuClickListener(listener: OnMenuClickListener){
+        menuListener = listener
     }
 
 }
