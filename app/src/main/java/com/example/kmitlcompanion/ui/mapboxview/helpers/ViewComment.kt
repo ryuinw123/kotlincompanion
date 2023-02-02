@@ -1,8 +1,11 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kmitlcompanion.domain.model.Comment
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
@@ -10,17 +13,36 @@ import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentAdapter
 import com.example.kmitlcompanion.ui.mapboxview.adapter.CommentClickListener
 import com.example.kmitlcompanion.ui.mapboxview.adapter.OnButtonClickListener
 import com.example.kmitlcompanion.ui.mapboxview.adapter.OnMenuClickListener
+import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
 class ViewComment @Inject constructor(
-    private val commentAdapter: CommentAdapter
+    private val commentAdapter: CommentAdapter,
+    private val dateUtils: DateUtils
 ){
 
     //private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var weakCommentView : WeakReference<EditText>
+    private lateinit var weakSendCommentBtn : WeakReference<Button>
+    private lateinit var weakEditCommentBtn : WeakReference<Button>
+    private lateinit var weakCancelEditCommentBtn : WeakReference<Button>
 
-    fun setup(viewModel: MapboxViewModel, recyclerView: RecyclerView, context: Context,alertBuilder : AlertDialog.Builder) {
+    private lateinit var viewModel : MapboxViewModel
+
+    fun setup(viewModel: MapboxViewModel, comment : EditText, sendCommentBtn: Button, editCommentBtn: Button
+              ,cancelEditCommentBtn: Button,recyclerView: RecyclerView,alertBuilder : AlertDialog.Builder) {
+
+        this.weakCommentView = WeakReference(comment)
+        this.weakSendCommentBtn = WeakReference(sendCommentBtn)
+        this.weakEditCommentBtn = WeakReference(editCommentBtn)
+        this.weakCancelEditCommentBtn = WeakReference(cancelEditCommentBtn)
+
+        this.viewModel = viewModel
+
+        setupButtonListener()
 
         //???
         val commentClickListener = CommentClickListener { author, message, level, parentId ->
@@ -38,8 +60,6 @@ class ViewComment @Inject constructor(
         }
         commentAdapter.commentClickListener = commentClickListener
 
-        //bottomSheetDialog = BottomSheetDialog(context)
-
         commentAdapter.setOnLikeClickListener(object : OnButtonClickListener{
             override fun onButtonClick(comment: Comment, position: Int) {
                 var newComment = Comment(
@@ -54,7 +74,6 @@ class ViewComment @Inject constructor(
                     myComment = comment.myComment
                 )
                 viewModel.likeDisLikeCommentUpdate(newComment, position)
-                //Log.d("test_like", comment.toString())
             }
         })
 
@@ -72,13 +91,11 @@ class ViewComment @Inject constructor(
                     myComment = comment.myComment
                 )
                 viewModel.likeDisLikeCommentUpdate(newComment, position)
-                //Log.d("test_disLike", comment.toString())
             }
         })
 
         commentAdapter.setOnMenuClickListener(object : OnMenuClickListener{
             override fun onMenuClick(comment: Comment, bottomSheetDialog: BottomSheetDialog) {
-                //Log.d("test_menu", comment.toString())
                 bottomSheetDialog.setCancelable(true)
                 bottomSheetDialog.show()
 
@@ -87,7 +104,6 @@ class ViewComment @Inject constructor(
             override fun onEditClick(comment: Comment,position: Int,bottomSheetDialog: BottomSheetDialog) {
                 bottomSheetDialog.dismiss()
                 viewModel.editCommentForm(comment,position)
-                //Log.d("test_edit",comment.id.toString())
             }
 
             override fun onDeleteClick(comment: Comment,position: Int,bottomSheetDialog: BottomSheetDialog
@@ -98,25 +114,74 @@ class ViewComment @Inject constructor(
                 alertBuilder.setMessage("คุณต้องการลบความคิดเห็นอย่างถาวรหรือไม่ ?")
                 alertBuilder.setNegativeButton("ไม่",null)
                 alertBuilder.setPositiveButton("ใช่",DialogInterface.OnClickListener { dialogInterface, i ->
-                    //Log.d("test_deleteListener",comment.id.toString())
                     viewModel.deleteCommentUpdate(comment.id.toString(),position)
                 })
                 alertBuilder.show()
-
-                //Log.d("test_delete",comment.id.toString())
             }
         })
 
         recyclerView.adapter = commentAdapter
-
     }
 
     fun update(commentList : MutableList<Comment>) {
         commentAdapter.submitList(commentList)
     }
 
+    private fun setupButtonListener(){
+        commend?.doAfterTextChanged {
+            var checkValid = (it.toString().replace(Regex("[\\s\\n]+"), "") != "")
+            sendCommend?.isEnabled = checkValid
+            editCommentBtn?.isEnabled = checkValid
+        }
+
+        sendCommend?.setOnClickListener {
+            //val commentId = (viewModel.commentList.value?.size ?: 0) + 1
+            this.viewModel.addComment(Comment(
+                0,
+                dateUtils.shinGetTime(),
+                "",
+                commend?.text.toString(),
+                0,
+                0,
+                isLikedComment = false,
+                isDisLikedComment = false,
+                myComment = true
+            ))
+            commend?.text?.clear()
+        }
+
+        editCommentBtn?.setOnClickListener {
+            viewModel.editCommentUpdate(commend?.text.toString())
+            editCommentBtn?.visibility = View.GONE
+            cancelEditCommentBtn?.visibility = View.GONE
+            sendCommend?.visibility = View.VISIBLE
+            commend?.text?.clear()
+            commend?.clearFocus()
+        }
+
+        cancelEditCommentBtn?.setOnClickListener {
+            editCommentBtn?.visibility = View.GONE
+            cancelEditCommentBtn?.visibility = View.GONE
+            sendCommend?.visibility = View.VISIBLE
+            commend?.text?.clear()
+            commend?.clearFocus()
+        }
+    }
+
     fun onAlert(title : String,message : String,positive : String,negative : String, dialogInterfaceListener: DialogInterface.OnClickListener ){
 
     }
+
+    private val commend
+        get() = this.weakCommentView.get()
+
+    private val sendCommend
+        get() = weakSendCommentBtn.get()
+
+    private val editCommentBtn
+        get() = weakEditCommentBtn.get()
+
+    private val cancelEditCommentBtn
+        get() = weakCancelEditCommentBtn.get()
 
 }

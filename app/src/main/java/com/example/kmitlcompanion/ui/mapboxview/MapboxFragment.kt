@@ -20,7 +20,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -54,8 +53,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
-            helper.comment.setup(this@MapboxFragment.viewModel,rvComment,requireContext(),AlertDialog.Builder(requireContext()))
-            //helper.bottomComment.setup(bottomSheetMenu,this@MapboxFragment.viewModel)
+            helper.comment.setup(this@MapboxFragment.viewModel,commend, sendCommend, editCommentBtn,
+                                cancelEditCommentBtn, rvComment,AlertDialog.Builder(requireContext()))
             helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
@@ -64,49 +63,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             setupViewObservers()
 
-        }
-
-        //รอ implement ลงไฟล์อื่น
-        val btnAddComment = binding.sendCommend
-        val recyclerView = binding.rvComment
-
-        binding.commend.doAfterTextChanged {
-            var checkValid = (it.toString().replace(Regex("[\\s\\n]+"), "") != "")
-            binding.sendCommend.isEnabled = checkValid
-            binding.editCommentBtn.isEnabled = checkValid
-        }
-
-        binding.sendCommend.setOnClickListener {
-            //val commentId = (viewModel.commentList.value?.size ?: 0) + 1
-            viewModel.addComment(Comment(
-                0,
-                dateUtils.shinGetTime(),
-                "",
-                binding.commend.text.toString(),
-                0,
-                0,
-                false,
-                false,
-                true
-            ))
-            binding.commend.text.clear()
-        }
-
-        binding.editCommentBtn.setOnClickListener {
-            viewModel.editCommentUpdate(binding.commend.text.toString())
-            binding.editCommentBtn.visibility = View.GONE
-            binding.cancelEditCommentBtn.visibility = View.GONE
-            binding.sendCommend.visibility = View.VISIBLE
-            binding.commend.text.clear()
-            binding.commend.clearFocus()
-        }
-
-        binding.cancelEditCommentBtn.setOnClickListener {
-            binding.editCommentBtn.visibility = View.GONE
-            binding.cancelEditCommentBtn.visibility = View.GONE
-            binding.sendCommend.visibility = View.VISIBLE
-            binding.commend.text.clear()
-            binding.commend.clearFocus()
         }
 
         //show bottom bar
@@ -125,7 +81,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
-        lifecycle.addObserver(helper.navigation)
+        //lifecycle.addObserver(helper.navigation)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -230,30 +186,30 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
 
             //For Nataviation
-            applicationMode.observe(viewLifecycleOwner , Observer {
-                bottomBarUtils.applicationMode = it
-                if (it == 0) {
-                    Log.d("Navigation" ,"End Navigation")
-                    helper.navigation.stopNavigationEvent()
-                }
-                else if (it == 1) {
-                    Log.d("Navigation","Enter ApplicationMode 1")
-                    helper.navigation.startNavigation(requireContext())
-                }
-            })
-
-
-            recenterEvent.observe(viewLifecycleOwner, Observer {
-                helper.navigation.recenterEvent()
-            })
-
-            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
-                helper.navigation.routeOverviewEvent()
-            })
-
-            soundEvent.observe(viewLifecycleOwner, Observer {
-                helper.navigation.soundEvent()
-            })
+//            applicationMode.observe(viewLifecycleOwner , Observer {
+//                bottomBarUtils.applicationMode = it
+//                if (it == 0) {
+//                    Log.d("Navigation" ,"End Navigation")
+//                    helper.navigation.stopNavigationEvent()
+//                }
+//                else if (it == 1) {
+//                    Log.d("Navigation","Enter ApplicationMode 1")
+//                    helper.navigation.startNavigation(requireContext())
+//                }
+//            })
+//
+//
+//            recenterEvent.observe(viewLifecycleOwner, Observer {
+//                helper.navigation.recenterEvent()
+//            })
+//
+//            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
+//                helper.navigation.routeOverviewEvent()
+//            })
+//
+//            soundEvent.observe(viewLifecycleOwner, Observer {
+//                helper.navigation.soundEvent()
+//            })
 
             locationIcon.observe(viewLifecycleOwner, Observer {
                 helper.location.updatePuckIcon(requireContext(),it)
