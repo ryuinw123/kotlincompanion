@@ -8,8 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.DEFAULT_SOUND
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.ui.mainactivity.MainActivity
 import javax.inject.Inject
@@ -76,13 +79,15 @@ class NotificationUtils @Inject constructor(
         val builder = NotificationCompat.Builder(context, channelId)
             .setContentTitle(context.getString(R.string.app_name))
             .setContentText(context.getString(R.string.content_text, detail))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(3)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(contentPendingIntent)
             .setSmallIcon(R.drawable.ic_location_on_red_24dp)
             .setStyle(bigPicStyle)
             .setLargeIcon(mapImage)
 
-        notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
+
+            notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
     }
 
     fun createNotification(channelId: String): Notification {

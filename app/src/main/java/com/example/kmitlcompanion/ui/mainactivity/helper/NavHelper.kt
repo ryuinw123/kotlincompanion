@@ -28,9 +28,9 @@ class  NavHelper  @Inject constructor(){
 
         this.weakNavHostFragment = WeakReference(navHostFragment)
         this.weakBottomMap = WeakReference(bottomMap)
-        this.appearanceLightNavigationBars(window)
-        this.setDrawUIonTop(root)
-        this.setWindowInsetsController(window)
+//        this.appearanceLightNavigationBars(window)
+//        this.setDrawUIonTop(root)
+//        this.setWindowInsetsController(window)
         this.drawBottomNavBar(window,bottomNavigation)
 
     }

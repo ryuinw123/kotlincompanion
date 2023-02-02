@@ -60,7 +60,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
-            helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
+            //helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             setupViewObservers()
 
         }
@@ -81,7 +81,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
-        lifecycle.addObserver(helper.navigation)
+        //lifecycle.addObserver(helper.navigation)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
@@ -186,30 +186,30 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
 
             //For Nataviation
-            applicationMode.observe(viewLifecycleOwner , Observer {
-                bottomBarUtils.applicationMode = it
-                if (it == 0) {
-                    Log.d("Navigation" ,"End Navigation")
-                    helper.navigation.stopNavigationEvent()
-                }
-                else if (it == 1) {
-                    Log.d("Navigation","Enter ApplicationMode 1")
-                    helper.navigation.startNavigation(requireContext())
-                }
-            })
-
-
-            recenterEvent.observe(viewLifecycleOwner, Observer {
-                helper.navigation.recenterEvent()
-            })
-
-            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
-                helper.navigation.routeOverviewEvent()
-            })
-
-            soundEvent.observe(viewLifecycleOwner, Observer {
-                helper.navigation.soundEvent()
-            })
+//            applicationMode.observe(viewLifecycleOwner , Observer {
+//                bottomBarUtils.applicationMode = it
+//                if (it == 0) {
+//                    Log.d("Navigation" ,"End Navigation")
+//                    helper.navigation.stopNavigationEvent()
+//                }
+//                else if (it == 1) {
+//                    Log.d("Navigation","Enter ApplicationMode 1")
+//                    helper.navigation.startNavigation(requireContext())
+//                }
+//            })
+//
+//
+//            recenterEvent.observe(viewLifecycleOwner, Observer {
+//                helper.navigation.recenterEvent()
+//            })
+//
+//            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
+//                helper.navigation.routeOverviewEvent()
+//            })
+//
+//            soundEvent.observe(viewLifecycleOwner, Observer {
+//                helper.navigation.soundEvent()
+//            })
 
             locationIcon.observe(viewLifecycleOwner, Observer {
                 helper.location.updatePuckIcon(requireContext(),it)
