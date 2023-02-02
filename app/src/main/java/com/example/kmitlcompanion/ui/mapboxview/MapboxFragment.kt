@@ -66,6 +66,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
         }
 
+        //รอ implement ลงไฟล์อื่น
         val btnAddComment = binding.sendCommend
         val recyclerView = binding.rvComment
 
@@ -228,7 +229,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
 
-            //For ???
+            //For Nataviation
             applicationMode.observe(viewLifecycleOwner , Observer {
                 bottomBarUtils.applicationMode = it
                 if (it == 0) {
