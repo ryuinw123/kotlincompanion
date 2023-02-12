@@ -29,7 +29,7 @@ class ViewSearch @Inject constructor(
     private val bottomBarUtils: BottomBarUtils
 ){
     private lateinit var viewModel : MapboxViewModel
-    private lateinit var pinButtonWeakReference: WeakReference<Button>
+    //private lateinit var pinButtonWeakReference: WeakReference<Button>
     private lateinit var weakTextTagDes: WeakReference<TextView>
     private lateinit var context: Context
     private lateinit var weakSearch: WeakReference<SearchView>
@@ -38,13 +38,12 @@ class ViewSearch @Inject constructor(
     private lateinit var weekMaterialTagCardView : WeakReference<ConstraintLayout>
     private lateinit var weekTextTagDescription : WeakReference<TextView>
     private lateinit var weekClearTagCardView : WeakReference<MaterialCardView>
-    private var weakMapView: WeakReference<MapView?>? = null
+
     private var isSearch : Boolean = false
 
-    fun setup(viewModel: MapboxViewModel, search: SearchView,map: MapView,
+    fun setup(viewModel: MapboxViewModel, search: SearchView,
               searchRecyclerView: RecyclerView,
               materialCardViewBG : MaterialCardView,
-              addPinButton : Button,
               tagCardView: ConstraintLayout,
               textTagDes : TextView,
               clearTagCardView: MaterialCardView,
@@ -52,9 +51,9 @@ class ViewSearch @Inject constructor(
 
         this.context = context
         this.viewModel = viewModel
-        this.pinButtonWeakReference = WeakReference(addPinButton)
+        //this.pinButtonWeakReference = WeakReference(addPinButton)
         this.weakTextTagDes = WeakReference(textTagDes)
-        this.weakMapView = WeakReference(mapView)
+
         this.weakSearch = WeakReference(search)
         this.weakSearchRecyclerView = WeakReference(searchRecyclerView)
         this.weakMaterialCardViewBG = WeakReference(materialCardViewBG)
@@ -140,7 +139,7 @@ class ViewSearch @Inject constructor(
         //bottomBarUtils.bottomMap?.visibility = status
         //this.pinButtonWeakReference.get()?.visibility = status
 
-        this.pinButtonWeakReference.get()?.visibility = if(status == View.VISIBLE) View.GONE else status
+        //this.pinButtonWeakReference.get()?.visibility = if(status == View.VISIBLE) View.GONE else status
         searchRecyclerView?.visibility = status
 
         materialCardViewBG?.setCardBackgroundColor(
@@ -206,9 +205,6 @@ class ViewSearch @Inject constructor(
 
     private val search
         get() = weakSearch?.get()
-
-    private val mapView
-        get() = weakMapView?.get()
 
     private val searchRecyclerView
         get() = weakSearchRecyclerView?.get()

@@ -60,7 +60,7 @@ class CreateLocation : BaseFragment<FragmentCreateLocationBinding , CreateLocati
 //                "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
 //            )
             val itemList = tagTypeListUtil.getMutableListOfTagTypeString() as ArrayList<String>
-            helper.spinner.setupSpinnerAdaptor(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
+            helper.spinner.setup(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
             helper.upload.setup(this@CreateLocation.viewModel)
             setupViewObservers()
             setupTextChange()

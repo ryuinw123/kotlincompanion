@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
@@ -21,15 +18,9 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -66,11 +57,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
             helper.comment.setup(this@MapboxFragment.viewModel,commend, sendCommend, editCommentBtn,
                                 cancelEditCommentBtn, rvComment,AlertDialog.Builder(requireContext()))
-            helper.search.setup(
-                this@MapboxFragment.viewModel, searchView,mapView,
-                searchRecyclerview, materialCardViewBG, button2, materialTagCardView,
-                textTagDescription, clearTagCardView, requireContext()
-            )
+            helper.search.setup(this@MapboxFragment.viewModel, searchView, searchRecyclerview,
+                                materialCardViewBG, materialTagCardView, textTagDescription, clearTagCardView,
+                                requireContext())
 
             helper.bookMark.setup(this@MapboxFragment.viewModel)
             helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
@@ -298,26 +287,18 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 helper.location.updatePuckIcon(requireContext(),it)
             })
 
-            //For Search
-            val subject = PublishSubject.create<Pair<String?,MutableList<Int?>>>()
-            disposable = subject
-                .debounce(1000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (isSearch.value == true){
-                        Log.d("test_ss","search api")
-                        appendDataToSearchList(it.first,it.second)
-                    }
-                }
+
+
             submitSearchValue.observe(viewLifecycleOwner, Observer {
-                //appendDataToSearchList(it.first,it.second)
                 Log.d("test_ss","search")
-                subject.onNext(it)
+                if (isSearch.value == true){
+                    Log.d("test_ss","search api")
+                    appendDataToSearchList(it.first,it.second)
+                }
             })
 
             appendSearchList.observe(viewLifecycleOwner, Observer {
                 helper.search.addToDataList(it)
-                //subject.onNext(it)
             })
 
             resetSearchList.observe(viewLifecycleOwner, Observer {
@@ -333,13 +314,14 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                             tagList.add(it.value.code)
                         }
                     }
-
+                    button2.visibility = View.GONE
                     appendDataToSearchList("",tagList)
                     helper.search.objectVisbility(View.VISIBLE)
                     bottomBarUtils.bottomMap?.visibility = View.GONE
                 }else {
                     helper.search.objectVisbility(View.GONE)
                     bottomBarUtils.bottomMap?.visibility = View.VISIBLE
+                    button2.visibility = View.VISIBLE
                 }
             })
 
