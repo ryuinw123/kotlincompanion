@@ -55,6 +55,9 @@ class CreateLocationViewModel @Inject constructor(
     private val _detailInput = MutableLiveData<String>()
     val detailInput : LiveData<String> = _detailInput
 
+    private val _polygonEvent = MutableLiveData(false)
+    val polygonEvent : LiveData<Boolean> = _polygonEvent
+
 
 
     private val _typeSpinner = MutableLiveData<String>()
@@ -65,6 +68,10 @@ class CreateLocationViewModel @Inject constructor(
 
     private val _publicUpload = MutableLiveData<Event<Boolean>>()
     val publicUpload : LiveData<Event<Boolean>>  = _publicUpload
+
+    fun polygonEvent() {
+        _polygonEvent.value = true
+    }
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -77,7 +84,6 @@ class CreateLocationViewModel @Inject constructor(
         Log.d("nulllcheck","viewModel")
         _imageData.value = intent
         _storeImageData.add(_imageData.value)
-        //_imageData.value?.add(intent)
     }
 
     fun removeImage(){

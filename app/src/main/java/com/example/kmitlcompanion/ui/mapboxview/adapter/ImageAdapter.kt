@@ -36,12 +36,6 @@ internal class ImageAdapter @Inject constructor(
             viewPager2.post(runnable)
         }
 
-
-
-
-
-
-
     }
 
     override fun getItemCount(): Int {

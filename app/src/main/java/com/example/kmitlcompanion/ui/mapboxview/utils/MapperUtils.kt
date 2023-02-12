@@ -49,7 +49,7 @@ class MapperUtils @Inject constructor(
         return feature
     }
 
-    private fun createCircleCoordinates(center : Point, radiusInKm:Double , points : Int = 64) : List<List<Double>> {
+    fun createCircleCoordinates(center : Point, radiusInKm:Double , points : Int = 64) : List<List<Double>> {
 
 
         val km = radiusInKm
@@ -73,6 +73,23 @@ class MapperUtils @Inject constructor(
 
         return ret
     }
+
+    fun doublePolygonToPoint(polygon :List<List<Double>>)  : List<List<Point>> {
+
+        val mapboxPoint = mutableListOf<List<Point>>()
+        val polygonPoint = mutableListOf<Point>()
+
+        for (i in polygon.indices) {
+            val point = Point.fromLngLat(polygon[i][0] , polygon[i][1])
+            polygonPoint.add(point)
+        }
+        mapboxPoint.add(polygonPoint)
+
+        return mapboxPoint
+
+    }
+
+
 
 
 

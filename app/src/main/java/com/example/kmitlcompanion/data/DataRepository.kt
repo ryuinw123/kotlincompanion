@@ -37,7 +37,8 @@ class DataRepository @Inject constructor(
                 LocationDetail(
                     point = Point.fromLngLat(longitude,latitude)?: null,
                     address = it?.address,
-                    place = it?.place
+                    place = it?.place,
+                    polygon = null
                 )
             }
     }
