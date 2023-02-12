@@ -4,10 +4,7 @@ import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.domain.model.PinDetail
-import com.example.kmitlcompanion.domain.model.LocationDetail
-import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.model.ReturnAddComment
+import com.example.kmitlcompanion.domain.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
@@ -51,4 +48,10 @@ interface DomainRepository {
                                         isLikedComment : Int,
                                         isDisLikedComment : Int) : Completable
 
+
+    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>) : Observable<List<SearchDetail>>
+
+
+    fun getAllBookmaker() : Observable<MutableList<Int>>
+    fun updateBookmakerQuery(markerId : String,isBookmarked : Boolean) : Completable
 }

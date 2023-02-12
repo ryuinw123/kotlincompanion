@@ -18,6 +18,7 @@ import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.createlocation.helper.CreateLocationHelper
 import com.example.kmitlcompanion.ui.createlocation.helper.ImageHelper
+import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,6 +34,7 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
     private val requestGallery = 2121
 
     @Inject lateinit var helper: CreateLocationHelper
+    @Inject lateinit var tagTypeListUtil : TagTypeListUtil
 
     override fun onReady(savedInstanceState: Bundle?) {
         viewModel.updateCurrentLocation(navArgs.currentLocation)
@@ -50,9 +52,10 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
                                 listOf(discardImage1,discardImage2,discardImage3,discardImage4,discardImage5),
                                 this@CreateLocation.viewModel)
 
-            val itemList = arrayListOf<String>(
-                "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
-            )
+//            val itemList = arrayListOf<String>(
+//                "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
+//            )
+            val itemList = tagTypeListUtil.getMutableListOfTagTypeString() as ArrayList<String>
             helper.spinner.setupSpinnerAdaptor(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
             helper.upload.setup(this@CreateLocation.viewModel)
             setupViewObservers()

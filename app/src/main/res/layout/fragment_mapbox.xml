@@ -14,21 +14,180 @@
             type="com.example.kmitlcompanion.ui.mapboxview.helpers.ViewMap" />
     </data>
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <com.mapbox.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_locationComponentEnabled = "true"
-            mapbox:mapbox_locationComponentPuckBearingSource = "heading"
             app:mapbox_cameraTargetLat="13.7563"
             app:mapbox_cameraTargetLng="100.5018"
             app:mapbox_cameraZoom="9.0"
-            >
+            mapbox:mapbox_locationComponentEnabled="true"
+            mapbox:mapbox_locationComponentPuckBearingSource="heading">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/search_and_tag_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/materialCardViewBG"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#00FFFFFF"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/materialCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/kmitl_color"
+                        app:strokeWidth="2dp">
+
+                        <androidx.appcompat.widget.SearchView
+                            android:id="@+id/search_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:focusableInTouchMode="true"
+                            app:iconifiedByDefault="false"
+                            app:queryBackground="@android:color/transparent"
+                            app:queryHint="ค้นหา......"
+                            app:searchIcon="@drawable/ic_baseline_search_24" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_recyclerview"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:iconifiedByDefault="false"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTagCardView"
+                    app:layout_constraintVertical_bias="0.0">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/materialTagCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialCardViewBG">
+
+
+                    <TextView
+                        android:id="@+id/text_tag_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="กรองด้วยแท็กที่คุณสนใจ...."
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/tag_re_cy_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_tag_description">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/clear_tag_card_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="6.5dp"
+                            android:layout_marginEnd="1dp"
+                            android:onClick="@{()->viewModel.clearItemTag()}"
+                            android:visibility="gone"
+                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardCornerRadius="22dp"
+                            app:cardElevation="1dp"
+                            app:layout_constraintEnd_toStartOf="@+id/tag_recycler_view"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:strokeColor="@color/kmitl_color"
+                            app:strokeWidth="2dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/tag_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="?android:attr/selectableItemBackground"
+                                android:orientation="horizontal"
+                                android:padding="6dp">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/cardView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <ImageView
+                                        android:id="@+id/image_close_icon"
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
+                                        android:layout_gravity="center"
+                                        android:adjustViewBounds="true"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_baseline_close_24"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:tint="#FF5722" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tag_recycler_view"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:scrollbars="none"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/clear_tag_card_view" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -38,7 +197,7 @@
                     android:id="@+id/tripProgressCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     app:cardElevation="8dp"
                     app:cardUseCompatPadding="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -48,16 +207,15 @@
                     <com.mapbox.navigation.ui.tripprogress.view.MapboxTripProgressView
                         android:id="@+id/tripProgressView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
+                        android:layout_height="wrap_content" />
 
                     <ImageView
                         android:id="@+id/stop"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="end|center_vertical"
-                        android:onClick="@{()->viewModel.updateApplicationMode(0)}"
                         android:layout_marginEnd="12dp"
+                        android:onClick="@{()->viewModel.updateApplicationMode(0)}"
                         app:srcCompat="@android:drawable/ic_delete" />
                 </androidx.cardview.widget.CardView>
 
@@ -77,8 +235,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="invisible"
                     android:onClick="@{()->viewModel.updateSoundEvent()}"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/maneuverView" />
 
@@ -99,8 +257,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="invisible"
                     android:onClick="@{()->viewModel.updateRecenterEvent()}"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/routeOverview" />
 
@@ -126,7 +284,6 @@
         </com.mapbox.maps.MapView>
 
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
@@ -136,7 +293,6 @@
             android:elevation="8dp"
             android:orientation="vertical"
             android:paddingBottom="8dp"
-            android:visibility="visible"
             app:behavior_hideable="false"
             app:behavior_peekHeight="80dp"
             app:layout_behavior=".ui.mapboxview.helpers.ViewSlider$AutoCloseBottomSheetBehavior">
@@ -253,25 +409,46 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/pin_header"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:text="รายละเอียดสถานที่"
-                        android:textColor="@color/black"
-                        android:textSize="22sp"
+<!--                    <Button-->
+<!--                        android:id="@+id/navigation"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"-->
+<!--                        android:text="Button"-->
+<!--                        android:visibility="visible"-->
+<!--                        tools:layout_editor_absoluteX="317dp"-->
+<!--                        tools:layout_editor_absoluteY="112dp" />-->
+
+                    <Button
+                        android:id="@+id/navigation"
+                        android:layout_width="280dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="12dp"
+                        android:backgroundTint="@color/kmitl_color"
+
+                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"
+                        android:paddingRight="20dp"
+                        android:strokeColor="#FF5E00"
+                        android:text="นำทางสถานที่นี้"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
                         android:textStyle="bold"
+                        android:typeface="normal"
+                        app:cornerRadius="50dp"
+                        app:icon="@drawable/ic_navigate"
+                        app:iconTint="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.1"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/address_text" />
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                        app:strokeColor="@color/kmitl_color"
+                        app:strokeWidth="5dp" />
 
                     <TextView
                         android:id="@+id/place_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="10dp"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="place_text"
@@ -281,7 +458,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+                        app:layout_constraintTop_toBottomOf="@+id/navigation" />
 
                     <TextView
                         android:id="@+id/address_text"
@@ -298,6 +475,20 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/place_text" />
+
+                    <TextView
+                        android:id="@+id/pin_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="รายละเอียดสถานที่"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/address_text" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2"
@@ -379,16 +570,6 @@
                         tools:visibility="visible" />
 
                     <Button
-                        android:id="@+id/navigation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"
-                        android:text="Button"
-                        android:visibility="gone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/address_text" />
-
-                    <Button
                         android:id="@+id/pinlike_button"
                         android:layout_width="160dp"
                         android:layout_height="70dp"
@@ -409,7 +590,7 @@
                         app:iconSize="30dp"
                         app:iconTint="@color/kmitl_color"
                         app:layout_constraintBottom_toTopOf="@+id/comment_zone"
-                        app:layout_constraintEnd_toStartOf="@+id/pinlike_button2"
+                        app:layout_constraintEnd_toStartOf="@+id/pinbookmark_button"
                         app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/description_location_label_tv"
@@ -417,13 +598,13 @@
                         app:strokeWidth="5dp" />
 
                     <Button
-                        android:id="@+id/pinlike_button2"
+                        android:id="@+id/pinbookmark_button"
                         android:layout_width="160dp"
                         android:layout_height="70dp"
                         android:layout_marginTop="25dp"
                         android:layout_marginBottom="25dp"
                         android:backgroundTint="#FFFFFF"
-                        android:text="เก็บในสถานที่ของฉัน"
+                        android:text="เก็บ"
                         android:textAlignment="center"
                         android:textAllCaps="false"
                         android:textColor="#FF5E00"
@@ -434,6 +615,7 @@
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="35dp"
+                        android:onClick="@{()->viewModel.bookMarkUpdate()}"
                         app:iconTint="@color/kmitl_color"
                         app:layout_constraintBottom_toTopOf="@+id/comment_zone"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -499,9 +681,9 @@
                                 android:layout_height="40dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginEnd="50dp"
-                                android:textSize="15sp"
-                                android:inputType="text"
                                 android:focusableInTouchMode="true"
+                                android:inputType="text"
+                                android:textSize="15sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/cardView2"
                                 app:layout_constraintTop_toTopOf="@+id/cardView2"

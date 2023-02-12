@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.repository
 
 import com.example.kmitlcompanion.data.model.*
+import com.example.kmitlcompanion.domain.model.SearchDetail
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -57,5 +58,10 @@ interface RemoteRepository {
                                         isLikedComment : Int,
                                         isDisLikedComment : Int,
                                         token : String) : Completable
+
+    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>,token: String) : Observable<List<SearchDataDetails>>
+
+    fun getAllBookmaker(token : String) : Observable<MutableList<Int>>
+    fun updateBookmakerQuery(markerId : String,isBookmarked : Boolean,token : String) : Completable
 
 }

@@ -72,4 +72,23 @@ interface RetrofitTestClient {
                                               @Part("isDisLikedComment") isDisLikedComment : Int ,
                                               @Part("token") token : String): Completable
 
+
+    @Multipart
+    @POST("getsearchdetailslocationquery")
+    fun getSearchDetailsQuery(@Part("text") text : String,
+                              @Part("typeList") typeList: List<Int?>,
+                              @Part("token") token : String,
+                              ): Observable<List<SearchDataDetails>>
+
+    @Multipart
+    @POST("getallbookmakerlocationquery")
+    fun getAllBookmakerLocationQuery(@Part("token") token : String,
+                        ): Observable<MutableList<Int>>
+
+    @Multipart
+    @POST("updatebookmakerlocationquery")
+    fun updateBookmakerLocationQuery(@Part("markerId") markerId: String,
+                             @Part("isBookmarked") isBookmarked : Boolean,
+                             @Part("token") token : String,
+                            ): Completable
 }

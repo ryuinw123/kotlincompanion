@@ -1,12 +1,17 @@
 package com.example.kmitlcompanion.ui.mapboxview.utils
 
+import android.util.Log
 import com.example.kmitlcompanion.domain.model.MapPoint
+import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
 import javax.inject.Inject
 
-class MapperUtils @Inject constructor() {
+class MapperUtils @Inject constructor(
+    private val tagTypeListUtil: TagTypeListUtil,
+    private val mapExpressionUtils: MapExpressionUtils,
+) {
 
     fun mapToFeatureCollections(points: List<MapPoint>): FeatureCollection {
         return FeatureCollection.fromFeatures(points.map { getFeature(it) })
@@ -21,7 +26,7 @@ class MapperUtils @Inject constructor() {
         val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
             createCircleCoordinates(
                 point,
-                5.0
+                1.020
             )
         } ] }, "
                 + "properties: {}}")
@@ -38,7 +43,9 @@ class MapperUtils @Inject constructor() {
         feature.addStringProperty("address", mapPoint.address)
         feature.addStringProperty("description", mapPoint.description)
         feature.addNumberProperty("id", mapPoint.id)
-        feature.addStringProperty("imageLink",mapPoint.imageLink.toString())
+        feature.addStringProperty("imageLink",mapPoint.imageLink.toString())//"yaranaika"
+        feature.addNumberProperty(mapExpressionUtils.getTagExpression(),tagTypeListUtil.typeToTagCode(mapPoint.type))
+        //Log.d("test_change_icon",feature.toString())
         return feature
     }
 

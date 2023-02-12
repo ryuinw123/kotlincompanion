@@ -16,5 +16,4 @@ class GetPinDetailsLocationQuery @Inject constructor(
             id = params!!
         )
     }
-
 }

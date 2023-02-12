@@ -3,10 +3,12 @@ package com.example.kmitlcompanion.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kmitlcompanion.dbomain.usecases.getSearchDetailsQuery
 import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.usecases.*
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
+import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.geojson.Point
@@ -19,13 +21,17 @@ import javax.inject.Inject
 class MapboxViewModel @Inject constructor(
     private val getMapLocations: GetMapLocations,
     private val dateUtils: DateUtils,
+    private val tagTypeListUtil: TagTypeListUtil,
     private val getPinDetailsLocationQuery: GetPinDetailsLocationQuery,
     private val addLikeLocationQuery: addLikeLocationQuery,
     private val removeLikeLocationQuery: removeLikeLocationQuery,
     private val addCommentMarkerLocationQuery: AddCommentMarkerLocationQuery,
     private val editCommentLocationQuery: EditCommentLocationQuery,
     private val deleteCommentLocationQuery: DeleteCommentLocationQuery,
-    private val likeDislikeCommentLocationQuery: LikeDislikeCommentLocationQuery
+    private val likeDislikeCommentLocationQuery: LikeDislikeCommentLocationQuery,
+    private val getSearchDetailsQuery: getSearchDetailsQuery,
+    private val getAllBookmaker: GetAllBookmaker,
+    private val updateBookmakerQuery: UpdateBookmakerQuery,
 ) : BaseViewModel() {
 
     //For Marker & Location
@@ -78,13 +84,23 @@ class MapboxViewModel @Inject constructor(
     private val _editCommentPosition =  MutableLiveData<Int>()
     //val editCommentPosition: MutableLiveData<Int> = _editCommentPosition
 
+    //For Bookmark
+    private val _allMarkerBookmarked = MutableLiveData<MutableList<Int>>()
+    val allMarkerBookmarked : LiveData<MutableList<Int>> = _allMarkerBookmarked
+
+    private val _updateBookMark = MutableLiveData<Boolean>()
+    val updateBookMark : MutableLiveData<Boolean> = _updateBookMark
+
+    private val _isMarkerBookmarked = MutableLiveData<Boolean>()
+    val isMarkerBookmarked : LiveData<Boolean> = _isMarkerBookmarked
+
+
     //For อิหยังนิ
     private val _permissionGrand = MutableLiveData(false)
     val permissionGrand : LiveData<Boolean> = _permissionGrand
 
     private val _locationIcon = MutableLiveData<String>()
     val locationIcon : LiveData<String> = _locationIcon
-
 
 
 
@@ -108,6 +124,32 @@ class MapboxViewModel @Inject constructor(
     val soundEvent : LiveData<Event<Boolean>> = _soundEvent
 
 
+
+    //For Search
+    private val _appendSearchList = MutableLiveData<MutableList<SearchDetail>>()
+    val appendSearchList : LiveData<MutableList<SearchDetail>> = _appendSearchList
+
+    private val _resetSearchList = MutableLiveData<Event<Boolean>>()
+    val resetSearchList : LiveData<Event<Boolean>> = _resetSearchList
+
+    private val _submitSearchValue = MutableLiveData<Pair<String?,MutableList<Int?>>>()
+    val submitSearchValue : LiveData<Pair<String?,MutableList<Int?>>> = _submitSearchValue
+
+    private val _isSearch = MutableLiveData<Boolean>()
+    val isSearch : MutableLiveData<Boolean> = _isSearch
+
+    //For Tag
+    private val _itemTagList = MutableLiveData<MutableList<TagViewDataDetail>>()
+    val itemTagList : LiveData<MutableList<TagViewDataDetail>> = _itemTagList
+
+    private val _tagFly = MutableLiveData<Pair<Point,Double>>()
+    val tagFly : LiveData<Pair<Point,Double>> = _tagFly
+
+    //screen height width
+    private val _screenSize = MutableLiveData<ScreenSize>()
+    val screenSize : LiveData<ScreenSize> = _screenSize
+
+
     fun updateRecenterEvent() {
         _recenterEvent.value = Event(true)
     }
@@ -121,7 +163,6 @@ class MapboxViewModel @Inject constructor(
     fun updateLocationIcon(icon : String) {
         _locationIcon.value = icon
     }
-
 
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
@@ -148,11 +189,13 @@ class MapboxViewModel @Inject constructor(
                 Log.d("GetPinDetailsLocationQuery","complete")
 
             }
+
             override fun onNext(t: PinDetail) {
                 _likeCoutingUpdate.value = t.likeCounting
                 _isLiked.value = t.isLiked
                 _commentList.value = t.comment
-                //Log.d("test_pin_vm",t.comment.toString())
+                _isMarkerBookmarked.value = t.isBookmarked
+                Log.d("test_pin_vm",t.isBookmarked.toString())
 
             }
 
@@ -272,9 +315,6 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun likeDisLikeCommentUpdate(comment: Comment,position: Int){
-        //commentid
-        //isLikedComment
-        //isDisLikedComment
         likeDislikeCommentLocationQuery.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
                 var newList = _commentList.value ?: mutableListOf()
@@ -288,7 +328,47 @@ class MapboxViewModel @Inject constructor(
         }, params = Triple(comment.id.toString(),comment.isLikedComment,comment.isDisLikedComment))
     }
 
+    //For Bookmark
+    fun getAllBookMarker(){
+        //excute
+        getAllBookmaker.execute(object : DisposableObserver<MutableList<Int>>(){
+            override fun onComplete() {
+                Log.d("test_getAllBookMarker","on complete")
+            }
+
+            override fun onNext(t: MutableList<Int>) {
+                _allMarkerBookmarked.value = t
+                Log.d("test_getAllBookMarker",t.toString())
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("getAllBookMarker",e.toString())
+            }
+        })
+    }
+
+    fun bookMarkUpdate(){//id , status = true mark , false delete mark
+        val locationId = _idLocationLabel.value ?:""
+        val markerBookmarked = !(_isMarkerBookmarked.value!!)
+        updateBookmakerQuery.execute(object : DisposableCompletableObserver(){
+                override fun onComplete() {
+                    Log.d("test_bookMarkUpdate","complete")
+                    _isMarkerBookmarked.value = markerBookmarked
+                    _updateBookMark.value = true
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.d("bookMarkUpdate",e.toString())
+                }
+            }, params = Pair(locationId,markerBookmarked)
+        )
+    }
+
     //For ??
+    fun setScreenSize(screenSize: ScreenSize){
+        _screenSize.value = screenSize
+    }
+
     fun updateUserLocation(point: Point) {
         _userLocation.value = point
     }
@@ -336,6 +416,65 @@ class MapboxViewModel @Inject constructor(
     fun updatePositionFlyer(point: Point) {
         _positionFlyer.value = point
     }
+
+
+    //For Search
+    fun resetDataToSearchList(){
+        _resetSearchList.value = Event(true)
+    }
+
+    fun submitSearch(searchText : String?, tagList : MutableList<Int?>){
+        _submitSearchValue.value = Pair(searchText,tagList)
+    }
+
+    fun appendDataToSearchList(searchText : String?, tagList : MutableList<Int?>){
+        Log.d("test_appendDataToSearchList",_itemTagList.value.toString())
+        getSearchDetailsQuery.execute(object : DisposableObserver<List<SearchDetail>>(){
+            override fun onComplete() {
+                Log.d("getSearchDetailsQuery","onComplete")
+            }
+
+            override fun onNext(t: List<SearchDetail>) {
+                Log.d("test_getSearchDetailsQuery","onNext $t")
+                _appendSearchList.value = t.toMutableList()
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("getSearchDetailsQuery_onError",e.toString())
+            }
+        }, params = Pair(searchText,tagList))
+    }
+
+    fun updateSearchStatus(status : Boolean){
+        _isSearch.value = status
+    }
+
+    //For Tag
+    fun updateItemTagList(newTagList : MutableList<TagViewDataDetail>,dummy : TagViewDataDetail){
+        newTagList.add(dummy)
+        _itemTagList.value = newTagList
+    }
+
+    fun flyToTagLocation(posLatlong : Point, zoomLevel : Double){
+        _tagFly.value = Pair(posLatlong,zoomLevel)
+    }
+
+    fun editItemTagList(newPositionTagList : TagViewDataDetail,position: Int,dummy : TagViewDataDetail){
+        var newList = _itemTagList.value ?: mutableListOf<TagViewDataDetail>()
+        newList[position] = newPositionTagList
+        newList.add(dummy)
+        _itemTagList.value = newList
+    }
+
+    fun clearItemTag(){
+        val dummy = TagViewDataDetail(TagDetail(999999,"x",0), false)
+        var newList =   tagTypeListUtil.getAvailableMutableListOfTagTypeDetails().mapIndexed { index, tagDetail ->
+                                    TagViewDataDetail(tagDetail, false)
+                            }.toMutableList()
+        newList.add(dummy)
+        _itemTagList.value = newList
+    }
+
 
 
     fun goToCreateMapBox(){

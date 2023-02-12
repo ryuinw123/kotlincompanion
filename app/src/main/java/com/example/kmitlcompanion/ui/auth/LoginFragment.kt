@@ -48,7 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
         helper.setup(viewModel)
 
 
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
+        //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
         binding = FragmentLoginBinding.inflate(inflater,container, false).apply {
             viewModel = this@LoginFragment.viewModel
             setupViewObservers()

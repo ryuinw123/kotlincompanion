@@ -120,4 +120,24 @@ class CacheDataStore @Inject constructor(
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+    override fun getSearchDetailsQuery(
+        text: String,
+        typeList: MutableList<Int?>,
+        token: String
+    ): Observable<List<SearchDataDetails>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun updateBookmakerQuery(
+        markerId: String,
+        isBookmarked: Boolean,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

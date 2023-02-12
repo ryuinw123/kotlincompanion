@@ -7,14 +7,15 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
-import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
 import com.mapbox.maps.extension.style.image.image
 import com.mapbox.maps.extension.style.layers.addLayer
+import com.mapbox.maps.extension.style.layers.generated.SymbolLayerDsl
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
@@ -23,7 +24,9 @@ import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.scalebar.scalebar
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -31,6 +34,7 @@ import javax.inject.Inject
 class ViewMap @Inject constructor(
     private val mapper: MapperUtils,
     private val bitmapConverter: BitmapUtils,
+    private val mapExpressionUtils: MapExpressionUtils,
 ) : DefaultLifecycleObserver {
 
     private lateinit var viewModel: MapboxViewModel
@@ -43,16 +47,47 @@ class ViewMap @Inject constructor(
         this.viewModel = viewModel
         weakMapView = WeakReference(mapView)
 
+        mapView?.compass?.updateSettings {
+            marginTop = 350F
+            marginRight = 40F
+        }
+
+        mapView?.scalebar?.updateSettings {
+            marginLeft = 40F
+            marginTop = 350F
+        }
+
         mapView?.getMapboxMap()?.loadStyle(
             styleExtension = style(styleUri = STYLE_ID) {
                 +image(LOCATION) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.red_marker)!!)
+                    var bitmap = bitmapConverter.bitmapFromDrawableRes(R.drawable.type_pin)!!
+//                    var bitmapImage = Bitmap.createScaledBitmap(bitmap
+//                        ,bitmap.width * 0.5 as Int
+//                        , bitmap.width * 0.5 as Int, true)
+                    bitmap(bitmap)
+                }
+                +image(RESTAURANT) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_restaurant)!!)
+                }
+                +image(SCHOOL) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_school)!!)
+                }
+                +image(ROOM) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_room)!!)
+                }
+                +image(SHOP) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_shop)!!)
+                }
+                +image(BUILDING) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_building)!!)
+                }
+                +image(DORM) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_dorm)!!)
                 }
             }
         ) {
             callback(mapView.getMapboxMap())
         }
-
 
     }
 
@@ -62,11 +97,12 @@ class ViewMap @Inject constructor(
         locationId: Long
     ) {
         prepareMarkerToMap(context, information)
-        initialLocation(locationId)
+        //initialLocation(locationId)
+        //ขอปิดไว้ก่อน เนื่องจากเปิดแล้ว พอเปิดแอพแบบที่ไม่ใช่รัน debug locationId จะไม่กลายเป็น -1 แล้วเข้า if ทำให้ระเบิด
+        //รันใน api 29 หรือรันโดย debug ฟังก์ชันนี่จะไม่ทำงาน ทำให้ไม่เกิดบัค
     }
 
     private fun prepareMarkerToMap(context: Context, information: MapInformation) {
-
         //mapView?.getMapboxMap()?.getStyle()?.let {
             /* in testing */
             mapView?.getMapboxMap()?.getStyle {
@@ -103,13 +139,14 @@ class ViewMap @Inject constructor(
                 it.addLayer(
                     symbolLayer(LOCATION_LAYER_ID, SOURCE_ID) {
                         sourceLayer(SOURCE_LAYER_ID)
-                        iconImage(
-                            literal(LOCATION)
-                        )
+
+                        iconImage(mapExpressionUtils.getImageExpression())
+
                         iconAllowOverlap(true)
                         iconAnchor(IconAnchor.BOTTOM)
                     }
                 )
+                //it.setStyleLayerProperty(LOCATION_LAYER_ID,"visibility", Value.valueOf("none"))
             }
         //}
 
@@ -117,10 +154,11 @@ class ViewMap @Inject constructor(
     }
 
     private fun initialLocation(locationId : Long) {
+        Log.d("test_locationId",locationId.toString())
         if (locationId != -1L) {
             /*val kmitlPoint = Point.fromLngLat(100.7811,13.7310)
             viewModel.updatePositionFlyer(kmitlPoint)*/
-
+            Log.d("test_locationIdinif",locationId.toString())
             val mapInformation = viewModel.mapInformationResponse.value
             val locationList = mapInformation?.mapPoints
 
@@ -142,12 +180,12 @@ class ViewMap @Inject constructor(
                     imageList = it.imageLink
                 )
             }
-
         }
-
     }
 
     private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
+
+        viewModel.getDetailsLocationQuery(id)//get marker details
 
         viewModel.updateIdLocationLabel(id)
         viewModel.updateCurrentLocationGps(location)
@@ -158,7 +196,6 @@ class ViewMap @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
-        viewModel.getDetailsLocationQuery(id)
 
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
 
@@ -177,6 +214,7 @@ class ViewMap @Inject constructor(
             mapboxMap.queryRenderedFeatures(
                 RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+
                 if (queriedFeature.isNotEmpty()) {
                     //isFound = true
                     val selectedFeature = queriedFeature[0].feature
@@ -235,16 +273,33 @@ class ViewMap @Inject constructor(
         mapView?.getMapboxMap()?.flyTo(
             cameraOptions {
 
-                center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
-                zoom(12.0)
+                //center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
+                center(Point.fromLngLat(point.longitude(), point.latitude()))
+                zoom(18.0)
                 bearing(180.0)
                 pitch(50.0)
             },
             MapAnimationOptions.mapAnimationOptions {
-                duration(3000)
+                duration(2000)
             }
         )
     }
+
+    fun flyToLocation(point: Point, zoom : Double, bearing : Double, pitch : Double, duration : Long) {
+        mapView?.getMapboxMap()?.flyTo(
+            cameraOptions {
+                //center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
+                center(Point.fromLngLat(point.longitude(), point.latitude()))
+                zoom(zoom)
+                bearing(bearing)
+                pitch(pitch)
+            },
+            MapAnimationOptions.mapAnimationOptions {
+                duration(duration)
+            }
+        )
+    }
+
 
     private val mapView
         get() = weakMapView?.get()
@@ -281,10 +336,18 @@ class ViewMap @Inject constructor(
         const val LOCATION_LAYER_ID = "LOCATION_LAYER_ID"
         const val AREA_LAYER_ID = "AREA_LAYER_ID"
 
+        const val LOCATION = "locations"
 
+        //tag name
+        const val TAG = "tag"
 
-        private const val LOCATION = "locations"
-
+        //tag icon
+        const val RESTAURANT = "restaurant"
+        const val SCHOOL = "school"
+        const val ROOM = "room"
+        const val SHOP = "shop"
+        const val BUILDING = "building"
+        const val DORM = "dorm"
     }
 
 

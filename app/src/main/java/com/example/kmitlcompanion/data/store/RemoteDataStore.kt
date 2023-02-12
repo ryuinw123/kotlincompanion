@@ -1,5 +1,7 @@
 package com.example.kmitlcompanion.data.store
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
+import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
@@ -126,5 +128,25 @@ class RemoteDataStore @Inject constructor(
         token: String
     ): Completable {
         return remoteRepository.likeDislikeCommentLocationQuery(commentId,isLikedComment,isDisLikedComment,token)
+    }
+
+    override fun getSearchDetailsQuery(
+        text: String,
+        typeList: MutableList<Int?>,
+        token: String
+    ): Observable<List<SearchDataDetails>> {
+         return remoteRepository.getSearchDetailsQuery(text = text, typeList = typeList,token = token)
+    }
+
+    override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
+        return remoteRepository.getAllBookmaker(token = token)
+    }
+
+    override fun updateBookmakerQuery(
+        markerId: String,
+        isBookmarked: Boolean,
+        token: String
+    ): Completable {
+        return remoteRepository.updateBookmakerQuery(markerId = markerId, isBookmarked = isBookmarked,token = token)
     }
 }

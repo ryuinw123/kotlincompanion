@@ -80,7 +80,7 @@ class ViewGeofence @Inject constructor(
     private fun generateGeofenceLocation(mapInformation : List<MapPoint>) {
         val geofenceList =  mutableListOf<Geofence>()
         mapInformation.forEach {
-            val locationRadius = 5000f
+            val locationRadius = 1020f
             val location = Geofence.Builder()
                 .setRequestId(it.id.toString())
                 .setCircularRegion(it.latitude,it.longitude,locationRadius)
