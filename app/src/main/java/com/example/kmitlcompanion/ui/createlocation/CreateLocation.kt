@@ -12,19 +12,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.databinding.FragmentCreatelocationBinding
-import com.example.kmitlcompanion.databinding.FragmentCreatemapboxlocationBinding
+import com.example.kmitlcompanion.databinding.FragmentCreateLocationBinding
 import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.createlocation.helper.CreateLocationHelper
-import com.example.kmitlcompanion.ui.createlocation.helper.ImageHelper
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocationViewModel>() {
-    override val layoutId: Int = R.layout.fragment_createlocation
+class CreateLocation : BaseFragment<FragmentCreateLocationBinding , CreateLocationViewModel>() {
+    override val layoutId: Int = R.layout.fragment_create_location
 
     override val viewModel: CreateLocationViewModel by viewModels()
 
@@ -36,6 +34,11 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
 
     override fun onReady(savedInstanceState: Bundle?) {
         viewModel.updateCurrentLocation(navArgs.currentLocation)
+
+        Log.d("createLocation","position = ${navArgs.currentLocation}")
+        navArgs.currentLocation.polygon?.let {
+            viewModel.polygonEvent()
+        }
     }
 
     override fun onCreateView(
@@ -43,7 +46,7 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCreatelocationBinding.inflate(inflater,container,false).apply {
+        binding = FragmentCreateLocationBinding.inflate(inflater,container,false).apply {
             viewModel = this@CreateLocation.viewModel
 
             helper.image.setup(listOf(selectImageView1,selectImageView2,selectImageView3,selectImageView4,selectImageView5),
@@ -53,10 +56,10 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
             val itemList = arrayListOf<String>(
                 "ร้านอาหาร","ตึก","ร้านค้า","อีเวนท์","หอพัก"
             )
-            helper.spinner.setupSpinnerAdaptor(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
+            helper.spinner.setup(typeSpinner,itemList,requireContext(),this@CreateLocation.viewModel)
             helper.upload.setup(this@CreateLocation.viewModel)
             setupViewObservers()
-            setUpTextChange()
+            setupTextChange()
         }
 
 
@@ -73,7 +76,7 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
         }
     }
 
-    private fun FragmentCreatelocationBinding.setupViewObservers() {
+    private fun FragmentCreateLocationBinding.setupViewObservers() {
         this@CreateLocation.viewModel.run {
             currentLocation.observe(viewLifecycleOwner, Observer {
                 this@setupViewObservers.nameInput.setText(it.place)
@@ -84,6 +87,9 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
             })
             discradImage.observe(viewLifecycleOwner, Observer {
                 helper.image.clearImage(requireContext())
+            })
+            polygonEvent.observe(viewLifecycleOwner, Observer {
+                helper.spinner.turnoffSpinner()
             })
 
             imageData.observe(viewLifecycleOwner, Observer {
@@ -107,7 +113,7 @@ class CreateLocation : BaseFragment<FragmentCreatelocationBinding , CreateLocati
         }
 
     }
-    private fun FragmentCreatelocationBinding.setUpTextChange() {
+    private fun FragmentCreateLocationBinding.setupTextChange() {
         nameInput.doAfterTextChanged {
             viewModel?.updateNameInput(nameInput.text.toString())
         }

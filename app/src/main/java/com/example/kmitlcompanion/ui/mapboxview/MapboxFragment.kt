@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -20,8 +21,11 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.inject.Inject
 
 
@@ -60,10 +64,15 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
+
+            helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
             //helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             setupViewObservers()
 
+
+
         }
+
 
         //show bottom bar
         bottomBarUtils.bottomMap?.visibility = View.VISIBLE
@@ -72,8 +81,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button2.setOnClickListener {
-            view.findNavController().navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
+        binding.button2.setOnClickListener{
+            helper.createSheet.openCreateSheetDialog()
         }
 
     }
@@ -157,6 +166,25 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                         }
                     }
                 }
+            })
+
+
+            //update create bottomsheet event
+            createAreaEvent.observe(viewLifecycleOwner,Observer {
+                helper.createSheet.dropBottomSheet()
+                helper.createSheet.openCreateEventDialog()
+            })
+            createPinEvent.observe(viewLifecycleOwner,Observer {
+                helper.createSheet.dropBottomSheet()
+                viewModel?.goToCreateMapBox()
+            })
+            createCircleAreaEvent.observe(viewLifecycleOwner,Observer {
+                helper.createSheet.dropBottomSheet()
+                viewModel?.gotoCreateCircleEvent()
+            })
+            createPolygonAreaEvent.observe(viewLifecycleOwner,Observer {
+                helper.createSheet.dropBottomSheet()
+                viewModel?.gotoCreatePolygonEvent()
             })
 
             //For Comment

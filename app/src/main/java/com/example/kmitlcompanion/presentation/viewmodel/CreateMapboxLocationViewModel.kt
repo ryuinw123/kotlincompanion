@@ -19,12 +19,19 @@ class CreateMapboxLocationViewModel @Inject constructor(
     private val getLocationQuery: GetLocationQuery
 ) : BaseViewModel() {
 
+    private val _positionFlyer = MutableLiveData<Point>()
+    val positionFlyer : LiveData<Point> = _positionFlyer
+
     private val _currentMapLocation = MutableLiveData<Point?>()
     val currentMapLocation : LiveData<Point?> = _currentMapLocation
 
 
     private val _currentLocation = MutableLiveData<LocationDetail>()
     val currentLocation: LiveData<LocationDetail> = _currentLocation
+
+    fun updatePositionFlyer(point: Point) {
+        _positionFlyer.value = point
+    }
 
 
 

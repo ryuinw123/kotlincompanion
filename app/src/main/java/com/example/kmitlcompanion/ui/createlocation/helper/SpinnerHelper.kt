@@ -14,7 +14,12 @@ class SpinnerHelper @Inject constructor(
     private val spinnerSelector: SpinnerSelector
 )  {
 
-    fun setupSpinnerAdaptor(spinner: Spinner , itemList : ArrayList<String>,context: Context , viewModel: CreateLocationViewModel) {
+    private lateinit var spinner : Spinner
+    private lateinit var viewModel: CreateLocationViewModel
+
+    fun setup(spinner: Spinner , itemList : ArrayList<String>,context: Context , viewModel: CreateLocationViewModel) {
+        this.spinner = spinner
+        this.viewModel = viewModel
         val adapter = ArrayAdapter(context,android.R.layout.simple_spinner_dropdown_item,itemList)
         spinner.adapter = adapter
         spinnerSelector.setup(viewModel)
@@ -28,4 +33,12 @@ class SpinnerHelper @Inject constructor(
         val popupWindow = popup.get(spinner) as ListPopupWindow
         popupWindow.height = 0
     }
+
+    fun turnoffSpinner() {
+        this.viewModel.updateTypeSpinner("อีเวนท์")
+        //เดียวลบ setselection
+        this.spinner.setSelection(3)
+        this.spinner.isEnabled = false
+    }
+
 }

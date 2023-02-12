@@ -14,4 +14,6 @@ internal class ViewHelper @Inject constructor(
     val service: ViewService,
     val bottomComment: ViewBottomComment,
     val navigation : ViewNavigation,
+    val createSheet : ViewCreateSheet,
+
 )

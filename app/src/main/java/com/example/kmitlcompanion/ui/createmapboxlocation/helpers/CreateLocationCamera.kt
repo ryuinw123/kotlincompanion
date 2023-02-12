@@ -3,6 +3,8 @@ package com.example.kmitlcompanion.ui.createmapboxlocation.helpers
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationViewModel
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.extension.observable.eventdata.CameraChangedEventData
 import com.mapbox.maps.plugin.delegates.listeners.OnCameraChangeListener
@@ -25,6 +27,10 @@ internal class CreateLocationCamera @Inject constructor(
     override fun onCameraChanged(eventData: CameraChangedEventData) {
         val center = weakMapboxMap?.get()?.cameraState?.center
         viewModel.updateCurrentMapLocation(center)
+    }
+
+    fun setCamera(point: Point) {
+        weakMapboxMap?.get()?.setCamera(CameraOptions.Builder().center(point).build())
     }
 
 

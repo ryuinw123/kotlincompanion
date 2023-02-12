@@ -111,7 +111,6 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="100dp"
                     android:backgroundTint="@color/kmitl_color"
-                    android:onClick="@{()->viewModel.goToCreateMapBox()}"
                     app:icon="@drawable/ic_add_24px"
                     app:iconGravity="textStart"
                     app:iconPadding="-2dp"
@@ -123,9 +122,9 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
         </com.mapbox.maps.MapView>
-
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"

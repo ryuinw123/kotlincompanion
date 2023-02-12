@@ -85,6 +85,25 @@ class MapboxViewModel @Inject constructor(
     private val _locationIcon = MutableLiveData<String>()
     val locationIcon : LiveData<String> = _locationIcon
 
+    //For CreateMenuBottomSheetEventClick
+
+
+    //BottomEvent
+
+    private val _createAreaEvent = MutableLiveData<Event<Boolean>>()
+    val createAreaEvent : LiveData<Event<Boolean>> = _createAreaEvent
+
+    private val _createCircleAreaEvent = MutableLiveData<Event<Boolean>>()
+    val createCircleAreaEvent : LiveData<Event<Boolean>> = _createCircleAreaEvent
+
+    private val _createPolygonAreaEvent = MutableLiveData<Event<Boolean>>()
+    val createPolygonAreaEvent : LiveData<Event<Boolean>> = _createPolygonAreaEvent
+
+    private val _createPinEvent = MutableLiveData<Event<Boolean>>()
+    val createPinEvent : LiveData<Event<Boolean>> = _createPinEvent
+
+
+
 
 
 
@@ -96,8 +115,6 @@ class MapboxViewModel @Inject constructor(
     private val _applicationMode = MutableLiveData<Int>()
     val applicationMode : LiveData<Int> = _applicationMode
 
-
-
     private val _recenterEvent = MutableLiveData<Event<Boolean>>()
     val recenterEvent : LiveData<Event<Boolean>> = _recenterEvent
 
@@ -106,6 +123,22 @@ class MapboxViewModel @Inject constructor(
 
     private val _soundEvent = MutableLiveData<Event<Boolean>>()
     val soundEvent : LiveData<Event<Boolean>> = _soundEvent
+
+
+    fun updateCreatePinEvent() {
+        _createPinEvent.value = Event(true)
+    }
+    fun updateCreateAreaEvent() {
+        _createAreaEvent.value = Event(true)
+    }
+
+    fun updateCreateCircleAreaEvent() {
+        _createCircleAreaEvent.value = Event(true)
+    }
+
+    fun updateCreatePolygonAreaEvent() {
+        _createPolygonAreaEvent.value = Event(true)
+    }
 
 
     fun updateRecenterEvent() {
@@ -339,7 +372,16 @@ class MapboxViewModel @Inject constructor(
 
 
     fun goToCreateMapBox(){
-        navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2())
+        navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2(userLocation.value))
+    }
+
+    fun gotoCreatePolygonEvent() {
+        navigate(MapboxFragmentDirections.actionMapboxFragmentToCreatePolygonEventFragment(userLocation.value))
+
+    }
+
+    fun gotoCreateCircleEvent() {
+        navigate(MapboxFragmentDirections.actionMapboxFragmentToCreateCircleEventFragment(userLocation.value))
     }
 
     fun goBackClicked() {
