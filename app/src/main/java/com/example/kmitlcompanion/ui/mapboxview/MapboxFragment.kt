@@ -96,7 +96,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 this@MapboxFragment.context?.let {
                     helper.map.updateMap(it,information,navArgs.locationId)
                 }
-                helper.geofence.setup(information)
+                //helper.geofence.setup(information)
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
@@ -131,7 +131,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
-                    helper.service.setup(requireContext())
+                    helper.service.setup(requireContext(),this@MapboxFragment.viewModel)
                 }
             })
 

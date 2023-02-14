@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kmitlcompanion.domain.model.EventDetail
 import com.example.kmitlcompanion.domain.model.Location
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.presentation.BaseViewModel
@@ -28,25 +29,17 @@ class CreatePolygonEventViewModel @Inject constructor(
 
     fun goToCreateLocation(){
 
-        val polygon = mutableListOf<List<Double>>()
+        val polygon = mutableListOf<Point>()
 
         for (i in activePoint.value!!) {
-            val point = i.point
-            val latitude = point.latitude()
-            val longitude = point.longitude()
-
-            val lstPoint = listOf(latitude,longitude)
-            polygon.add(lstPoint)
+            polygon.add(i.point)
         }
 
 
         navigate(
-            CreatePolygonEventFragmentDirections.actionCreatePolygonEventFragmentToCreateLocation2(
-                currentLocation = LocationDetail(
-                    place = null,
-                    address = null,
-                    point = null,
-                    polygon = polygon
+            CreatePolygonEventFragmentDirections.actionCreatePolygonEventFragmentToCreateEventFragment(
+                event = EventDetail(
+                    point = polygon
                 ),
             )
         )

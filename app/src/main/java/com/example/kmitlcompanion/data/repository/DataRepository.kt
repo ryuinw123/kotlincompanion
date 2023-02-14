@@ -2,7 +2,9 @@ package com.example.kmitlcompanion.data.repository
 
 import android.content.Intent
 import com.example.kmitlcompanion.data.model.*
+import com.example.kmitlcompanion.domain.model.Event
 import com.example.kmitlcompanion.domain.model.LocationDetail
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -10,6 +12,8 @@ import java.io.File
 import java.net.URI
 
 interface DataRepository {
+
+    fun createEventQuery(name : String, detail: String,status : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
     fun getLocationQuery(latitude: Double,longitude: Double , token : String) : Observable<LocationQuery>
 
     fun getMapPoints(token: String): Observable<List<MapPointData>>

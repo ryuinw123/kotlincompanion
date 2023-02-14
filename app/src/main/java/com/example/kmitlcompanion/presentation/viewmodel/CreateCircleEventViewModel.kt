@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kmitlcompanion.domain.model.EventDetail
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.ui.createcircleevent.CreateCircleEventFragmentDirections
@@ -17,8 +18,8 @@ class CreateCircleEventViewModel @Inject constructor(
 
 ) : BaseViewModel() {
 
-    private val _currentPolygon = MutableLiveData<List<List<Double>>>()
-    val currentPolygon : LiveData<List<List<Double>>> = _currentPolygon
+    private val _currentPolygon = MutableLiveData<List<Point>>()
+    val currentPolygon : LiveData<List<Point>> = _currentPolygon
 
     private val _currentRadius = MutableLiveData<Double>()
     val currentRadius : LiveData<Double> = _currentRadius
@@ -32,18 +33,15 @@ class CreateCircleEventViewModel @Inject constructor(
 
     fun goToCreateLocation(){
         navigate(
-            CreateCircleEventFragmentDirections.actionCreateCircleEventFragmentToCreateLocation2(
-                currentLocation = LocationDetail(
-                    place = null,
-                    address = null,
-                    point = null,
-                    polygon = currentPolygon.value
+            CreateCircleEventFragmentDirections.actionCreateCircleEventFragmentToCreateEventFragment(
+                event = EventDetail(
+                    point = currentPolygon.value!!
                 ),
             )
         )
     }
 
-    fun updateCurrentPolygon(polygon : List<List<Double>>) {
+    fun updateCurrentPolygon(polygon : List<Point>) {
         _currentPolygon.value = polygon
     }
 

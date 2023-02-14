@@ -27,15 +27,35 @@ class DataRepository @Inject constructor(
         return dataStore.getRemoteData(false).getUser().blockingFirst()[0].token
     }
 
+    override fun createEventQuery(event: Event): Completable {
+        val file = event.file
+        val uri = event.uri
+        var imageList : MutableList<MultipartBody.Part> = mutableListOf()
+
+        if (file.isNotEmpty() && uri.isNotEmpty()){
+            for (i in 0 until(file.size) ){
+                val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
+                imageList.add(MultipartBody.Part.createFormData("image",file[i]!!.name,requestFile))
+            }
+        }
+        return dataStore.getRemoteData(true).createEventQuery(
+            name = event.inputName!!,
+            detail = event.description!!,
+            point = event.point,
+            image = imageList,
+            token = getToken(),
+            status = event.status!!
+        )
+    }
+
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
 
         return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,getToken())
             .map {
                 LocationDetail(
-                    point = Point.fromLngLat(longitude,latitude)?: null,
+                    point = Point.fromLngLat(longitude,latitude)!!,
                     address = it?.address,
                     place = it?.place,
-                    polygon = null
                 )
             }
     }
@@ -71,7 +91,7 @@ class DataRepository @Inject constructor(
 
     }
 
-    override fun createLocationQuery(location: LocationData): Completable {
+    override fun createLocationQuery(location: Location): Completable {
         val file = location.file
         val uri = location.uri
         var imageList : MutableList<MultipartBody.Part> = mutableListOf()
@@ -83,13 +103,13 @@ class DataRepository @Inject constructor(
             }
         }
         return dataStore.getRemoteData(true).createLocationQuery(
-            name = location.inputName,
-            place = location.place,
-            address = location.address,
-            latitude = location.latitude,
-            longitude = location.longitude,
-            type = location.type,
-            detail = location.description,
+            name = location.inputName!!,
+            place = location.place!!,
+            address = location.address!!,
+            latitude = location.point!!.latitude(),
+            longitude = location.point!!.longitude(),
+            type = location.type!!,
+            detail = location.description!!,
             image = imageList,
             token = getToken()
         )

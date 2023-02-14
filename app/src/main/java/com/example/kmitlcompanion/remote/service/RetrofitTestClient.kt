@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.remote.service
 
 import com.example.kmitlcompanion.data.model.*
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -15,6 +16,9 @@ interface RetrofitTestClient {
     fun getMapPoints(@Query("token") token: String): Observable<List<MapPointData>>
 
 
+    @Multipart
+    @POST("createeventquery")
+    fun createLocationQuery(@Part("name") name : String, @Part("description") detail : String,@Part("status") status : String, @Part("point") point : List<Point>, @Part image:List<MultipartBody.Part>, @Part("token") token:String): Completable
     @Multipart
     @POST("createlocationquery")
     fun createLocationQuery(@Part("name") name : String,@Part("place") place : String,@Part("address") address : String, @Part("latitude") latitude: Double, @Part("longitude") longitude: Double  , @Part("description") detail : String ,@Part("type") type : String ,@Part image:List<MultipartBody.Part>,@Part("token") token:String): Completable

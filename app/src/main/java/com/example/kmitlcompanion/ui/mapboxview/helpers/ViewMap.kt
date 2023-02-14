@@ -10,6 +10,7 @@ import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
+import com.mapbox.geojson.Polygon
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
@@ -24,6 +25,9 @@ import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.gestures.removeOnMapClickListener
+import com.mapbox.turf.TurfJoins
+import com.mapbox.turf.TurfMeasurement
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -61,11 +65,11 @@ class ViewMap @Inject constructor(
         information: MapInformation,
         locationId: Long
     ) {
-        prepareMarkerToMap(context, information)
+        prepareMarkerToMap(information)
         initialLocation(locationId)
     }
 
-    private fun prepareMarkerToMap(context: Context, information: MapInformation) {
+    private fun prepareMarkerToMap(information: MapInformation) {
 
         //mapView?.getMapboxMap()?.getStyle()?.let {
             /* in testing */
@@ -88,7 +92,7 @@ class ViewMap @Inject constructor(
                 it.addSource(
                     geoJsonSource(AREA_ID) {
                         featureCollection(
-                            mapper.mapToCircleFeatureCollections(information.mapPoints)
+                            mapper.mapToAreaFeatureCollections(viewModel.mapEventResponse.value!!.eventPoints)
                         )
                     }
                 )
@@ -114,6 +118,7 @@ class ViewMap @Inject constructor(
         //}
 
         addPointListener()
+        //addEventListener()
     }
 
     private fun initialLocation(locationId : Long) {
@@ -168,19 +173,21 @@ class ViewMap @Inject constructor(
     private fun addPointListener() {
         val mapboxMap = mapView?.getMapboxMap()
 
-        //var isFound = false
-
         mapboxMap?.addOnMapClickListener {
             val screenPoint = mapboxMap.pixelForCoordinate(it)
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
+
+            //Log.d("Geofence" , "QueryOption 1")
 
             mapboxMap.queryRenderedFeatures(
                 RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
                 if (queriedFeature.isNotEmpty()) {
-                    //isFound = true
+
+                    //Log.d("Geofence" , "QueryOption 2 = $queriedFeature")
+
                     val selectedFeature = queriedFeature[0].feature
-                    Log.d("Selected Feature" , selectedFeature.toString())
+                    //Log.d("Selected Feature" , selectedFeature.toString())
                     val point = selectedFeature.geometry() as Point
                     val name = selectedFeature.getStringProperty("name")
                     val place = selectedFeature.getStringProperty("place")
@@ -201,30 +208,89 @@ class ViewMap @Inject constructor(
 
                 }
                 else{
+                    val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+                    //Log.d("Geofence" , "QueryOption Step 1")
+
+                    mapboxMap.queryRenderedFeatures(
+                        RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+                        val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                        if (queriedFeature.isNotEmpty()) {
+                            //Log.d("Geofence" , "QueryOptionArea 2 = $queriedFeature")
+                            //isFound = true
+                            val selectedFeature = queriedFeature[0].feature
+                            val center = TurfMeasurement.center(selectedFeature).geometry() as Point
+                            val name = selectedFeature.getStringProperty("name")
+                            val description = selectedFeature.getStringProperty("description")
+                            val id = selectedFeature.getStringProperty("id")
+                            val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
+
+                            locationDetail(
+                                name=name,
+                                id=id,
+                                place= "",
+                                address = "",
+                                location = center,
+                                description = description,
+                                imageList = imageList
+                            )
+
+                        }
+                        else{
+                            hiddenBottomSheetState()
+                        }
+                    }
+                }
+            }
+
+
+
+            true
+        }
+
+    }
+
+    /*private fun addEventListener() {
+        val mapboxMap = mapView?.getMapboxMap()
+        //var isFound = false
+
+        mapboxMap?.addOnMapClickListener {
+            val screenPoint = mapboxMap.pixelForCoordinate(it)
+            val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+            Log.d("Geofence" , "QueryOption Step 1")
+
+            mapboxMap.queryRenderedFeatures(
+                RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+                val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                if (queriedFeature.isNotEmpty()) {
+                    Log.d("Geofence" , "QueryOptionArea 2 = $queriedFeature")
+                    //isFound = true
+                    val selectedFeature = queriedFeature[0].feature
+                    Log.d("Selected Feature" , selectedFeature.toString())
+                    val name = selectedFeature.getStringProperty("name")
+                    val description = selectedFeature.getStringProperty("description")
+                    val id = selectedFeature.getStringProperty("id")
+                    val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
+
+                    locationDetail(
+                        name=name,
+                        id=id,
+                        place= "",
+                        address = "",
+                        location = it,
+                        description = description,
+                        imageList = imageList
+                    )
+
+                }
+                else{
                     hiddenBottomSheetState()
                 }
             }
             true
         }
+    }*/
 
-        /*var isClick = false
-        pointAnnotationManager?.addClickListener { clickedAnnotation ->
-            activePointList.map {
-                if (it.pointAnnotation == clickedAnnotation) {
-                    val point = Point.fromLngLat(it.mapPoint.longitude, it.mapPoint.latitude)
-                    viewModel.updateIdLocationLabel(it.mapPoint.commentId.toString())
-                    viewModel.updateNameLocationLabel(it.mapPoint.place)
-                    viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
-                    viewModel.updateCurrentLocationGps(point)
-                    viewModel.updatePositionFlyer(point)
-                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                    viewModel.updateImageLink(it.mapPoint.imageLink)
-                    isClick = true
-                }
-            }
-            isClick
-        }*/
-    }
+
 
     private fun hiddenBottomSheetState() {
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
@@ -258,7 +324,6 @@ class ViewMap @Inject constructor(
         super.onDestroy(owner)
         weakMapView?.get()?.onDestroy()
     }
-
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)

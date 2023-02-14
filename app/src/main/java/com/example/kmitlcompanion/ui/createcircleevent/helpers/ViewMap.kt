@@ -95,8 +95,8 @@ class ViewMap @Inject constructor(
             val radius = viewModel.currentRadius.value ?: 0.1
             Log.d("CreateEvent" , "radius = $radius")
             val points = mapperUtils.createCircleCoordinates(it.point!!, radius)
-            viewModel.updateCurrentPolygon(points)
             val mapboxPoints = mapperUtils.doublePolygonToPoint(points)
+            viewModel.updateCurrentPolygon(mapboxPoints[0])
             val polygonAnnotationOptions: PolygonAnnotationOptions = PolygonAnnotationOptions()
                 .withPoints(mapboxPoints)
                 // Style the polygon that will be added to the map.

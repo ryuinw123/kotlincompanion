@@ -5,32 +5,80 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import com.example.kmitlcompanion.domain.model.EventArea
+import com.example.kmitlcompanion.domain.model.MapPoint
 import com.example.kmitlcompanion.ui.mapboxview.broadcast.NotificationUtils
+import com.google.android.gms.location.GeofencingEvent
+import com.mapbox.geojson.Point
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONArray
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LocationService : Service() {
 
-    @Inject lateinit var secretLocation: SecretLocation
-    @Inject lateinit var notificationUtils: NotificationUtils
+    @Inject
+    lateinit var secretLocation: SecretLocation
+
+    @Inject
+    lateinit var secretPolygon: SecretPolygon
+
+    @Inject
+    lateinit var notificationUtils: NotificationUtils
+
+
+    var location: Point? = null
+        set(value) {
+            field = value
+            secretPolygon.filterArea(this,value ?: Point.fromLngLat(0.0, 0.0))
+            //secretMap.filterArea(value!!)
+        }
+
     override fun onCreate() {
         super.onCreate()
-        Log.d("Geofence" , "Service Create")
+        Log.d("Geofence", "On create")
 
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        Log.d("Geofence", "OnStartCommand")
+        val eventListJson = intent!!.getStringExtra("event")
+        val eventList = ArrayList<EventArea>()
+        val eventArray = JSONArray(eventListJson)
+        Log.d("Geofence", "Step 1")
+        for (i in 0 until eventArray.length()) {
+            val eventObject = eventArray.getJSONObject(i)
+            val id = eventObject.getLong("id")
+            val pointsList = eventObject.getJSONArray("area")
+            var area = ArrayList<Point>()
+            for (j in 0 until pointsList.length()) {
+                val pointObject = pointsList.getJSONObject(j)
+                val coordinates = pointObject.getJSONArray("coordinates")
+                val longitude = coordinates.getDouble(0)
+                val latitude = coordinates.getDouble(1)
+                area.add(Point.fromLngLat(longitude, latitude))
+            }
 
+            eventList.add(
+                EventArea(
+                    name = "",
+                    description = "",
+                    imageLink = listOf(),
+                    type = "",
+                    id = id,
+                    area = area
+                )
+            )
+        }
+
+
+        secretLocation.start(this)
+        secretPolygon.start(eventList)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationUtils.createChannel(NotificationUtils.LOCATION_CHANNEL_ID)
-            secretLocation.start(this)
             val notification = notificationUtils.createNotification(NotificationUtils.LOCATION_CHANNEL_ID)
             startForeground(123, notification)
-
         }
-        else
-            secretLocation.start(this)
         return START_STICKY
     }
 

@@ -4,20 +4,19 @@ import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
-import com.example.kmitlcompanion.domain.model.PinDetail
-import com.example.kmitlcompanion.domain.model.LocationDetail
-import com.example.kmitlcompanion.domain.model.MapInformation
-import com.example.kmitlcompanion.domain.model.ReturnAddComment
+import com.example.kmitlcompanion.domain.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
 interface DomainRepository {
 
+    fun createEventQuery(event : Event) : Completable
+
     fun getLocationQuery(latitude: Double , longitude: Double) : Observable<LocationDetail>
 
     fun getMapPoints() : Observable<MapInformation>
 
-    fun createLocationQuery(location: LocationData): Completable
+    fun createLocationQuery(location: Location): Completable
 
     fun createPublicLocationQuery(location: LocationPublicData): Completable
 
