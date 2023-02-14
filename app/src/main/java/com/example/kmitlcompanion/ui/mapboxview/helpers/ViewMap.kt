@@ -100,7 +100,7 @@ class ViewMap @Inject constructor(
         information: MapInformation,
         locationId: Long
     ) {
-        prepareMarkerToMap(context, information)
+        prepareMarkerToMap(information)
         //initialLocation(locationId)
         //ขอปิดไว้ก่อน เนื่องจากเปิดแล้ว พอเปิดแอพแบบที่ไม่ใช่รัน debug locationId จะไม่กลายเป็น -1 แล้วเข้า if ทำให้ระเบิด
         //รันใน api 29 หรือรันโดย debug ฟังก์ชันนี่จะไม่ทำงาน ทำให้ไม่เกิดบัค

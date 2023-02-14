@@ -53,7 +53,7 @@ interface DomainRepository {
 
     fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>) : Observable<List<SearchDetail>>
 
-
     fun getAllBookmaker() : Observable<MutableList<Int>>
+
     fun updateBookmakerQuery(markerId : String,isBookmarked : Boolean) : Completable
 }
