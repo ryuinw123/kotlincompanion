@@ -1,9 +1,9 @@
-package com.example.kmitlcompanion.domain.model
+package com.example.kmitlcompanion.data.model
 
 import com.mapbox.geojson.Point
 
 
-data class EventArea (
+data class EventAreaData (
     val name:String,
     val description : String,
     val id: Long,

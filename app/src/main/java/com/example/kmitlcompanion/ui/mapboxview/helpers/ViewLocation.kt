@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -58,9 +59,18 @@ class ViewLocation @Inject constructor(
     fun setup(viewModel: MapboxViewModel ,context: Context, mapView : MapView)  {
         this.viewModel = viewModel
         this.weakMapView = WeakReference(mapView)
+//        locationPermissionHelper.checkPermissions {
+//            onMapReady(context)
+//            Log.d("test_permsiss","perm")
+//            viewModel.updatePermission(true)
+//        }
+    }
+
+    fun updateEventPermission(context: Context){
         locationPermissionHelper.checkPermissions {
             onMapReady(context)
-            viewModel.updatePermission(true)
+            Log.d("test_permsiss","perm")
+            this.viewModel.updatePermission(true)
         }
     }
 

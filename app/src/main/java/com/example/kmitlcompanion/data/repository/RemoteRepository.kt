@@ -12,8 +12,13 @@ import java.net.URI
 interface RemoteRepository {
 
     fun createEventQuery(name : String, detail: String,status : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
+
+    fun getEventLocations(token: String) : Observable<List<EventAreaData>>
+
     fun getLocationQuery(latitude: Double,longitude: Double,token : String): Observable<LocationQuery>
+
     fun getMapPoints(token:String): Observable<List<MapPointData>>
+
     fun createLocationQuery(name: String,
                             place:String,
                             address:String,

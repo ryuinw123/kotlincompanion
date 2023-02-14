@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.domain.model.EventInformation
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
@@ -104,6 +105,12 @@ class ViewMap @Inject constructor(
         //initialLocation(locationId)
         //ขอปิดไว้ก่อน เนื่องจากเปิดแล้ว พอเปิดแอพแบบที่ไม่ใช่รัน debug locationId จะไม่กลายเป็น -1 แล้วเข้า if ทำให้ระเบิด
         //รันใน api 29 หรือรันโดย debug ฟังก์ชันนี่จะไม่ทำงาน ทำให้ไม่เกิดบัค
+    }
+
+    fun updateEvent(
+        eventInformation: EventInformation,
+    ){
+
     }
 
 

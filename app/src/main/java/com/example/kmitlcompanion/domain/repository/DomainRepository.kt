@@ -12,6 +12,8 @@ interface DomainRepository {
 
     fun createEventQuery(event : Event) : Completable
 
+    fun getEventLocations() : Observable<EventInformation>
+
     fun getLocationQuery(latitude: Double , longitude: Double) : Observable<LocationDetail>
 
     fun getMapPoints() : Observable<MapInformation>

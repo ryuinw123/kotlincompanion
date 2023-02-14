@@ -20,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MapboxViewModel @Inject constructor(
     private val getMapLocations: GetMapLocations,
+    private val getEventLocations: GetEventLocations,
     private val dateUtils: DateUtils,
     private val tagTypeListUtil: TagTypeListUtil,
     private val getPinDetailsLocationQuery: GetPinDetailsLocationQuery,
@@ -38,38 +39,7 @@ class MapboxViewModel @Inject constructor(
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
     val mapInformationResponse: LiveData<MapInformation> = _mapInformationResponse
 
-    private val _mapEventResponse = MutableLiveData<EventInformation>(EventInformation(
-        listOf(
-            EventArea(
-                name = "bkk",
-                description = "this",
-                id = 0,
-                area = listOf(
-                    Point.fromLngLat(-122.09368411555363, 37.40996715600657),
-                    Point.fromLngLat(-122.09969165409512, 37.346488595544415),
-                    Point.fromLngLat(-122.01129031297978, 37.34491406444812),
-                    Point.fromLngLat(-122.00380146356501, 37.411567921087695)
-                ),
-                imageLink = listOf(),
-                type = ""
-            ),
-            EventArea(
-                name = "hondaCity",
-                description = "honda",
-                id = 1,
-                area = listOf(
-                    Point.fromLngLat(-122.30423322839806, 37.30426986660123),
-                    Point.fromLngLat(-122.3051290196735, 37.347568252831465),
-                    Point.fromLngLat(-122.2222716187394, 37.33655878832518),
-                    Point.fromLngLat(-122.22474129882005, 37.29296928749751)
-                ),
-                imageLink = listOf(),
-                type = ""
-            ),
-        ),
-        source = Source.REMOTE,
-        timeStamp = 0,
-    ))
+    private val _mapEventResponse = MutableLiveData<EventInformation>()
     val mapEventResponse : LiveData<EventInformation> = _mapEventResponse
 
     private val _bottomSheetState = MutableLiveData<Int>()
@@ -233,6 +203,8 @@ class MapboxViewModel @Inject constructor(
         _locationIcon.value = icon
     }
 
+
+    //For download locations
     fun downloadLocations() {
         getMapLocations.execute(object : DisposableObserver<MapInformation>() {
             override fun onComplete() {
@@ -249,6 +221,93 @@ class MapboxViewModel @Inject constructor(
                 println("Error")
             }
 
+        })
+    }
+
+    //For download Event
+    fun downloadLocationsEvent() {
+        Log.d("test_event","test in event download")
+//        _mapEventResponse.value = EventInformation(
+//            listOf(
+//                EventArea(
+//                    name = "bkk",
+//                    description = "this",
+//                    id = 0,
+//                    area = listOf(
+//                        Point.fromLngLat(-122.09368411555363, 37.40996715600657),
+//                        Point.fromLngLat(-122.09969165409512, 37.346488595544415),
+//                        Point.fromLngLat(-122.01129031297978, 37.34491406444812),
+//                        Point.fromLngLat(-122.00380146356501, 37.411567921087695)
+//                    ),
+//                    imageLink = listOf(),
+//                    type = ""
+//                ),
+//                EventArea(
+//                    name = "hondaCity",
+//                    description = "honda",
+//                    id = 1,
+//                    area = listOf(
+//                        Point.fromLngLat(-122.30423322839806, 37.30426986660123),
+//                        Point.fromLngLat(-122.3051290196735, 37.347568252831465),
+//                        Point.fromLngLat(-122.2222716187394, 37.33655878832518),
+//                        Point.fromLngLat(-122.22474129882005, 37.29296928749751)
+//                    ),
+//                    imageLink = listOf(),
+//                    type = ""
+//                ),
+//            ),
+//            listOf<EventArea>(),
+//            source = Source.REMOTE,
+//            timeStamp = 0,
+//        )
+//
+        getEventLocations.execute(object : DisposableObserver<EventInformation>(){
+
+            override fun onComplete() {
+                Log.d("test_downloadLocationsEvent","complete")
+            }
+
+            override fun onNext(t: EventInformation) {
+                Log.d("test_downloadLocationsEvent",t.toString())
+                //_mapEventResponse.value = t
+                _mapEventResponse.value = EventInformation(
+                    listOf(
+                        EventArea(
+                            name = "bkk",
+                            description = "this",
+                            id = 0,
+                            startTime = "",
+                            endTime = "",
+                            area = listOf(
+                                Point.fromLngLat(-122.09368411555363, 37.40996715600657),
+                                Point.fromLngLat(-122.09969165409512, 37.346488595544415),
+                                Point.fromLngLat(-122.01129031297978, 37.34491406444812),
+                                Point.fromLngLat(-122.00380146356501, 37.411567921087695)
+                            ),
+                            imageLink = listOf(),
+                        ),
+                        EventArea(
+                            name = "hondaCity",
+                            description = "honda",
+                            id = 1,
+                            startTime = "",
+                            endTime = "",
+                            area = listOf(
+                                Point.fromLngLat(-122.30423322839806, 37.30426986660123),
+                                Point.fromLngLat(-122.3051290196735, 37.347568252831465),
+                                Point.fromLngLat(-122.2222716187394, 37.33655878832518),
+                                Point.fromLngLat(-122.22474129882005, 37.29296928749751)
+                            ),
+                            imageLink = listOf(),
+                        ),
+                    ),
+                    source = Source.REMOTE,
+                    timeStamp = 0,)
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("test_downloadLocationsEvent",e.toString())
+            }
         })
     }
 

@@ -14,6 +14,7 @@ import javax.inject.Inject
 class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
+
     override fun createEventQuery(
         name: String,
         detail: String,
@@ -23,6 +24,10 @@ class RemoteDataStore @Inject constructor(
         token: String
     ): Completable {
         return remoteRepository.createEventQuery(name, detail,status, point, image, token)
+    }
+
+    override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
+        return remoteRepository.getEventLocations(token)
     }
 
     override fun getLocationQuery(

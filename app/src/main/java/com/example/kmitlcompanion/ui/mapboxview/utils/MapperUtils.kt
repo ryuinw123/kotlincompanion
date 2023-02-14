@@ -19,17 +19,18 @@ class MapperUtils @Inject constructor(
         return FeatureCollection.fromFeatures(points.map { getFeature(it) })
     }
 
-    fun mapToAreaFeatureCollections(events : List<EventArea>) : FeatureCollection {
+    fun mapToAreaFeatureCollections(events : List<EventArea?>) : FeatureCollection {
         return FeatureCollection.fromFeatures(events.map { getAreaFeature(it) })
     }
 
-    private fun getAreaFeature(eventArea: EventArea): Feature {
-        val polygon = Polygon.fromLngLats(listOf( eventArea.area))
+    private fun getAreaFeature(eventArea: EventArea?): Feature {
+
+        val polygon = Polygon.fromLngLats(listOf( eventArea?.area))
         val feature = Feature.fromGeometry(polygon)
-        feature.addStringProperty("name", eventArea.name)
-        feature.addStringProperty("description", eventArea.description)
-        feature.addNumberProperty("id", eventArea.id)
-        feature.addStringProperty("imageLink",eventArea.imageLink.toString())
+        feature.addStringProperty("name", eventArea?.name)
+        feature.addStringProperty("description", eventArea?.description)
+        feature.addNumberProperty("id", eventArea?.id)
+        feature.addStringProperty("imageLink",eventArea?.imageLink.toString())
 
         /*val areaJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
              getDoubleFromPointArea(eventArea.area)
@@ -37,9 +38,7 @@ class MapperUtils @Inject constructor(
                 + "properties: { 'name' : '${eventArea.name}' , 'description' : '${eventArea.description}' , 'id' : '${eventArea.id}' , 'imageLink' : '${eventArea.imageLink}'} }")
 
         return Feature.fromJson(areaJson)*/
-
         return feature
-
     }
 
     private fun getDoubleFromPointArea( points : List<Point> ) : List<List<Double>> {

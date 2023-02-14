@@ -42,7 +42,7 @@ class LocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("Geofence", "OnStartCommand")
-        val eventListJson = intent!!.getStringExtra("event")
+        val eventListJson = intent?.getStringExtra("event")
         val eventList = ArrayList<EventArea>()
         val eventArray = JSONArray(eventListJson)
         Log.d("Geofence", "Step 1")
@@ -64,7 +64,8 @@ class LocationService : Service() {
                     name = "",
                     description = "",
                     imageLink = listOf(),
-                    type = "",
+                    startTime = "",
+                    endTime = "",
                     id = id,
                     area = area
                 )

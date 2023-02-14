@@ -54,29 +54,26 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         //(activity as AppCompatActivity?)!!.supportActionBar?.subtitle = "hello world"
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
+
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
             helper.comment.setup(this@MapboxFragment.viewModel,commend, sendCommend, editCommentBtn,
                                 cancelEditCommentBtn, rvComment,AlertDialog.Builder(requireContext()))
             helper.search.setup(this@MapboxFragment.viewModel, searchView, searchRecyclerview,
                                 materialCardViewBG, materialTagCardView, textTagDescription, clearTagCardView,
                                 requireContext())
-
             helper.bookMark.setup(this@MapboxFragment.viewModel)
             helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
+                this@MapboxFragment.viewModel.downloadLocationsEvent()
                 this@MapboxFragment.viewModel.downloadLocations()
             }
             helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             helper.tag.setup(mapView, this@MapboxFragment.viewModel, tagRecyclerView,clearTagCardView
                 , requireContext())
-
-
             helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
-            
+
             setupViewObservers()
-
-
 
         }
 
@@ -109,6 +106,17 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
                 //helper.geofence.setup(information)
             })
+
+            mapEventResponse.observe(viewLifecycleOwner, Observer { information ->
+                this@MapboxFragment.context?.let {
+                    //helper.service.startService(it,this@MapboxFragment.viewModel)
+//                    if (information.eventPoints.isNotEmpty()){
+//
+//                    }
+                    helper.location.updateEventPermission(it)
+                }
+            })
+
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
                 Log.d("Navigation" , "BottomSheet state change to $it")
