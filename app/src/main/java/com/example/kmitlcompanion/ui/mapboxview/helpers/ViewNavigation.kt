@@ -327,7 +327,7 @@ class ViewNavigation @Inject constructor(
                 NavigationOptions.Builder(applicationContext)
                     .accessToken(context.getString(R.string.mapbox_access_token))
 // comment out the location engine setting block to disable simulation
-                    .locationEngine(replayLocationEngine)
+                    //.locationEngine(replayLocationEngine)
                     .build()
             )
         }

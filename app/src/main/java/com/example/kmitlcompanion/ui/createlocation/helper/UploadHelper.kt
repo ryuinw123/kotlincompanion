@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.createlocation.helper
 
 import android.content.Intent
+import com.example.kmitlcompanion.presentation.viewmodel.CreateEventViewModel
 import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import javax.inject.Inject
 

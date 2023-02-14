@@ -2,10 +2,7 @@ package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.content.Intent
 import android.net.Uri
-import android.text.BoringLayout
 import android.util.Log
-import android.widget.Spinner
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.Location
@@ -15,17 +12,11 @@ import com.example.kmitlcompanion.domain.usecases.CreateLocationQuery
 import com.example.kmitlcompanion.domain.usecases.CreatePublicLocationQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
-import com.example.kmitlcompanion.ui.createlocation.CreateLocation
-import com.example.kmitlcompanion.ui.createlocation.CreateLocationDirections
-import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
+import com.example.kmitlcompanion.ui.createlocation.CreateLocationFragmentDirections
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.CompletableObserver
-import io.reactivex.rxjava3.internal.operators.completable.CompletableObserveOn
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,8 +32,8 @@ class CreateLocationViewModel @Inject constructor(
     private val _imageUpload = MutableLiveData<Event<Boolean>>()
     val imageUpload : LiveData<Event<Boolean>> = _imageUpload
 
-    private val _discradImage = MutableLiveData<Event<Boolean>>()
-    val discradImage : LiveData<Event<Boolean>> = _discradImage
+    private val _discardImage = MutableLiveData<Event<Boolean>>()
+    val discardImage : LiveData<Event<Boolean>> = _discardImage
 
     private val _imageData = MutableLiveData<Intent?>()
     val imageData : LiveData<Intent?> = _imageData
@@ -55,8 +46,6 @@ class CreateLocationViewModel @Inject constructor(
     private val _detailInput = MutableLiveData<String>()
     val detailInput : LiveData<String> = _detailInput
 
-    private val _polygonEvent = MutableLiveData(false)
-    val polygonEvent : LiveData<Boolean> = _polygonEvent
 
 
 
@@ -69,9 +58,6 @@ class CreateLocationViewModel @Inject constructor(
     private val _publicUpload = MutableLiveData<Event<Boolean>>()
     val publicUpload : LiveData<Event<Boolean>>  = _publicUpload
 
-    fun polygonEvent() {
-        _polygonEvent.value = true
-    }
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -101,7 +87,7 @@ class CreateLocationViewModel @Inject constructor(
     }
 
     fun discardImage() {
-        _discradImage.value = Event(true)
+        _discardImage.value = Event(true)
     }
 
     fun updateCurrentLocation(locationDetail: LocationDetail){
@@ -174,7 +160,7 @@ class CreateLocationViewModel @Inject constructor(
 
     //Navigation
     fun goToMapbox() {
-        navigate(CreateLocationDirections.actionCreateLocationToMapboxFragment2())
+        navigate(CreateLocationFragmentDirections.actionCreateLocationToMapboxFragment2())
     }
 
 }

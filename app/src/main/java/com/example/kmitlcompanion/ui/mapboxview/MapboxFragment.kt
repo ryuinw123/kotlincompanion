@@ -7,27 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
-import com.example.kmitlcompanion.domain.model.Comment
+import com.example.kmitlcompanion.domain.model.ScreenSize
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.NonDisposableHandle.parent
+import io.reactivex.rxjava3.disposables.Disposable
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
@@ -43,7 +37,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private val navArgs by navArgs<MapboxFragmentArgs>()
     override val layoutId :Int = R.layout.fragment_mapbox
 
-
+    private lateinit var disposable: Disposable
 
     override fun onReady(savedInstanceState: Bundle?) {
         Log.d("Geofence","LocationId from MapboxFragment = ${navArgs.locationId}")
@@ -54,19 +48,32 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        resources
+        //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
+        //requireActivity().actionBar?.show()
+        //(activity as AppCompatActivity?)!!.supportActionBar?.subtitle = "hello world"
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
             helper.slider.setup(bottomSheet,this@MapboxFragment.viewModel)
             helper.comment.setup(this@MapboxFragment.viewModel,commend, sendCommend, editCommentBtn,
                                 cancelEditCommentBtn, rvComment,AlertDialog.Builder(requireContext()))
+            helper.search.setup(this@MapboxFragment.viewModel, searchView, searchRecyclerview,
+                                materialCardViewBG, materialTagCardView, textTagDescription, clearTagCardView,
+                                requireContext())
+
+            helper.bookMark.setup(this@MapboxFragment.viewModel)
             helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocations()
             }
+            helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
+            helper.tag.setup(mapView, this@MapboxFragment.viewModel, tagRecyclerView,clearTagCardView
+                , requireContext())
+
 
             helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
-            //helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
+            
             setupViewObservers()
 
 
@@ -85,23 +92,29 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.createSheet.openCreateSheetDialog()
         }
 
+        val displayMetrics = requireContext().resources.displayMetrics
+        val displayHeight = (displayMetrics.heightPixels / displayMetrics.density).toDouble()
+        val displayWidth = (displayMetrics.widthPixels / displayMetrics.density).toDouble()
+        viewModel.setScreenSize(ScreenSize(displayWidth,displayHeight))
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){
         lifecycle.addObserver(helper.map)
         lifecycle.addObserver(helper.location)
-        //lifecycle.addObserver(helper.navigation)
+        lifecycle.addObserver(helper.navigation)
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
                     helper.map.updateMap(it,information,navArgs.locationId)
                 }
-                helper.geofence.setup(information)
+                //helper.geofence.setup(information)
             })
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
                 Log.d("Navigation" , "BottomSheet state change to $it")
-                bottomBarUtils.sliderState = it
+                if (isSearch.value == false){
+                    bottomBarUtils.sliderState = it
+                }
             })
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it
@@ -131,7 +144,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
-                    helper.service.setup(requireContext())
+                    helper.service.setup(requireContext(),this@MapboxFragment.viewModel)
                 }
             })
 
@@ -212,36 +225,126 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
+            //ForBookmark
+            isMarkerBookmarked.observe(viewLifecycleOwner, Observer {
+                isMarkerBookmarked?.value?.let {
+                    Log.d("test_ismarkerbookmarked",it.toString())
+                    if (it){
+                        pinbookmarkButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinbookmarkButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinbookmarkButton.compoundDrawables[0]?.let { btn ->
+                            btn.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                        }
+                    }else{
+                        pinbookmarkButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.white))
+                        pinbookmarkButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        pinbookmarkButton.compoundDrawables[0]?.let { btn ->
+                            btn.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
+                        }
+                    }
+                }
+            })
+
+            updateBookMark.observe(viewLifecycleOwner, Observer {
+                updateBookMark.value?.let {
+                    if (it){
+                        Log.d("test_updatebookmark","update")
+                        //getAllBookMarker()
+                        helper.bookMark.updateBookmark(idLocationLabel.value?.toInt(),isMarkerBookmarked.value)
+                        updateBookMark.value = false
+                    }
+                }
+            })
+
 
             //For Nataviation
-//            applicationMode.observe(viewLifecycleOwner , Observer {
-//                bottomBarUtils.applicationMode = it
-//                if (it == 0) {
-//                    Log.d("Navigation" ,"End Navigation")
-//                    helper.navigation.stopNavigationEvent()
-//                }
-//                else if (it == 1) {
-//                    Log.d("Navigation","Enter ApplicationMode 1")
-//                    helper.navigation.startNavigation(requireContext())
-//                }
-//            })
-//
-//
-//            recenterEvent.observe(viewLifecycleOwner, Observer {
-//                helper.navigation.recenterEvent()
-//            })
-//
-//            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
-//                helper.navigation.routeOverviewEvent()
-//            })
-//
-//            soundEvent.observe(viewLifecycleOwner, Observer {
-//                helper.navigation.soundEvent()
-//            })
+            applicationMode.observe(viewLifecycleOwner , Observer {
+                bottomBarUtils.applicationMode = it
+                if (it == 0) {
+                    Log.d("Navigation" ,"End Navigation")
+                    helper.navigation.stopNavigationEvent()
+                }
+                else if (it == 1) {
+                    Log.d("Navigation","Enter ApplicationMode 1")
+                    helper.navigation.startNavigation(requireContext())
+                }
+            })
+
+
+            recenterEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.recenterEvent()
+            })
+
+            routeOverViewEvent.observe(viewLifecycleOwner , Observer {
+                helper.navigation.routeOverviewEvent()
+            })
+
+            soundEvent.observe(viewLifecycleOwner, Observer {
+                helper.navigation.soundEvent()
+            })
 
             locationIcon.observe(viewLifecycleOwner, Observer {
                 helper.location.updatePuckIcon(requireContext(),it)
             })
+
+
+
+            submitSearchValue.observe(viewLifecycleOwner, Observer {
+                Log.d("test_ss","search")
+                if (isSearch.value == true){
+                    Log.d("test_ss","search api")
+                    appendDataToSearchList(it.first,it.second)
+                }
+            })
+
+            appendSearchList.observe(viewLifecycleOwner, Observer {
+                helper.search.addToDataList(it)
+            })
+
+            resetSearchList.observe(viewLifecycleOwner, Observer {
+                helper.search.resetDataToList()
+            })
+
+            isSearch.observe(viewLifecycleOwner, Observer {
+                Log.d("test_issearch","search")
+                if (it){
+                    val tagList = mutableListOf<Int?>()
+                    itemTagList.value?.forEach {
+                        if (it.status){
+                            tagList.add(it.value.code)
+                        }
+                    }
+                    button2.visibility = View.GONE
+                    appendDataToSearchList("",tagList)
+                    helper.search.objectVisbility(View.VISIBLE)
+                    bottomBarUtils.bottomMap?.visibility = View.GONE
+                }else {
+                    helper.search.objectVisbility(View.GONE)
+                    bottomBarUtils.bottomMap?.visibility = View.VISIBLE
+                    button2.visibility = View.VISIBLE
+                }
+            })
+
+
+            //For Tag
+            itemTagList.observe(viewLifecycleOwner, Observer {
+                if (it.isNotEmpty()){
+                    if (it.last().value.code == 999999){
+                        it.removeLast()
+                        helper.tag.addItem(it)
+                        helper.search.changeTagSearch()
+                        if (isSearch.value == false){
+                            helper.tag.setTagDisplay(it)
+                        }
+                        Log.d("test_additemTag","right here")
+                    }
+                }
+            })
+
+            tagFly.observe(viewLifecycleOwner, Observer {
+                helper.map.flyToLocation(it.first,it.second,0.0,0.0,2000)
+            })
+
         }
     }
 

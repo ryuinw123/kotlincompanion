@@ -9,6 +9,5 @@ import kotlinx.parcelize.Parcelize
 data class LocationDetail(
     val place: String?,
     val address: String?,
-    val point: Point?,
-    val polygon: List<List<Double>>?
+    val point: Point,
 ) : Parcelable

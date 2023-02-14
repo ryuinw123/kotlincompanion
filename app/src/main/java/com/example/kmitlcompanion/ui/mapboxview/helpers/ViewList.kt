@@ -21,7 +21,8 @@ internal class ViewList @Inject constructor(
 ) {
     fun setupImageAdapter(viewPager2: ViewPager2 , imageList: MutableList<String>) {
 
-        if (!imageList[0].isNullOrEmpty()) {
+        //if (!imageList[0].isNullOrEmpty()) {
+        if (imageList.toString() != "[]") {
             imageAdapter.imageList = imageList
             imageAdapter.viewPager2 = viewPager2
             viewPager2.adapter = imageAdapter

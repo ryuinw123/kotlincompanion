@@ -26,7 +26,6 @@ class SpinnerHelper @Inject constructor(
         spinner.onItemSelectedListener = spinnerSelector
         limitDropDownHeight(spinner,context.resources)
     }
-
     private fun limitDropDownHeight(spinner : Spinner, resources: Resources) {
         val popup = Spinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
@@ -34,11 +33,5 @@ class SpinnerHelper @Inject constructor(
         popupWindow.height = 0
     }
 
-    fun turnoffSpinner() {
-        this.viewModel.updateTypeSpinner("อีเวนท์")
-        //เดียวลบ setselection
-        this.spinner.setSelection(3)
-        this.spinner.isEnabled = false
-    }
 
 }

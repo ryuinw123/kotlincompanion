@@ -7,14 +7,16 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
+import com.mapbox.geojson.Polygon
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
-import com.mapbox.maps.extension.style.expressions.dsl.generated.literal
 import com.mapbox.maps.extension.style.image.image
 import com.mapbox.maps.extension.style.layers.addLayer
+import com.mapbox.maps.extension.style.layers.generated.SymbolLayerDsl
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
@@ -23,7 +25,12 @@ import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
 import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.scalebar.scalebar
+import com.mapbox.maps.plugin.gestures.removeOnMapClickListener
+import com.mapbox.turf.TurfJoins
+import com.mapbox.turf.TurfMeasurement
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -31,6 +38,7 @@ import javax.inject.Inject
 class ViewMap @Inject constructor(
     private val mapper: MapperUtils,
     private val bitmapConverter: BitmapUtils,
+    private val mapExpressionUtils: MapExpressionUtils,
 ) : DefaultLifecycleObserver {
 
     private lateinit var viewModel: MapboxViewModel
@@ -43,16 +51,47 @@ class ViewMap @Inject constructor(
         this.viewModel = viewModel
         weakMapView = WeakReference(mapView)
 
+        mapView?.compass?.updateSettings {
+            marginTop = 350F
+            marginRight = 40F
+        }
+
+        mapView?.scalebar?.updateSettings {
+            marginLeft = 40F
+            marginTop = 350F
+        }
+
         mapView?.getMapboxMap()?.loadStyle(
             styleExtension = style(styleUri = STYLE_ID) {
                 +image(LOCATION) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.red_marker)!!)
+                    var bitmap = bitmapConverter.bitmapFromDrawableRes(R.drawable.type_pin)!!
+//                    var bitmapImage = Bitmap.createScaledBitmap(bitmap
+//                        ,bitmap.width * 0.5 as Int
+//                        , bitmap.width * 0.5 as Int, true)
+                    bitmap(bitmap)
+                }
+                +image(RESTAURANT) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_restaurant)!!)
+                }
+                +image(SCHOOL) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_school)!!)
+                }
+                +image(ROOM) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_room)!!)
+                }
+                +image(SHOP) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_shop)!!)
+                }
+                +image(BUILDING) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_building)!!)
+                }
+                +image(DORM) {
+                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_dorm)!!)
                 }
             }
         ) {
             callback(mapView.getMapboxMap())
         }
-
 
     }
 
@@ -61,11 +100,14 @@ class ViewMap @Inject constructor(
         information: MapInformation,
         locationId: Long
     ) {
-        prepareMarkerToMap(context, information)
-        initialLocation(locationId)
+        prepareMarkerToMap(information)
+        //initialLocation(locationId)
+        //ขอปิดไว้ก่อน เนื่องจากเปิดแล้ว พอเปิดแอพแบบที่ไม่ใช่รัน debug locationId จะไม่กลายเป็น -1 แล้วเข้า if ทำให้ระเบิด
+        //รันใน api 29 หรือรันโดย debug ฟังก์ชันนี่จะไม่ทำงาน ทำให้ไม่เกิดบัค
     }
 
-    private fun prepareMarkerToMap(context: Context, information: MapInformation) {
+
+    private fun prepareMarkerToMap(information: MapInformation) {
 
         //mapView?.getMapboxMap()?.getStyle()?.let {
             /* in testing */
@@ -88,7 +130,7 @@ class ViewMap @Inject constructor(
                 it.addSource(
                     geoJsonSource(AREA_ID) {
                         featureCollection(
-                            mapper.mapToCircleFeatureCollections(information.mapPoints)
+                            mapper.mapToAreaFeatureCollections(viewModel.mapEventResponse.value!!.eventPoints)
                         )
                     }
                 )
@@ -103,24 +145,27 @@ class ViewMap @Inject constructor(
                 it.addLayer(
                     symbolLayer(LOCATION_LAYER_ID, SOURCE_ID) {
                         sourceLayer(SOURCE_LAYER_ID)
-                        iconImage(
-                            literal(LOCATION)
-                        )
+
+                        iconImage(mapExpressionUtils.getImageExpression())
+
                         iconAllowOverlap(true)
                         iconAnchor(IconAnchor.BOTTOM)
                     }
                 )
+                //it.setStyleLayerProperty(LOCATION_LAYER_ID,"visibility", Value.valueOf("none"))
             }
         //}
 
         addPointListener()
+        //addEventListener()
     }
 
     private fun initialLocation(locationId : Long) {
+        Log.d("test_locationId",locationId.toString())
         if (locationId != -1L) {
             /*val kmitlPoint = Point.fromLngLat(100.7811,13.7310)
             viewModel.updatePositionFlyer(kmitlPoint)*/
-
+            Log.d("test_locationIdinif",locationId.toString())
             val mapInformation = viewModel.mapInformationResponse.value
             val locationList = mapInformation?.mapPoints
 
@@ -142,12 +187,12 @@ class ViewMap @Inject constructor(
                     imageList = it.imageLink
                 )
             }
-
         }
-
     }
 
     private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
+
+        viewModel.getDetailsLocationQuery(id)//get marker details
 
         viewModel.updateIdLocationLabel(id)
         viewModel.updateCurrentLocationGps(location)
@@ -158,7 +203,6 @@ class ViewMap @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
-        viewModel.getDetailsLocationQuery(id)
 
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
 
@@ -168,19 +212,22 @@ class ViewMap @Inject constructor(
     private fun addPointListener() {
         val mapboxMap = mapView?.getMapboxMap()
 
-        //var isFound = false
-
         mapboxMap?.addOnMapClickListener {
             val screenPoint = mapboxMap.pixelForCoordinate(it)
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
 
+            //Log.d("Geofence" , "QueryOption 1")
+
             mapboxMap.queryRenderedFeatures(
                 RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+
                 if (queriedFeature.isNotEmpty()) {
-                    //isFound = true
+
+                    //Log.d("Geofence" , "QueryOption 2 = $queriedFeature")
+
                     val selectedFeature = queriedFeature[0].feature
-                    Log.d("Selected Feature" , selectedFeature.toString())
+                    //Log.d("Selected Feature" , selectedFeature.toString())
                     val point = selectedFeature.geometry() as Point
                     val name = selectedFeature.getStringProperty("name")
                     val place = selectedFeature.getStringProperty("place")
@@ -201,30 +248,89 @@ class ViewMap @Inject constructor(
 
                 }
                 else{
+                    val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+                    //Log.d("Geofence" , "QueryOption Step 1")
+
+                    mapboxMap.queryRenderedFeatures(
+                        RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+                        val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                        if (queriedFeature.isNotEmpty()) {
+                            //Log.d("Geofence" , "QueryOptionArea 2 = $queriedFeature")
+                            //isFound = true
+                            val selectedFeature = queriedFeature[0].feature
+                            val center = TurfMeasurement.center(selectedFeature).geometry() as Point
+                            val name = selectedFeature.getStringProperty("name")
+                            val description = selectedFeature.getStringProperty("description")
+                            val id = selectedFeature.getStringProperty("id")
+                            val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
+
+                            locationDetail(
+                                name=name,
+                                id=id,
+                                place= "",
+                                address = "",
+                                location = center,
+                                description = description,
+                                imageList = imageList
+                            )
+
+                        }
+                        else{
+                            hiddenBottomSheetState()
+                        }
+                    }
+                }
+            }
+
+
+
+            true
+        }
+
+    }
+
+    /*private fun addEventListener() {
+        val mapboxMap = mapView?.getMapboxMap()
+        //var isFound = false
+
+        mapboxMap?.addOnMapClickListener {
+            val screenPoint = mapboxMap.pixelForCoordinate(it)
+            val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+            Log.d("Geofence" , "QueryOption Step 1")
+
+            mapboxMap.queryRenderedFeatures(
+                RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+                val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                if (queriedFeature.isNotEmpty()) {
+                    Log.d("Geofence" , "QueryOptionArea 2 = $queriedFeature")
+                    //isFound = true
+                    val selectedFeature = queriedFeature[0].feature
+                    Log.d("Selected Feature" , selectedFeature.toString())
+                    val name = selectedFeature.getStringProperty("name")
+                    val description = selectedFeature.getStringProperty("description")
+                    val id = selectedFeature.getStringProperty("id")
+                    val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
+
+                    locationDetail(
+                        name=name,
+                        id=id,
+                        place= "",
+                        address = "",
+                        location = it,
+                        description = description,
+                        imageList = imageList
+                    )
+
+                }
+                else{
                     hiddenBottomSheetState()
                 }
             }
             true
         }
+    }*/
 
-        /*var isClick = false
-        pointAnnotationManager?.addClickListener { clickedAnnotation ->
-            activePointList.map {
-                if (it.pointAnnotation == clickedAnnotation) {
-                    val point = Point.fromLngLat(it.mapPoint.longitude, it.mapPoint.latitude)
-                    viewModel.updateIdLocationLabel(it.mapPoint.commentId.toString())
-                    viewModel.updateNameLocationLabel(it.mapPoint.place)
-                    viewModel.updateDescriptionLocationLabel(it.mapPoint.description)
-                    viewModel.updateCurrentLocationGps(point)
-                    viewModel.updatePositionFlyer(point)
-                    viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                    viewModel.updateImageLink(it.mapPoint.imageLink)
-                    isClick = true
-                }
-            }
-            isClick
-        }*/
-    }
+
 
     private fun hiddenBottomSheetState() {
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
@@ -235,16 +341,33 @@ class ViewMap @Inject constructor(
         mapView?.getMapboxMap()?.flyTo(
             cameraOptions {
 
-                center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
-                zoom(12.0)
+                //center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
+                center(Point.fromLngLat(point.longitude(), point.latitude()))
+                zoom(18.0)
                 bearing(180.0)
                 pitch(50.0)
             },
             MapAnimationOptions.mapAnimationOptions {
-                duration(3000)
+                duration(2000)
             }
         )
     }
+
+    fun flyToLocation(point: Point, zoom : Double, bearing : Double, pitch : Double, duration : Long) {
+        mapView?.getMapboxMap()?.flyTo(
+            cameraOptions {
+                //center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
+                center(Point.fromLngLat(point.longitude(), point.latitude()))
+                zoom(zoom)
+                bearing(bearing)
+                pitch(pitch)
+            },
+            MapAnimationOptions.mapAnimationOptions {
+                duration(duration)
+            }
+        )
+    }
+
 
     private val mapView
         get() = weakMapView?.get()
@@ -258,7 +381,6 @@ class ViewMap @Inject constructor(
         super.onDestroy(owner)
         weakMapView?.get()?.onDestroy()
     }
-
 
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
@@ -281,10 +403,18 @@ class ViewMap @Inject constructor(
         const val LOCATION_LAYER_ID = "LOCATION_LAYER_ID"
         const val AREA_LAYER_ID = "AREA_LAYER_ID"
 
+        const val LOCATION = "locations"
 
+        //tag name
+        const val TAG = "tag"
 
-        private const val LOCATION = "locations"
-
+        //tag icon
+        const val RESTAURANT = "restaurant"
+        const val SCHOOL = "school"
+        const val ROOM = "room"
+        const val SHOP = "shop"
+        const val BUILDING = "building"
+        const val DORM = "dorm"
     }
 
 

@@ -6,6 +6,7 @@ import com.example.kmitlcompanion.domain.CompletableUseCase
 import com.example.kmitlcompanion.domain.executor.PostExecutionThread
 import com.example.kmitlcompanion.domain.model.Location
 import com.example.kmitlcompanion.domain.repository.DomainRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
 
@@ -15,15 +16,15 @@ class CreateLocationQuery @Inject constructor(
 ) : CompletableUseCase<Location>(postExecutionThread) {
 
     override fun buildUseCaseCompletable(params: Location?): Completable {
+        val point = Point.fromLngLat(params!!.point!!.longitude(),params!!.point!!.latitude())
         return domainRepository.createLocationQuery(
-            location = LocationData(
+            location = Location(
                 inputName = params!!.inputName!!,
                 description = params!!.description!!,
                 place = params!!.place!!,
                 type = params!!.type!!,
                 address = params!!.address!!,
-                latitude = params!!.point!!.latitude(),
-                longitude = params!!.point!!.longitude(),
+                point = point,
                 file = params!!.file,
                 uri = params!!.uri
             )

@@ -7,22 +7,22 @@
             android:title="settings_menu"
             app:showAsAction="ifRoom"/>
 
-        <item
-            android:id="@+id/notificationFragment"
-            android:icon="@drawable/notifications_48px"
-            android:title="noti_menu"
-            app:showAsAction="ifRoom"/>
+<!--        <item-->
+<!--            android:id="@+id/notificationFragment"-->
+<!--            android:icon="@drawable/notifications_48px"-->
+<!--            android:name="noti_menu"-->
+<!--            app:showAsAction="ifRoom"/>-->
 
 
 <!--        <item-->
 <!--            android:commentId="@+commentId/feedFragment"-->
 <!--            android:icon="@drawable/feed_48px"-->
-<!--            android:title="feed_menu"-->
+<!--            android:name="feed_menu"-->
 <!--            app:showAsAction="ifRoom"/>-->
 
         <item
             android:id="@+id/eventPageFragment"
-            android:icon="@drawable/event_48px"
+            android:icon="@drawable/notifications_48px"
             android:title="event_menu"
             app:showAsAction="ifRoom"/>
 
@@ -31,7 +31,7 @@
             android:enabled="false"/>
 
 <!--        <item android:commentId="@+commentId/mapboxFragment2"-->
-<!--            android:title="map_menu"-->
+<!--            android:name="map_menu"-->
 <!--            android:visible="false"-->
 <!--            android:enabled="true"/>-->
 </menu>

@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.DEFAULT_SOUND
 import com.example.kmitlcompanion.R
@@ -83,9 +84,9 @@ class NotificationUtils @Inject constructor(
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(contentPendingIntent)
             .setSmallIcon(R.drawable.ic_location_on_red_24dp)
-            .setStyle(bigPicStyle)
+            //.setStyle(bigPicStyle)
             .setLargeIcon(mapImage)
-
+        Log.d("test_",context.getString(R.string.content_text, detail))
 
             notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
     }

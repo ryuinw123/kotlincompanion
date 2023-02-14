@@ -1,17 +1,21 @@
 package com.example.kmitlcompanion.ui
 
+import android.R
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.example.kmitlcompanion.BR
-import com.example.kmitlcompanion.presentation.navigation.NavigationCommand
 import com.example.kmitlcompanion.presentation.BaseViewModel
+import com.example.kmitlcompanion.presentation.navigation.NavigationCommand
 import com.example.kmitlcompanion.utils.observeNonNull
 
 
@@ -67,6 +71,5 @@ abstract class BaseFragment<BINDING : ViewDataBinding,VM : BaseViewModel>(): Fra
             is NavigationCommand.Back -> findNavController().navigateUp()
         }
     }
-
 
 }

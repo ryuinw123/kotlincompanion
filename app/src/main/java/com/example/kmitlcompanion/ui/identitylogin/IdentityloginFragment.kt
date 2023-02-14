@@ -34,7 +34,7 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
     ): View? {
         helper.setup(viewModel)
 
-        (activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
+        //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
         binding = FragmentIdentityloginBinding.inflate(inflater,container, false).apply{
             viewModel = this@IdentityloginFragment.viewModel
             setupViewObservers()

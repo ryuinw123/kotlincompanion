@@ -1,8 +1,11 @@
 package com.example.kmitlcompanion.data.store
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
+import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -11,6 +14,17 @@ import javax.inject.Inject
 class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
+    override fun createEventQuery(
+        name: String,
+        detail: String,
+        status : String,
+        point: List<Point>,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        return remoteRepository.createEventQuery(name, detail,status, point, image, token)
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,
@@ -126,5 +140,25 @@ class RemoteDataStore @Inject constructor(
         token: String
     ): Completable {
         return remoteRepository.likeDislikeCommentLocationQuery(commentId,isLikedComment,isDisLikedComment,token)
+    }
+
+    override fun getSearchDetailsQuery(
+        text: String,
+        typeList: MutableList<Int?>,
+        token: String
+    ): Observable<List<SearchDataDetails>> {
+         return remoteRepository.getSearchDetailsQuery(text = text, typeList = typeList,token = token)
+    }
+
+    override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
+        return remoteRepository.getAllBookmaker(token = token)
+    }
+
+    override fun updateBookmakerQuery(
+        markerId: String,
+        isBookmarked: Boolean,
+        token: String
+    ): Completable {
+        return remoteRepository.updateBookmakerQuery(markerId = markerId, isBookmarked = isBookmarked,token = token)
     }
 }

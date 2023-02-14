@@ -25,60 +25,70 @@
             tools:layout_editor_absoluteX="-37dp"
             tools:layout_editor_absoluteY="61dp" />
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator_bottom_nav"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layoutDirection="rtl">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomappbar"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:background="@color/kmitl_color"
-                app:backgroundTint="@color/kmitl_color"
-                app:fabAlignmentMode="end"
-                app:contentInsetStart="0dp"
-                >
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinator_bottom_nav"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layoutDirection="rtl"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottom_navigation"
+                <com.google.android.material.bottomappbar.BottomAppBar
+                    android:id="@+id/bottomappbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    app:elevation="0dp"
-                    app:itemIconTint="@android:color/white"
-                    app:itemTextColor="@android:color/white"
-                    app:labelVisibilityMode="unlabeled"
-                    app:menu="@menu/bottom_nav_menu" />
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/kmitl_color"
+                    app:backgroundTint="@color/kmitl_color"
+                    app:contentInsetStart="0dp"
+                    app:fabAlignmentMode="end">
+
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottom_navigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        app:elevation="0dp"
+                        app:itemIconTint="@android:color/white"
+                        app:itemTextColor="@android:color/white"
+                        app:labelVisibilityMode="unlabeled"
+                        app:menu="@menu/bottom_nav_menu" />
 
 
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottom_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    app:elevation="0dp"
-                    app:itemIconTint="@android:color/white"
-                    app:itemTextColor="@android:color/white"
-                    app:labelVisibilityMode="unlabeled"
-                    app:menu="@menu/button_nav_map" />
-            </com.google.android.material.bottomappbar.BottomAppBar>
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottom_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        app:elevation="0dp"
+                        app:itemIconTint="@android:color/white"
+                        app:itemTextColor="@android:color/white"
+                        app:labelVisibilityMode="unlabeled"
+                        app:menu="@menu/button_nav_map" />
+                </com.google.android.material.bottomappbar.BottomAppBar>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/map_button"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:backgroundTint="#00AAFF"
-                android:onClick="@{()->helper.navigateToMap()}"
-                android:src="@drawable/map_48px"
-                android:visibility="visible"
-                app:fabCustomSize="70dp"
-                app:layout_anchor="@id/bottomappbar"
-                app:maxImageSize="40dp"
-                app:tint="@color/white"></com.google.android.material.floatingactionbutton.FloatingActionButton>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/map_button"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:backgroundTint="#00AAFF"
+                    android:onClick="@{()->helper.navigateToMap()}"
+                    android:src="@drawable/map_48px"
+                    android:visibility="visible"
+                    app:fabCustomSize="70dp"
+                    app:layout_anchor="@id/bottomappbar"
+                    app:maxImageSize="40dp"
+                    app:tint="@color/white"
+                    tools:ignore="SpeakableTextPresentCheck"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

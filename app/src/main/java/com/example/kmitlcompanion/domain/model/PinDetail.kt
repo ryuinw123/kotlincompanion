@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class PinDetail(
     val likeCounting : Int,
     val isLiked : Boolean,
-    val comment : MutableList<Comment>
+    val comment : MutableList<Comment>,
+    val isBookmarked : Boolean,
 ) : Parcelable

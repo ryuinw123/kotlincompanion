@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">kmitlcompanion</string>
+    <string name="app_name">Kmitl Companion</string>
     <string name="logout">logout</string>
     <string name="todo">TODO</string>
     <string name="OldAUTH_ID">27567133155-3gsequ5o2m08cnj6vnqgdllkv7tabobg.apps.googleusercontent.com</string>
@@ -13,7 +13,7 @@
 
     <!-- Notification Strings-->
     <string name="channel_name">GeofenceStatus</string>
-    <string name="content_text">You found a clue <xliff:g id="geofence_location">%1$s</xliff:g>.</string>
+    <string name="content_text">คุณได้มาถึงตำแหน่ง <xliff:g id="geofence_location">%1$s</xliff:g>.</string>
     <string name="notification_channel_description">Geofence status notification</string>
 
     <!-- Content Description Strings -->

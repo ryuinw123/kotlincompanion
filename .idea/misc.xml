@@ -3,28 +3,47 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.164" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/event_48px.xml" value="0.2575" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/feed_48px.xml" value="0.2575" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2505" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.279" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_dislike.xml" value="0.2505" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_launcher_background.xml" value="0.164" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_like.xml" value="0.182" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_location_on_red_24dp.xml" value="0.2575" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_location_blue.xml" value="0.164" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/ic_location_on_red_24dp.xml" value="0.176" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/locationpin_48px.xml" value="0.2575" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/chat_comment.xml" value="0.4" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/mapbox_user_icon.xml" value="0.1865" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/notifications_48px.xml" value="0.164" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/orange_marker.xml" value="0.1865" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/tag_restaurant.xml" value="0.164" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/tag_school.xml" value="0.164" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/type_pin.xml" value="0.2" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/type_room.xml" value="0.1505" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/drawable/type_school.xml" value="0.1505" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/activity_main.xml" value="0.17637215528781794" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/chat_comment.xml" value="1.0" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/comment_menu.xml" value="0.264" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/each_item.xml" value="0.536" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_createlocation.xml" value="0.20606884057971014" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_createmapboxlocation.xml" value="0.22735507246376813" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_event_page.xml" value="2.4" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_feed.xml" value="0.12760416666666666" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_home.xml" value="0.15307971014492755" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_identitylogin.xml" value="0.27447916666666666" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_login.xml" value="0.27447916666666666" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_identitylogin.xml" value="0.23777173913043478" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_login.xml" value="0.23777173913043478" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_main.xml" value="0.2" />
-        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_mapbox.xml" value="0.1" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_mapbox.xml" value="0.264" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_notification.xml" value="0.1" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_settings.xml" value="0.1334853090172239" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_sign_in.xml" value="0.17617753623188406" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/fragment_start_page.xml" value="0.24210526315789474" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/layout/tag_item.xml" value="0.72" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33495145631067963" />
         <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/button_nav_map.xml" value="0.2" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/menu/search_bar_menu.xml" value="0.27447916666666666" />
+        <entry key="..\:/Project4D/Github/kotlincompanion/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1715" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/annonymous_background.xml" value="0.243" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/bottom_nav.xml" value="0.1975" />
         <entry key="..\:/Users/rr/Documents/Github/kotlincompanion/app/src/main/res/drawable/event_48px.xml" value="0.1975" />

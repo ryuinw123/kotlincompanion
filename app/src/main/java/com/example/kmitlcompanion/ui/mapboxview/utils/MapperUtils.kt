@@ -1,33 +1,53 @@
 package com.example.kmitlcompanion.ui.mapboxview.utils
 
+import android.util.Log
+import com.example.kmitlcompanion.domain.model.EventArea
 import com.example.kmitlcompanion.domain.model.MapPoint
+import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
+import com.mapbox.geojson.Polygon
 import javax.inject.Inject
 
-class MapperUtils @Inject constructor() {
+class MapperUtils @Inject constructor(
+    private val tagTypeListUtil: TagTypeListUtil,
+    private val mapExpressionUtils: MapExpressionUtils,
+) {
 
     fun mapToFeatureCollections(points: List<MapPoint>): FeatureCollection {
         return FeatureCollection.fromFeatures(points.map { getFeature(it) })
     }
 
-    fun mapToCircleFeatureCollections(points : List<MapPoint>) : FeatureCollection {
-        return FeatureCollection.fromFeatures(points.map { getCircleFeature(it) })
+    fun mapToAreaFeatureCollections(events : List<EventArea>) : FeatureCollection {
+        return FeatureCollection.fromFeatures(events.map { getAreaFeature(it) })
     }
 
-    private fun getCircleFeature(mapPoint: MapPoint): Feature {
-        val point = Point.fromLngLat(mapPoint.longitude, mapPoint.latitude)
-        val circleJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
-            createCircleCoordinates(
-                point,
-                5.0
-            )
+    private fun getAreaFeature(eventArea: EventArea): Feature {
+        val polygon = Polygon.fromLngLats(listOf( eventArea.area))
+        val feature = Feature.fromGeometry(polygon)
+        feature.addStringProperty("name", eventArea.name)
+        feature.addStringProperty("description", eventArea.description)
+        feature.addNumberProperty("id", eventArea.id)
+        feature.addStringProperty("imageLink",eventArea.imageLink.toString())
+
+        /*val areaJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
+             getDoubleFromPointArea(eventArea.area)
         } ] }, "
-                + "properties: {}}")
+                + "properties: { 'name' : '${eventArea.name}' , 'description' : '${eventArea.description}' , 'id' : '${eventArea.id}' , 'imageLink' : '${eventArea.imageLink}'} }")
 
-        return Feature.fromJson(circleJson)
+        return Feature.fromJson(areaJson)*/
 
+        return feature
+
+    }
+
+    private fun getDoubleFromPointArea( points : List<Point> ) : List<List<Double>> {
+        val polygon = mutableListOf<List<Double>>()
+        for (i in points) {
+            polygon.add( listOf(i.longitude(),i.latitude()) )
+        }
+        return polygon
     }
 
     private fun getFeature(mapPoint: MapPoint): Feature {
@@ -38,7 +58,9 @@ class MapperUtils @Inject constructor() {
         feature.addStringProperty("address", mapPoint.address)
         feature.addStringProperty("description", mapPoint.description)
         feature.addNumberProperty("id", mapPoint.id)
-        feature.addStringProperty("imageLink",mapPoint.imageLink.toString())
+        feature.addStringProperty("imageLink",mapPoint.imageLink.toString())//"yaranaika"
+        feature.addNumberProperty(mapExpressionUtils.getTagExpression(),tagTypeListUtil.typeToTagCode(mapPoint.type))
+        //Log.d("test_change_icon",feature.toString())
         return feature
     }
 

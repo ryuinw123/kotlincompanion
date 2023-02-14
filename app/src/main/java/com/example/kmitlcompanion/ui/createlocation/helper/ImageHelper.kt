@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.presentation.viewmodel.CreateEventViewModel
 import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.ref.WeakReference

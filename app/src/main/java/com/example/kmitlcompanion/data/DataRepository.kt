@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.data
 
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
+import com.example.kmitlcompanion.data.mapper.SearchMapper
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.store.DataStore
 import com.example.kmitlcompanion.data.util.ContentResolverUtil
@@ -9,6 +10,7 @@ import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.mapbox.geojson.Point
+import com.mapbox.maps.extension.style.expressions.dsl.generated.get
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -21,10 +23,32 @@ class DataRepository @Inject constructor(
     private val mapper: MapPointMapper,
     private val commentMapper : CommentMapper,
     private val contentResolverUtil: ContentResolverUtil,
+    private val searchMapper: SearchMapper,
 ) : DomainRepository{
 
     private fun getToken(): String{
         return dataStore.getRemoteData(false).getUser().blockingFirst()[0].token
+    }
+
+    override fun createEventQuery(event: Event): Completable {
+        val file = event.file
+        val uri = event.uri
+        var imageList : MutableList<MultipartBody.Part> = mutableListOf()
+
+        if (file.isNotEmpty() && uri.isNotEmpty()){
+            for (i in 0 until(file.size) ){
+                val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
+                imageList.add(MultipartBody.Part.createFormData("image",file[i]!!.name,requestFile))
+            }
+        }
+        return dataStore.getRemoteData(true).createEventQuery(
+            name = event.inputName!!,
+            detail = event.description!!,
+            point = event.point,
+            image = imageList,
+            token = getToken(),
+            status = event.status!!
+        )
     }
 
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {
@@ -32,10 +56,9 @@ class DataRepository @Inject constructor(
         return dataStore.getRemoteData(true).getLocationQuery(latitude,longitude,getToken())
             .map {
                 LocationDetail(
-                    point = Point.fromLngLat(longitude,latitude)?: null,
+                    point = Point.fromLngLat(longitude,latitude)!!,
                     address = it?.address,
                     place = it?.place,
-                    polygon = null
                 )
             }
     }
@@ -71,7 +94,7 @@ class DataRepository @Inject constructor(
 
     }
 
-    override fun createLocationQuery(location: LocationData): Completable {
+    override fun createLocationQuery(location: Location): Completable {
         val file = location.file
         val uri = location.uri
         var imageList : MutableList<MultipartBody.Part> = mutableListOf()
@@ -83,13 +106,13 @@ class DataRepository @Inject constructor(
             }
         }
         return dataStore.getRemoteData(true).createLocationQuery(
-            name = location.inputName,
-            place = location.place,
-            address = location.address,
-            latitude = location.latitude,
-            longitude = location.longitude,
-            type = location.type,
-            detail = location.description,
+            name = location.inputName!!,
+            place = location.place!!,
+            address = location.address!!,
+            latitude = location.point!!.latitude(),
+            longitude = location.point!!.longitude(),
+            type = location.type!!,
+            detail = location.description!!,
             image = imageList,
             token = getToken()
         )
@@ -152,7 +175,8 @@ class DataRepository @Inject constructor(
                 PinDetail(
                     likeCounting = data.likeCounting,
                     isLiked = data.isLiked,
-                    comment = data.comment.map{ commentMapper.mapToDomain(it)} as MutableList<Comment>
+                    comment = data.comment.map{ commentMapper.mapToDomain(it)} as MutableList<Comment>,
+                    isBookmarked = data.isBookmarked,
                 )  //list.map { commentMapper.mapToDomain(it.comment) }
             }
     }
@@ -192,5 +216,27 @@ class DataRepository @Inject constructor(
     ): Completable {
         return dataStore.getRemoteData(true)
             .likeDislikeCommentLocationQuery(commentId,isLikedComment,isDisLikedComment,getToken())
+    }
+
+
+    override fun getSearchDetailsQuery(
+        text: String,
+        typeList: MutableList<Int?>
+    ): Observable<List<SearchDetail>> {
+        return dataStore.getRemoteData(true)
+            .getSearchDetailsQuery(text=text,typeList = typeList, token = getToken()).map {
+                it.map { searchDataD ->
+                    searchMapper.mapToDomain(searchDataD)
+            }
+        }
+    }
+
+    override fun getAllBookmaker(): Observable<MutableList<Int>> {
+        return dataStore.getRemoteData(true).getAllBookmaker(token = getToken())
+    }
+
+    override fun updateBookmakerQuery(markerId: String, isBookmarked: Boolean): Completable {
+        return dataStore.getRemoteData(true)
+            .updateBookmakerQuery(markerId = markerId,isBookmarked = isBookmarked,token = getToken())
     }
 }

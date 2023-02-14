@@ -1,8 +1,10 @@
 package com.example.kmitlcompanion.remote
 
+import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.remote.service.RetrofitTestClient
 import com.example.kmitlcompanion.data.repository.RemoteRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -11,6 +13,17 @@ import javax.inject.Inject
 class RetrofitClient @Inject constructor(
     private val retrofitTestClient: RetrofitTestClient,
 ) : RemoteRepository {
+    override fun createEventQuery(
+        name: String,
+        detail: String,
+        status : String,
+        point: List<Point>,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        return retrofitTestClient.createLocationQuery(name,detail,status,point, image,token)
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,
@@ -106,5 +119,25 @@ class RetrofitClient @Inject constructor(
         token: String
     ): Completable {
         return retrofitTestClient.likeDislikeCommentMarkerLocationQuery(commentId,isLikedComment,isDisLikedComment,token)
+    }
+
+    override fun getSearchDetailsQuery(
+        text: String,
+        typeList: MutableList<Int?>,
+        token: String
+    ): Observable<List<SearchDataDetails>> {
+        return retrofitTestClient.getSearchDetailsQuery(text,typeList,token)
+    }
+
+    override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
+        return retrofitTestClient.getAllBookmakerLocationQuery(token)
+    }
+
+    override fun updateBookmakerQuery(
+        markerId: String,
+        isBookmarked: Boolean,
+        token: String
+    ): Completable {
+        return retrofitTestClient.updateBookmakerLocationQuery(markerId,isBookmarked,token)
     }
 }
