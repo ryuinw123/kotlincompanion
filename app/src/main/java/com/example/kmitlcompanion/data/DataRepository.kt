@@ -1,6 +1,8 @@
 package com.example.kmitlcompanion.data
 
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
+import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
 import com.example.kmitlcompanion.data.mapper.SearchMapper
 import com.example.kmitlcompanion.data.model.*
@@ -10,7 +12,6 @@ import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.mapbox.geojson.Point
-import com.mapbox.maps.extension.style.expressions.dsl.generated.get
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -24,6 +25,7 @@ class DataRepository @Inject constructor(
     private val commentMapper : CommentMapper,
     private val contentResolverUtil: ContentResolverUtil,
     private val searchMapper: SearchMapper,
+    private val eventMapper: EventMapper,
 ) : DomainRepository{
 
     private fun getToken(): String{
@@ -49,6 +51,19 @@ class DataRepository @Inject constructor(
             token = getToken(),
             status = event.status!!
         )
+    }
+
+    override fun getEventLocations(): Observable<EventInformation> {
+        val d = dataStore.getRemoteData(true).getEventLocations(getToken()).map { list ->
+            EventInformation(
+                eventPoints = list.map { eventMapper.mapToDomain(it) },
+                source = Source.REMOTE,
+                timeStamp = timeUtils.currentTime
+            )
+        }.map { information ->
+            Observable.just(information)
+        }.flatMap { it }
+        return d
     }
 
     override fun getLocationQuery(latitude: Double, longitude: Double): Observable<LocationDetail> {

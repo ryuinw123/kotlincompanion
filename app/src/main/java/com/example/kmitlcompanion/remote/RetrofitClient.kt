@@ -13,6 +13,7 @@ import javax.inject.Inject
 class RetrofitClient @Inject constructor(
     private val retrofitTestClient: RetrofitTestClient,
 ) : RemoteRepository {
+
     override fun createEventQuery(
         name: String,
         detail: String,
@@ -22,6 +23,10 @@ class RetrofitClient @Inject constructor(
         token: String
     ): Completable {
         return retrofitTestClient.createLocationQuery(name,detail,status,point, image,token)
+    }
+
+    override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
+        return retrofitTestClient.getEventLocations(token)
     }
 
     override fun getLocationQuery(

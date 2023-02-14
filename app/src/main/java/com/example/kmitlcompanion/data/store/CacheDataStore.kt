@@ -23,6 +23,10 @@ class CacheDataStore @Inject constructor(
         throw IllegalStateException("Function not currently supported!")
     }
 
+    override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,

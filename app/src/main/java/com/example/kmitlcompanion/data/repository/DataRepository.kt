@@ -3,6 +3,7 @@ package com.example.kmitlcompanion.data.repository
 import android.content.Intent
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.domain.model.Event
+import com.example.kmitlcompanion.domain.model.EventInformation
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.SearchDetail
 import com.mapbox.geojson.Point
@@ -16,6 +17,8 @@ interface DataRepository {
 
     fun createEventQuery(name : String, detail: String,status : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
     fun getLocationQuery(latitude: Double,longitude: Double , token : String) : Observable<LocationQuery>
+
+    fun getEventLocations(token: String) : Observable<List<EventAreaData>>
 
     fun getMapPoints(token: String): Observable<List<MapPointData>>
 
