@@ -1,8 +1,7 @@
-package com.example.kmitlcompanion.ui.createlocation.helper
+package com.example.kmitlcompanion.ui.createevent.helper
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.MediaStore
@@ -19,11 +18,11 @@ import javax.inject.Inject
 class ImageHelper @Inject constructor(){
     private var listOfWeakImageView : MutableList<WeakReference<ImageView?>?>? = null
     private var listOfWeakDiscardImageView : MutableList<WeakReference<FloatingActionButton?>?>? = null
-    private lateinit var viewModel: CreateLocationViewModel
+    private lateinit var viewModel: CreateEventViewModel
     private var currentUploadIndex : Int? = null
 
 
-    fun setup(imageView: List<ImageView> ,discardImageView: List<FloatingActionButton>, viewModel: CreateLocationViewModel){
+    fun setup(imageView: List<ImageView>, discardImageView: List<FloatingActionButton>, viewModel: CreateEventViewModel){
         this.listOfWeakImageView = mutableListOf()
         this.listOfWeakDiscardImageView = mutableListOf()
 

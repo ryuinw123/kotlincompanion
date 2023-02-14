@@ -1,6 +1,5 @@
-package com.example.kmitlcompanion.ui.createlocation.helper
+package com.example.kmitlcompanion.ui.createevent.helper
 
-import android.content.Intent
 import com.example.kmitlcompanion.presentation.viewmodel.CreateEventViewModel
 import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import javax.inject.Inject
@@ -8,9 +7,9 @@ import javax.inject.Inject
 class UploadHelper @Inject constructor(
 
 ) {
-    private lateinit var viewModel: CreateLocationViewModel
+    private lateinit var viewModel: CreateEventViewModel
 
-    fun setup(viewModel: CreateLocationViewModel) {
+    fun setup(viewModel: CreateEventViewModel) {
         this.viewModel = viewModel
     }
 

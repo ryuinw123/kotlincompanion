@@ -3,6 +3,7 @@ package com.example.kmitlcompanion.data.store
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -11,6 +12,17 @@ import javax.inject.Inject
 class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
 ) :DataRepository {
+    override fun createEventQuery(
+        name: String,
+        detail: String,
+        status : String,
+        point: List<Point>,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,

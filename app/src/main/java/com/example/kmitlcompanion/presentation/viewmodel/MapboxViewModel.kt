@@ -38,6 +38,40 @@ class MapboxViewModel @Inject constructor(
     private val _mapInformationResponse = MutableLiveData<MapInformation>()
     val mapInformationResponse: LiveData<MapInformation> = _mapInformationResponse
 
+    private val _mapEventResponse = MutableLiveData<EventInformation>(EventInformation(
+        listOf(
+            EventArea(
+                name = "bkk",
+                description = "this",
+                id = 0,
+                area = listOf(
+                    Point.fromLngLat(-122.09368411555363, 37.40996715600657),
+                    Point.fromLngLat(-122.09969165409512, 37.346488595544415),
+                    Point.fromLngLat(-122.01129031297978, 37.34491406444812),
+                    Point.fromLngLat(-122.00380146356501, 37.411567921087695)
+                ),
+                imageLink = listOf(),
+                type = ""
+            ),
+            EventArea(
+                name = "hondaCity",
+                description = "honda",
+                id = 1,
+                area = listOf(
+                    Point.fromLngLat(-122.30423322839806, 37.30426986660123),
+                    Point.fromLngLat(-122.3051290196735, 37.347568252831465),
+                    Point.fromLngLat(-122.2222716187394, 37.33655878832518),
+                    Point.fromLngLat(-122.22474129882005, 37.29296928749751)
+                ),
+                imageLink = listOf(),
+                type = ""
+            ),
+        ),
+        source = Source.REMOTE,
+        timeStamp = 0,
+    ))
+    val mapEventResponse : LiveData<EventInformation> = _mapEventResponse
+
     private val _bottomSheetState = MutableLiveData<Int>()
     val bottomSheetState: LiveData<Int> = _bottomSheetState
 
@@ -167,6 +201,7 @@ class MapboxViewModel @Inject constructor(
     val screenSize : LiveData<ScreenSize> = _screenSize
 
     
+
     fun updateCreatePinEvent() {
         _createPinEvent.value = Event(true)
     }
@@ -181,6 +216,7 @@ class MapboxViewModel @Inject constructor(
     fun updateCreatePolygonAreaEvent() {
         _createPolygonAreaEvent.value = Event(true)
     }
+
 
 
     fun updateRecenterEvent() {

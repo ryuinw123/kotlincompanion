@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.remote.service.RetrofitTestClient
 import com.example.kmitlcompanion.data.repository.RemoteRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -12,6 +13,17 @@ import javax.inject.Inject
 class RetrofitClient @Inject constructor(
     private val retrofitTestClient: RetrofitTestClient,
 ) : RemoteRepository {
+    override fun createEventQuery(
+        name: String,
+        detail: String,
+        status : String,
+        point: List<Point>,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        return retrofitTestClient.createLocationQuery(name,detail,status,point, image,token)
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,

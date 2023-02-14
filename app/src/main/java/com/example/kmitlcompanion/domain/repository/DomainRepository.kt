@@ -10,11 +10,13 @@ import io.reactivex.rxjava3.core.Observable
 
 interface DomainRepository {
 
+    fun createEventQuery(event : Event) : Completable
+
     fun getLocationQuery(latitude: Double , longitude: Double) : Observable<LocationDetail>
 
     fun getMapPoints() : Observable<MapInformation>
 
-    fun createLocationQuery(location: LocationData): Completable
+    fun createLocationQuery(location: Location): Completable
 
     fun createPublicLocationQuery(location: LocationPublicData): Completable
 

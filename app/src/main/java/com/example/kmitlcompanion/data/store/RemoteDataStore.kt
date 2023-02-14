@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
+import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -13,6 +14,17 @@ import javax.inject.Inject
 class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
+    override fun createEventQuery(
+        name: String,
+        detail: String,
+        status : String,
+        point: List<Point>,
+        image: List<MultipartBody.Part>,
+        token: String
+    ): Completable {
+        return remoteRepository.createEventQuery(name, detail,status, point, image, token)
+    }
+
     override fun getLocationQuery(
         latitude: Double,
         longitude: Double,

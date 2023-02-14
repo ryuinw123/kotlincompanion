@@ -109,7 +109,7 @@
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/createLocation"
-        android:name="com.example.kmitlcompanion.ui.createlocation.CreateLocation"
+        android:name="com.example.kmitlcompanion.ui.createlocation.CreateLocationFragment"
         android:label="CreateLocation" >
         <action
             android:id="@+id/action_createLocation_to_mapboxFragment2"
@@ -122,26 +122,37 @@
         android:id="@+id/createPolygonEventFragment"
         android:name="com.example.kmitlcompanion.ui.createpolygonevent.CreatePolygonEventFragment"
         android:label="CreatePolygonEventFragment" >
-        <action
-            android:id="@+id/action_createPolygonEventFragment_to_createLocation2"
-            app:destination="@id/createLocation" />
         <argument
             android:name="location"
             app:argType="com.mapbox.geojson.Point"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_createPolygonEventFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCircleEventFragment"
         android:name="com.example.kmitlcompanion.ui.createcircleevent.CreateCircleEventFragment"
         android:label="CreateCircleEventFragment" >
-        <action
-            android:id="@+id/action_createCircleEventFragment_to_createLocation2"
-            app:destination="@id/createLocation" />
         <argument
             android:name="location"
             app:argType="com.mapbox.geojson.Point"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_createCircleEventFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="com.example.kmitlcompanion.ui.createevent.CreateEventFragment"
+        android:label="CreateEventFragment" >
+        <action
+            android:id="@+id/action_createEventFragment_to_mapboxFragment"
+            app:destination="@id/mapboxFragment" />
+        <argument
+            android:name="event"
+            app:argType="com.example.kmitlcompanion.domain.model.EventDetail" />
     </fragment>
 </navigation>
