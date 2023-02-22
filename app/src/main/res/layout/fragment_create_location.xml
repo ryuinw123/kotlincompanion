@@ -37,11 +37,13 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/name_helper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="40dp"
                         android:layout_marginTop="30dp"
                         android:layout_marginEnd="40dp"
+                        android:textColorHint="#FF5722"
                         app:boxStrokeColor="@color/kmitl_color"
                         app:boxStrokeWidth="2dp"
                         app:boxStrokeWidthFocused="2dp"
@@ -54,6 +56,7 @@
                             android:id="@+id/name_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
                             android:hint="ชื่อปักหมุด" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,9 +104,11 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/detail_helper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
+                        android:textColorHint="@color/kmitl_color"
                         app:boxStrokeColor="@color/kmitl_color"
                         app:boxStrokeWidth="2dp"
                         app:boxStrokeWidthFocused="2dp"
@@ -116,6 +121,7 @@
                             android:id="@+id/detail_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
                             android:hint="รายละเอียด"
                             android:lines="3" />
                     </com.google.android.material.textfield.TextInputLayout>

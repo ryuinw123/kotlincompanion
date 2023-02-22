@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.data
 
-import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
@@ -36,7 +35,6 @@ class DataRepository @Inject constructor(
         val file = event.file
         val uri = event.uri
         var imageList : MutableList<MultipartBody.Part> = mutableListOf()
-
         if (file.isNotEmpty() && uri.isNotEmpty()){
             for (i in 0 until(file.size) ){
                 val requestFile = file[i]?.asRequestBody(contentResolverUtil.getMediaType(uri[i]!!))!!
@@ -44,12 +42,13 @@ class DataRepository @Inject constructor(
             }
         }
         return dataStore.getRemoteData(true).createEventQuery(
-            name = event.inputName!!,
+            name = event.name!!,
             detail = event.description!!,
+            startTime = event.startTime!!,
+            endTime = event.endTime!!,
             point = event.point,
             image = imageList,
-            token = getToken(),
-            status = event.status!!
+            token = getToken()
         )
     }
 
@@ -192,6 +191,8 @@ class DataRepository @Inject constructor(
                     isLiked = data.isLiked,
                     comment = data.comment.map{ commentMapper.mapToDomain(it)} as MutableList<Comment>,
                     isBookmarked = data.isBookmarked,
+                    isMyPin = data.isMyPin,
+                    createdUserName = data.createdUserName,
                 )  //list.map { commentMapper.mapToDomain(it.comment) }
             }
     }
@@ -236,10 +237,12 @@ class DataRepository @Inject constructor(
 
     override fun getSearchDetailsQuery(
         text: String,
-        typeList: MutableList<Int?>
+        typeList: MutableList<Int?>,
+        latitude: Double,
+        longitude: Double,
     ): Observable<List<SearchDetail>> {
         return dataStore.getRemoteData(true)
-            .getSearchDetailsQuery(text=text,typeList = typeList, token = getToken()).map {
+            .getSearchDetailsQuery(text=text, typeList = typeList,latitude = latitude,longitude = longitude, token = getToken()).map {
                 it.map { searchDataD ->
                     searchMapper.mapToDomain(searchDataD)
             }
@@ -253,5 +256,38 @@ class DataRepository @Inject constructor(
     override fun updateBookmakerQuery(markerId: String, isBookmarked: Boolean): Completable {
         return dataStore.getRemoteData(true)
             .updateBookmakerQuery(markerId = markerId,isBookmarked = isBookmarked,token = getToken())
+    }
+
+    //For event
+    override fun changeEventLikeLocationQuery(eventId: String, isLike: Boolean): Completable {
+        return dataStore.getRemoteData(true).changeEventLikeLocationQuery(eventId,isLike,getToken())
+    }
+
+    override fun changeEventBookmarkLocationQuery(eventId: String, isMark: Boolean): Completable {
+        return dataStore.getRemoteData(true).changeEventBookmarkLocationQuery(eventId,isMark,getToken())
+    }
+
+    override fun getEventDetailsLocationQuery(id: String): Observable<PinEventDetail> {
+        return dataStore.getRemoteData(true).getEventDetailsLocationQuery(id = id, token = getToken()).map {
+            PinEventDetail(
+                eventLikeCounting= it.eventLikeCounting,
+                isEventLiked = it.isEventLiked,
+                isEventBookmarked = it.isEventBookmarked,
+                isMyPin = it.isMyPin,
+                createdUserName = it.createdUserName,
+            )
+        }
+    }
+
+    override fun getAllEventBookMarker(): Observable<MutableList<Int>> {
+        return dataStore.getRemoteData(true).getAllEventBookMarker(getToken())
+    }
+
+    override fun deleteMarkerLocationQuery(id: String): Completable {
+        return dataStore.getRemoteData(true).deleteMarkerLocationQuery(id,getToken())
+    }
+
+    override fun deleteEventLocationQuery(id: String): Completable {
+        return dataStore.getRemoteData(true).deleteEventLocationQuery(id,getToken())
     }
 }

@@ -53,9 +53,21 @@ interface DomainRepository {
                                         isDisLikedComment : Int) : Completable
 
 
-    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>) : Observable<List<SearchDetail>>
+    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>,latitude: Double,longitude: Double) : Observable<List<SearchDetail>>
 
     fun getAllBookmaker() : Observable<MutableList<Int>>
 
     fun updateBookmakerQuery(markerId : String,isBookmarked : Boolean) : Completable
+
+    fun changeEventLikeLocationQuery(eventId : String,isLike : Boolean) : Completable
+
+    fun changeEventBookmarkLocationQuery(eventId : String,isMark : Boolean) : Completable
+
+    fun getEventDetailsLocationQuery(id : String) : Observable<PinEventDetail>
+
+    fun getAllEventBookMarker() : Observable<MutableList<Int>>
+
+    fun deleteMarkerLocationQuery(id : String) : Completable
+
+    fun deleteEventLocationQuery(id : String) : Completable
 }

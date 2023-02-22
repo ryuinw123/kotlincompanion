@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data.repository
 
 import com.example.kmitlcompanion.data.model.*
+import com.example.kmitlcompanion.domain.model.PinEventDetail
 import com.example.kmitlcompanion.domain.model.SearchDetail
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
@@ -11,7 +12,7 @@ import java.net.URI
 
 interface RemoteRepository {
 
-    fun createEventQuery(name : String, detail: String,status : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
+    fun createEventQuery(name : String, detail: String,startTime : String,endTime : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
 
     fun getEventLocations(token: String) : Observable<List<EventAreaData>>
 
@@ -67,9 +68,24 @@ interface RemoteRepository {
                                         isDisLikedComment : Int,
                                         token : String) : Completable
 
-    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>,token: String) : Observable<List<SearchDataDetails>>
+    fun getSearchDetailsQuery(text : String,typeList : MutableList<Int?>,latitude: Double,longitude: Double,token: String) : Observable<List<SearchDataDetails>>
 
     fun getAllBookmaker(token : String) : Observable<MutableList<Int>>
+
     fun updateBookmakerQuery(markerId : String,isBookmarked : Boolean,token : String) : Completable
 
+    fun changeEventLikeLocationQuery(eventId : String,isLike : Boolean,token: String) : Completable
+
+    fun changeEventBookmarkLocationQuery(eventId : String,isMark : Boolean,token: String) : Completable
+
+    fun getEventDetailsLocationQuery(id : String,token : String) : Observable<PinEventData>
+
+    fun getAllEventBookMarker(token : String) : Observable<MutableList<Int>>
+
+    fun deleteMarkerLocationQuery(id : String,token: String) : Completable
+
+    fun deleteEventLocationQuery(id : String,token: String) : Completable
+
 }
+
+

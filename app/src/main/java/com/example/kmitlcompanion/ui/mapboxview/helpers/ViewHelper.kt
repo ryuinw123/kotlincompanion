@@ -12,11 +12,12 @@ internal class ViewHelper @Inject constructor(
     val location : ViewLocation,
     val geofence: ViewGeofence,
     val service: ViewService,
-    val bottomComment: ViewBottomComment,
+    val like: ViewLike,
     val navigation : ViewNavigation,
     val search : ViewSearch,
     val tag : ViewTag,
     val bookMark: ViewBookMark,
     val createSheet : ViewCreateSheet,
+    val editDeleteMarker: ViewEditDeleteMarker,
 
 )

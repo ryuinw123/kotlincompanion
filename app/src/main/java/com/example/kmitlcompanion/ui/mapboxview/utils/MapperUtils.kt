@@ -30,6 +30,8 @@ class MapperUtils @Inject constructor(
         feature.addStringProperty("name", eventArea?.name)
         feature.addStringProperty("description", eventArea?.description)
         feature.addNumberProperty("id", eventArea?.id)
+        feature.addStringProperty("startTime", eventArea?.startTime)
+        feature.addStringProperty("endTime", eventArea?.endTime)
         feature.addStringProperty("imageLink",eventArea?.imageLink.toString())
 
         /*val areaJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${

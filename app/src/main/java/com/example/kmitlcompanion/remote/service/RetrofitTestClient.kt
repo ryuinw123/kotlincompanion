@@ -2,6 +2,9 @@ package com.example.kmitlcompanion.remote.service
 
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.domain.model.EventArea
+import com.example.kmitlcompanion.domain.model.PinEventDetail
+import com.example.kmitlcompanion.domain.usecases.ChangeEventBookmarkLocationQuery
+import com.example.kmitlcompanion.domain.usecases.ChangeEventLikeLocationQuery
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -21,7 +24,7 @@ interface RetrofitTestClient {
 
     @Multipart
     @POST("createeventquery")
-    fun createLocationQuery(@Part("name") name : String, @Part("description") detail : String,@Part("status") status : String, @Part("point") point : List<Point>, @Part image:List<MultipartBody.Part>, @Part("token") token:String): Completable
+    fun createEventQuery(@Part("name") name : String, @Part("description") detail : String,@Part("startTime") startTime : String,@Part("endTime") endTime : String, @Part("point") point : List<Point>, @Part image:List<MultipartBody.Part>, @Part("token") token:String): Completable
 
     @Multipart
     @POST("createlocationquery")
@@ -85,6 +88,8 @@ interface RetrofitTestClient {
     @POST("getsearchdetailslocationquery")
     fun getSearchDetailsQuery(@Part("text") text : String,
                               @Part("typeList") typeList: List<Int?>,
+                              @Part("lat") latitude: Double,
+                              @Part("long") longitude: Double,
                               @Part("token") token : String,
                               ): Observable<List<SearchDataDetails>>
 
@@ -99,4 +104,35 @@ interface RetrofitTestClient {
                              @Part("isBookmarked") isBookmarked : Boolean,
                              @Part("token") token : String,
                             ): Completable
+
+    @Multipart
+    @POST("changeeventlikelocationquery")
+    fun changeEventLikeLocationQuery(@Part("eventId") eventId : String,
+                                     @Part("isLiked") isLiked: Boolean,
+                                     @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("changeeventbookmarklocationquery")
+    fun changeEventBookmarkLocationQuery(@Part("eventId") eventId : String,
+                                         @Part("isMark") isMark: Boolean,
+                                         @Part("token") token : String): Completable
+
+    @Multipart
+    @POST("geteventdetailslocationquery")
+    fun getEventDetailsLocationQuery(@Part("id") id : String,
+                                     @Part("token") token : String,
+                                     ): Observable<PinEventData>
+
+    @Multipart
+    @POST("getalleventbookmarker")
+    fun getAllEventBookMarker(@Part("token") token : String): Observable<MutableList<Int>>
+
+    @Multipart
+    @POST("deletemarkerlocationquery")
+    fun deleteMarkerLocationQuery(@Part("id") id : String,@Part("token") token: String) : Completable
+
+    @Multipart
+    @POST("deleteeventlocationquery")
+    fun deleteEventLocationQuery(@Part("id") id : String,@Part("token") token: String) : Completable
+
 }

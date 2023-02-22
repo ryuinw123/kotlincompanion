@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.data.mapper
 
 import com.example.kmitlcompanion.data.model.SearchDataDetails
 import com.example.kmitlcompanion.domain.model.SearchDetail
+import com.mapbox.maps.extension.style.expressions.dsl.generated.distance
 import javax.inject.Inject
 
 class SearchMapper @Inject constructor() {
@@ -14,6 +15,7 @@ class SearchMapper @Inject constructor() {
             address = it.address,
             pic = it.pic,
             code = it.code,
+            distance = it.distance,
         )
     }
 

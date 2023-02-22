@@ -22,7 +22,7 @@ object RetrofitServiceFactory {
         val retrofit = Retrofit.Builder()
             //.baseUrl("http://shitduck.duckdns.org:8000/api/")
             //.baseUrl("http://192.168.2.40:8000/api/")
-            .baseUrl("http://172.26.0.1:8000/api/") //For Banana PC
+            .baseUrl("http://172.18.16.1:8000/api/") //For Banana PC
             //.baseUrl("http://192.168.1.22:8000/api/") //For Banana Phone
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

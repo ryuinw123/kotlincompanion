@@ -4,11 +4,10 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PinData(
-    val likeCounting : Int,
-    val isLiked : Boolean,
-    val comment : MutableList<CommentData>,
-    val isBookmarked : Boolean,
+data class PinEventData(
+    val eventLikeCounting : Int,
+    val isEventLiked : Boolean,
+    val isEventBookmarked : Boolean,
     val isMyPin : Boolean,
     val createdUserName : String,
 ) : Parcelable

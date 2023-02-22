@@ -12,10 +12,12 @@ import javax.inject.Inject
 class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
 ) :DataRepository {
+
     override fun createEventQuery(
         name: String,
         detail: String,
-        status : String,
+        startTime: String,
+        endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
         token: String
@@ -140,6 +142,8 @@ class CacheDataStore @Inject constructor(
     override fun getSearchDetailsQuery(
         text: String,
         typeList: MutableList<Int?>,
+        latitude: Double,
+        longitude: Double,
         token: String
     ): Observable<List<SearchDataDetails>> {
         throw IllegalStateException("Function not currently supported!")
@@ -154,6 +158,40 @@ class CacheDataStore @Inject constructor(
         isBookmarked: Boolean,
         token: String
     ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun changeEventLikeLocationQuery(
+        eventId: String,
+        isLike: Boolean,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun changeEventBookmarkLocationQuery(
+        eventId: String,
+        isMark: Boolean,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+
+    override fun getEventDetailsLocationQuery(id: String, token: String): Observable<PinEventData> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun getAllEventBookMarker(token: String): Observable<MutableList<Int>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+
+    override fun deleteMarkerLocationQuery(id: String, token: String): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun deleteEventLocationQuery(id: String, token: String): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
 }

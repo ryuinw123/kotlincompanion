@@ -33,6 +33,12 @@ class MapboxViewModel @Inject constructor(
     private val getSearchDetailsQuery: getSearchDetailsQuery,
     private val getAllBookmaker: GetAllBookmaker,
     private val updateBookmakerQuery: UpdateBookmakerQuery,
+    private val changeEventLikeLocationQuery: ChangeEventLikeLocationQuery,
+    private val changeEventBookmarkLocationQuery: ChangeEventBookmarkLocationQuery,
+    private val getAllEventBookmaker: GetAllEventBookmaker,
+    private val getEventPinDetailsLocationQuery: GetEventPinDetailsLocationQuery,
+    private val deleteMarkerLocationQuery: DeleteMarkerLocationQuery,
+    private val deleteEventLocationQuery: DeleteEventLocationQuery,
 ) : BaseViewModel() {
 
     //For Marker & Location
@@ -42,11 +48,21 @@ class MapboxViewModel @Inject constructor(
     private val _mapEventResponse = MutableLiveData<EventInformation>()
     val mapEventResponse : LiveData<EventInformation> = _mapEventResponse
 
+    //For reload maps
+    private val _refreshMapLocations = MutableLiveData<Boolean>()
+    val refreshMapLocations : MutableLiveData<Boolean> = _refreshMapLocations
+
+    private val _refreshEventLocations = MutableLiveData<Boolean>()
+    val refreshEventLocations : MutableLiveData<Boolean> = _refreshEventLocations
+
     private val _bottomSheetState = MutableLiveData<Int>()
     val bottomSheetState: LiveData<Int> = _bottomSheetState
 
     private val _currentLocationGps = MutableLiveData<String?>()
     val currentLocationGps: LiveData<String?> = _currentLocationGps
+
+    private val _iconLocation = MutableLiveData<Int>()
+    val iconLocation : LiveData<Int> = _iconLocation
 
     private val _idLocationLabel = MutableLiveData<String?>()
     val idLocationLabel : LiveData<String?> = _idLocationLabel
@@ -98,6 +114,8 @@ class MapboxViewModel @Inject constructor(
     private val _isMarkerBookmarked = MutableLiveData<Boolean>()
     val isMarkerBookmarked : LiveData<Boolean> = _isMarkerBookmarked
 
+    private val _onBookmarkClick = MutableLiveData<Boolean>()
+    val onBookmarkClick : MutableLiveData<Boolean> = _onBookmarkClick
 
     //For อิหยังนิ
     private val _permissionGrand = MutableLiveData(false)
@@ -170,7 +188,37 @@ class MapboxViewModel @Inject constructor(
     private val _screenSize = MutableLiveData<ScreenSize>()
     val screenSize : LiveData<ScreenSize> = _screenSize
 
-    
+    //For Event
+    private val _eventState = MutableLiveData<Boolean>(false)
+    val eventState : LiveData<Boolean> = _eventState
+
+    private val _eventBindStart = MutableLiveData<String>()
+    val eventBindStart : LiveData<String> = _eventBindStart
+
+    private val _eventBindEnd = MutableLiveData<String>()
+    val eventBindEnd : LiveData<String> = _eventBindEnd
+
+    private val _allEventBookmarkedIdList = MutableLiveData<MutableList<Int>>()
+    val allEventBookmarkedIdList : LiveData<MutableList<Int>> = _allEventBookmarkedIdList
+
+    private val _displayTimer = MutableLiveData<String>()
+    val displayTimer : MutableLiveData<String> = _displayTimer
+
+    //For Edit Delete Marker
+
+    private val _isMyPin = MutableLiveData<Boolean>()
+    val isMyPin : MutableLiveData<Boolean> = _isMyPin
+
+    private val _createdUserName = MutableLiveData<String>()
+    val createdUserName : MutableLiveData<String> = _createdUserName
+
+    private val _showMarkerMenuEvent = MutableLiveData<Event<Boolean>>()
+    val showMarkerMenuEvent : MutableLiveData<Event<Boolean>> = _showMarkerMenuEvent
+
+    private val _confirmDeleteMarkerDialog = MutableLiveData<Boolean>()
+    val confirmDeleteMarkerDialog : MutableLiveData<Boolean> = _confirmDeleteMarkerDialog
+
+    //For ??
 
     fun updateCreatePinEvent() {
         _createPinEvent.value = Event(true)
@@ -203,6 +251,10 @@ class MapboxViewModel @Inject constructor(
         _locationIcon.value = icon
     }
 
+    fun setIconLocation(resource : Int){
+        _iconLocation.value = resource
+    }
+
 
     //For download locations
     fun downloadLocations() {
@@ -227,40 +279,6 @@ class MapboxViewModel @Inject constructor(
     //For download Event
     fun downloadLocationsEvent() {
         Log.d("test_event","test in event download")
-//        _mapEventResponse.value = EventInformation(
-//            listOf(
-//                EventArea(
-//                    name = "bkk",
-//                    description = "this",
-//                    id = 0,
-//                    area = listOf(
-//                        Point.fromLngLat(-122.09368411555363, 37.40996715600657),
-//                        Point.fromLngLat(-122.09969165409512, 37.346488595544415),
-//                        Point.fromLngLat(-122.01129031297978, 37.34491406444812),
-//                        Point.fromLngLat(-122.00380146356501, 37.411567921087695)
-//                    ),
-//                    imageLink = listOf(),
-//                    type = ""
-//                ),
-//                EventArea(
-//                    name = "hondaCity",
-//                    description = "honda",
-//                    id = 1,
-//                    area = listOf(
-//                        Point.fromLngLat(-122.30423322839806, 37.30426986660123),
-//                        Point.fromLngLat(-122.3051290196735, 37.347568252831465),
-//                        Point.fromLngLat(-122.2222716187394, 37.33655878832518),
-//                        Point.fromLngLat(-122.22474129882005, 37.29296928749751)
-//                    ),
-//                    imageLink = listOf(),
-//                    type = ""
-//                ),
-//            ),
-//            listOf<EventArea>(),
-//            source = Source.REMOTE,
-//            timeStamp = 0,
-//        )
-//
         getEventLocations.execute(object : DisposableObserver<EventInformation>(){
 
             override fun onComplete() {
@@ -269,40 +287,7 @@ class MapboxViewModel @Inject constructor(
 
             override fun onNext(t: EventInformation) {
                 Log.d("test_downloadLocationsEvent",t.toString())
-                //_mapEventResponse.value = t
-                _mapEventResponse.value = EventInformation(
-                    listOf(
-                        EventArea(
-                            name = "bkk",
-                            description = "this",
-                            id = 0,
-                            startTime = "",
-                            endTime = "",
-                            area = listOf(
-                                Point.fromLngLat(-122.09368411555363, 37.40996715600657),
-                                Point.fromLngLat(-122.09969165409512, 37.346488595544415),
-                                Point.fromLngLat(-122.01129031297978, 37.34491406444812),
-                                Point.fromLngLat(-122.00380146356501, 37.411567921087695)
-                            ),
-                            imageLink = listOf(),
-                        ),
-                        EventArea(
-                            name = "hondaCity",
-                            description = "honda",
-                            id = 1,
-                            startTime = "",
-                            endTime = "",
-                            area = listOf(
-                                Point.fromLngLat(-122.30423322839806, 37.30426986660123),
-                                Point.fromLngLat(-122.3051290196735, 37.347568252831465),
-                                Point.fromLngLat(-122.2222716187394, 37.33655878832518),
-                                Point.fromLngLat(-122.22474129882005, 37.29296928749751)
-                            ),
-                            imageLink = listOf(),
-                        ),
-                    ),
-                    source = Source.REMOTE,
-                    timeStamp = 0,)
+                _mapEventResponse.value = t
             }
 
             override fun onError(e: Throwable) {
@@ -323,6 +308,8 @@ class MapboxViewModel @Inject constructor(
                 _isLiked.value = t.isLiked
                 _commentList.value = t.comment
                 _isMarkerBookmarked.value = t.isBookmarked
+                _isMyPin.value = t.isMyPin
+                _createdUserName.value = t.createdUserName
                 Log.d("test_pin_vm",t.isBookmarked.toString())
 
             }
@@ -365,6 +352,9 @@ class MapboxViewModel @Inject constructor(
     fun onClickLikeLocationQuery() {
         _onClicklikeLocation.value = true
     }
+
+
+
 
     //For Comment
     fun addComment(shortComment: Comment) {
@@ -475,12 +465,16 @@ class MapboxViewModel @Inject constructor(
         })
     }
 
+    fun bookMarkOnClick(){
+        _onBookmarkClick.value = true
+    }
+
     fun bookMarkUpdate(){//id , status = true mark , false delete mark
         val locationId = _idLocationLabel.value ?:""
-        val markerBookmarked = !(_isMarkerBookmarked.value!!)
+        val markerBookmarked = !(_isMarkerBookmarked.value!!) //change bookmark state
         updateBookmakerQuery.execute(object : DisposableCompletableObserver(){
                 override fun onComplete() {
-                    Log.d("test_bookMarkUpdate","complete")
+                    Log.d("test_eventbookMarkUpdate","complete")
                     _isMarkerBookmarked.value = markerBookmarked
                     _updateBookMark.value = true
                 }
@@ -491,6 +485,8 @@ class MapboxViewModel @Inject constructor(
             }, params = Pair(locationId,markerBookmarked)
         )
     }
+
+
 
     //For ??
     fun setScreenSize(screenSize: ScreenSize){
@@ -556,6 +552,7 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun appendDataToSearchList(searchText : String?, tagList : MutableList<Int?>){
+        val currentLocation = _userLocation.value
         Log.d("test_appendDataToSearchList",_itemTagList.value.toString())
         getSearchDetailsQuery.execute(object : DisposableObserver<List<SearchDetail>>(){
             override fun onComplete() {
@@ -570,7 +567,7 @@ class MapboxViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.d("getSearchDetailsQuery_onError",e.toString())
             }
-        }, params = Pair(searchText,tagList))
+        }, params = Triple(searchText,tagList,currentLocation))
     }
 
     fun updateSearchStatus(status : Boolean){
@@ -604,7 +601,148 @@ class MapboxViewModel @Inject constructor(
     }
 
 
+    //For Event
+    fun getEventDetailsLocationQuery(id : String?){
+        getEventPinDetailsLocationQuery.execute(object : DisposableObserver<PinEventDetail>(){
+            override fun onNext(t: PinEventDetail) {
+                Log.d("getEventPinDetailsLocationQuery",t.toString())
+                _likeCoutingUpdate.value = t.eventLikeCounting
+                _isLiked.value = t.isEventLiked
+                _isMarkerBookmarked.value = t.isEventBookmarked
+                _isMyPin.value = t.isMyPin
+                _createdUserName.value = t.createdUserName
+            }
 
+            override fun onError(e: Throwable) {
+                Log.d("getEventPinDetailsLocationQuery",e.toString())
+            }
+
+            override fun onComplete() {
+                Log.d("getEventPinDetailsLocationQuery","complete")
+            }
+        }, params = id)
+    }
+
+    //get all event bookmark
+    fun getAllEventBookMarker(){
+        getAllEventBookmaker.execute(object : DisposableObserver<MutableList<Int>>(){
+            override fun onNext(t: MutableList<Int>) {
+                Log.d("getAllEventBookMarker",t.toString())
+                _allEventBookmarkedIdList.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("getAllEventBookMarker",e.toString())
+            }
+
+            override fun onComplete() {
+                Log.d("getAllEventBookMarker","complete")
+            }
+        })
+    }
+
+    fun changeEventState(state : Boolean){
+        _eventState.value = state
+    }
+
+    fun setEndTime(endTime : String){
+        _eventBindEnd.value = endTime
+    }
+
+    fun setStartTime(startTime : String){
+        _eventBindStart.value = startTime
+    }
+
+    //event like
+    fun changeLikeLocationQueryEvent(eventId : String?,isLike : Boolean,updateCountLike : Int){ //true = addlike , false = removelike
+
+        Log.d("test_event_like","$eventId like = $isLike")
+        changeEventLikeLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                Log.d("test_event_changeLikeLocationQueryEvent","onComplete isLikeEvent")
+                _likeCoutingUpdate.value = updateCountLike
+                _isLiked.value = isLike
+                _onClicklikeLocation.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("test_changeLikeLocationQueryEvent",e.toString())
+            }
+        }, params = Pair(eventId,isLike))
+
+    }
+
+    //For Event Bookmark
+    fun eventBookMarkUpdate(){//id , status = true mark , false delete mark
+        val eventId = _idLocationLabel.value ?:""
+        val markerBookmarked = !(_isMarkerBookmarked.value ?:false) //change bookmark state
+        Log.d("test_eventbookMarkUpdate","event not implement")
+        changeEventBookmarkLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                Log.d("test_event_changeEventBookmarkLocationQuery",markerBookmarked.toString())
+                _isMarkerBookmarked.value = markerBookmarked
+                _updateBookMark.value = true
+                _onBookmarkClick.value = false
+
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("test_changeLikeLocationQueryEvent",e.toString())
+            }
+        }, params = Pair(eventId,markerBookmarked))
+    }
+
+    fun changeEventTimerEnd(timeValue : String){
+        _displayTimer.value = timeValue
+    }
+
+
+    //For Edit delete Marker
+    fun showMarkerMenu(){
+        _showMarkerMenuEvent.value = Event(true)
+    }
+
+    fun editMarker(){
+        Log.d("test_","editPin")
+    }
+
+    fun deleteMarker(){
+        _confirmDeleteMarkerDialog.value = true
+    }
+
+    fun sendDeleteMarker(){
+        val id = _idLocationLabel.value
+        //call api
+        deleteMarkerLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                _refreshMapLocations.value = true
+                Log.d("test_deleteMarkerLocationQuery","delete complete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("deleteMarkerLocationQuery",e.toString())
+            }
+        }, params = id)
+    }
+
+    fun sendDeleteEventMarker(){
+        val id = _idLocationLabel.value
+        //call api
+        deleteEventLocationQuery.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                _refreshEventLocations.value = true
+                Log.d("test_deleteMarkerLocationQuery","delete complete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("deleteMarkerLocationQuery",e.toString())
+            }
+        }, params = id)
+    }
+
+
+
+    //For page navigate
     fun goToCreateMapBox(){
         navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2(userLocation.value))
     }

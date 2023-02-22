@@ -21,6 +21,7 @@ class TagTypeListUtil @Inject constructor(
     //spatial tag
     private val spacialTagTypeList = mutableListOf<TagDetail>(
         TagDetail(100,"สถานที่ของฉัน",R.drawable.ic_baseline_bookmark_24),
+        TagDetail(969,"อีเวนต์",R.drawable.ic_event_48px),
     )
 
     fun getMutableListOfTagTypeString() : MutableList<String> {
@@ -36,7 +37,8 @@ class TagTypeListUtil @Inject constructor(
 
     fun getAvailableMutableListOfTagTypeDetails() : MutableList<TagDetail>{
         return mutableListOf<TagDetail>()
-            .plus(spacialTagTypeList[0])
+            .plus(spacialTagTypeList[0]) //bookmark
+            .plus(spacialTagTypeList[1]) //event
             .plus(tagTypeDetailsList.slice(IntRange(1, tagTypeDetailsList.size - 1)))
                 as MutableList<TagDetail>
     }
@@ -54,6 +56,10 @@ class TagTypeListUtil @Inject constructor(
     fun getImageByCode(code : Int): Int{
         var image = (tagTypeDetailsList.plus(spacialTagTypeList)).firstOrNull { it.code == code }?.icon
         return image!!
+    }
+
+    fun getEventTagCode() : Int{
+        return spacialTagTypeList[1].code
     }
 
 }

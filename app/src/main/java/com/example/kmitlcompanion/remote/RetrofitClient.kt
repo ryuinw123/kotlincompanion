@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.remote
 
-import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.remote.service.RetrofitTestClient
 import com.example.kmitlcompanion.data.repository.RemoteRepository
@@ -17,12 +16,13 @@ class RetrofitClient @Inject constructor(
     override fun createEventQuery(
         name: String,
         detail: String,
-        status : String,
+        startTime: String,
+        endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
         token: String
     ): Completable {
-        return retrofitTestClient.createLocationQuery(name,detail,status,point, image,token)
+        return retrofitTestClient.createEventQuery(name, detail, startTime,endTime, point, image, token)
     }
 
     override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
@@ -129,9 +129,11 @@ class RetrofitClient @Inject constructor(
     override fun getSearchDetailsQuery(
         text: String,
         typeList: MutableList<Int?>,
+        latitude: Double,
+        longitude: Double,
         token: String
     ): Observable<List<SearchDataDetails>> {
-        return retrofitTestClient.getSearchDetailsQuery(text,typeList,token)
+        return retrofitTestClient.getSearchDetailsQuery(text, typeList,latitude,longitude, token)
     }
 
     override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
@@ -144,5 +146,41 @@ class RetrofitClient @Inject constructor(
         token: String
     ): Completable {
         return retrofitTestClient.updateBookmakerLocationQuery(markerId,isBookmarked,token)
+    }
+
+    override fun changeEventLikeLocationQuery(
+        eventId: String,
+        isLike: Boolean,
+        token: String
+    ): Completable {
+        return retrofitTestClient.changeEventLikeLocationQuery(eventId,isLike,token)
+    }
+
+    override fun changeEventBookmarkLocationQuery(
+        eventId: String,
+        isMark: Boolean,
+        token: String
+    ): Completable {
+        return retrofitTestClient.changeEventBookmarkLocationQuery(eventId,isMark,token)
+    }
+
+    override fun getEventDetailsLocationQuery(
+        id: String,
+        token: String
+    ): Observable<PinEventData> {
+        return retrofitTestClient.getEventDetailsLocationQuery(id,token)
+    }
+
+    override fun getAllEventBookMarker(token: String): Observable<MutableList<Int>> {
+        return retrofitTestClient.getAllEventBookMarker(token)
+    }
+
+
+    override fun deleteMarkerLocationQuery(id: String, token: String): Completable {
+        return retrofitTestClient.deleteMarkerLocationQuery(id,token)
+    }
+
+    override fun deleteEventLocationQuery(id: String, token: String): Completable {
+        return retrofitTestClient.deleteEventLocationQuery(id,token)
     }
 }

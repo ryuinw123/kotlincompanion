@@ -29,4 +29,10 @@
         <item name="cornerSize">100%</item>
     </style>
 
+    <style name="Rounded_ShapeAppearanceOverlay.MaterialComponents.TextInputLayout" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="background">@color/kmitl_color</item>
+    </style>
+
 </resources>

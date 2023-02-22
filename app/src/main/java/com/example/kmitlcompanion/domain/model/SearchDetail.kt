@@ -7,6 +7,7 @@ data class SearchDetail(
     val address : String,
     val pic : Int,
     val code : Int,
+    val distance : String,
 ) {
 
 

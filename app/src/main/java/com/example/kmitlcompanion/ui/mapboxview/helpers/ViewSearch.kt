@@ -1,10 +1,8 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
-import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,21 +11,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.SearchDetail
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
+import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.adapter.OnEachSearchClickListener
 import com.example.kmitlcompanion.ui.mapboxview.adapter.SearchAdapter
+import com.example.kmitlcompanion.ui.mapboxview.utils.PolygonUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.TimeCounterUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
 import com.mapbox.geojson.Point
-import com.mapbox.maps.MapView
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
 class ViewSearch @Inject constructor(
     private val searchAdapter: SearchAdapter,
-    private val bottomBarUtils: BottomBarUtils
-){
+    private val bottomBarUtils: BottomBarUtils,
+    private val tagTypeListUtil: TagTypeListUtil,
+    private val polygonUtils: PolygonUtils,
+    ///private val timeCounterUtils: TimeCounterUtils,
+) : TimeCounterUtils.OnTickListener, TimeCounterUtils.OnFinishListener {
     private lateinit var viewModel : MapboxViewModel
     //private lateinit var pinButtonWeakReference: WeakReference<Button>
     private lateinit var weakTextTagDes: WeakReference<TextView>
@@ -110,20 +113,39 @@ class ViewSearch @Inject constructor(
                 search.clearFocus()
                 viewModel.resetDataToSearchList()
 
-                Log.d("test_ClickSearch",position.toString())
+                Log.d("test_ClickSearch : id = ",searchDetail.id.toString())
                 //viewModel.updatePositionFlyer(Point.fromLngLat(100.523186,13.736717))
 
-                val allMarker = viewModel.mapInformationResponse.value?.mapPoints
-                var targetMarker = allMarker?.firstOrNull { searchDetail.id.toLong() == it.id }
+                if (searchDetail.code == tagTypeListUtil.getEventTagCode()){
+                    val allEvents = viewModel.mapEventResponse.value?.eventPoints
+                    var targetEvent = allEvents?.firstOrNull { searchDetail.id.toLong() == it.id }
 
-                flyToSearchedLocationDetail(name = targetMarker!!.name,
-                                    id = targetMarker!!.id.toString(),
-                                    place = targetMarker!!.place,
-                                    address = targetMarker!!.address,
-                                    location = Point.fromLngLat(targetMarker!!.longitude,targetMarker!!.latitude),
-                                    description = targetMarker!!.description,
-                                    imageList = targetMarker!!.imageLink
-                                    )
+                    val center = polygonUtils.getCenter(targetEvent!!.area)
+                    eventDetail(name = targetEvent!!.name,
+                                        eventId = targetEvent!!.id.toString(),
+                                        startTime = targetEvent!!.startTime,
+                                        endTime = targetEvent!!.endTime,
+                                        location = center,
+                                        description = targetEvent!!.description,
+                                        imageList = targetEvent!!.imageLink
+                                        )
+
+                }else{
+                    val allMarker = viewModel.mapInformationResponse.value?.mapPoints
+                    var targetMarker = allMarker?.firstOrNull { searchDetail.id.toLong() == it.id }
+
+                    locationDetail(name = targetMarker!!.name,
+                        id = targetMarker!!.id.toString(),
+                        place = targetMarker!!.place,
+                        address = targetMarker!!.address,
+                        location = Point.fromLngLat(targetMarker!!.longitude,targetMarker!!.latitude),
+                        description = targetMarker!!.description,
+                        imageList = targetMarker!!.imageLink
+                    )
+                }
+
+
+
             }
         })
 
@@ -169,7 +191,8 @@ class ViewSearch @Inject constructor(
     }
 
     //@Copy
-    private fun flyToSearchedLocationDetail(name : String, id : String, place : String, address : String, location : Point, description : String, imageList : List<String>) {
+    fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
+
 
         viewModel.getDetailsLocationQuery(id)//get marker details
 
@@ -182,9 +205,59 @@ class ViewSearch @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
+        viewModel.setIconLocation(R.drawable.ic_location_on_red_24dp)
 
+        viewModel.changeEventState(false)
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+
+        TimeCounterUtils.stopTimer()
     }
+
+    fun eventDetail(name : String ,eventId : String ,startTime : String,endTime : String,
+                    location : Point ,description : String ,imageList : List<String>) {
+
+        viewModel.getEventDetailsLocationQuery(eventId)//get marker details
+        //Log.d("test_event","$name $startTime $endTime $description $imageList")
+        viewModel.updateIdLocationLabel(eventId)
+        viewModel.updateCurrentLocationGps(location)
+        viewModel.updatePositionFlyer(location)
+
+        viewModel.updateNameLocationLabel(name)
+        viewModel.setStartTime(startTime)
+        viewModel.setEndTime(endTime)
+        viewModel.updateDescriptionLocationLabel(description)
+        viewModel.updateImageLink(imageList)
+        viewModel.setIconLocation(R.drawable.ic_event_48px)
+
+        viewModel.changeEventState(true)
+        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+
+        //startCountdownTimer(endTime)
+        TimeCounterUtils.startCountdownTimer(startTime, endTime, this, this)
+    }
+
+    override fun onTick(formattedTime: String) {
+        viewModel.changeEventTimerEnd(formattedTime)
+    }
+
+    override fun onFinish() {
+        viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
+    }
+
+//    fun startCountdownTimer(targetTime: String) {
+//        val targetDateTime = timeCounterUtils.timeFormat.parse(targetTime)
+//        timeCounterUtils.timer?.cancel()
+//        timeCounterUtils.timer = object : CountDownTimer(targetDateTime.time - System.currentTimeMillis(), timeCounterUtils.COUNTDOWNINTERVAL) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                val result = timeCounterUtils.getFormattedTime(millisUntilFinished)
+//                viewModel.changeEventTimerEnd(result)
+//            }
+//
+//            override fun onFinish() {
+//                viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
+//            }
+//        }.start()
+//    }
 
     fun resetDataToList(){
         //var mList = mutableListOf<SearchDetail>()

@@ -6,23 +6,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.EventDetail
-import com.example.kmitlcompanion.domain.model.Location
-import com.example.kmitlcompanion.domain.model.LocationDetail
-import com.example.kmitlcompanion.domain.model.LocationPublic
 import com.example.kmitlcompanion.domain.usecases.CreateEventQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.createevent.CreateEventFragmentDirections
+import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateEventViewModel  @Inject constructor(
     private val createEventQuery: CreateEventQuery,
-
 ) : BaseViewModel(){
 
 
@@ -51,6 +50,19 @@ class CreateEventViewModel  @Inject constructor(
 
     private val _publicUpload = MutableLiveData<Event<Boolean>>()
     val publicUpload : LiveData<Event<Boolean>> = _publicUpload
+
+    //For DateTime
+    private val _startDateTimePickEvent = MutableLiveData<Event<Boolean>>()
+    val startDateTimePickEvent : LiveData<Event<Boolean>> = _startDateTimePickEvent
+
+    private val _startDateTimeValue = MutableLiveData<Calendar>()
+    val startDateTimeValue : LiveData<Calendar> = _startDateTimeValue
+
+    private val _endDateTimePickEvent = MutableLiveData<Event<Boolean>>()
+    val endDateTimePickEvent : LiveData<Event<Boolean>> = _endDateTimePickEvent
+
+    private val _endDateTimeValue = MutableLiveData<Calendar>()
+    val endDateTimeValue : LiveData<Calendar> = _endDateTimeValue
 
 
     fun updateNameInput(name: String?) {
@@ -93,6 +105,8 @@ class CreateEventViewModel  @Inject constructor(
     }
 
     fun privateLocation() {
+        var sTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(_startDateTimeValue.value?.time)
+        var eTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(_endDateTimeValue.value?.time)
         var file : MutableList<File?> = mutableListOf()
         var uris : MutableList<Uri?> = mutableListOf()
         _storeImageData.forEach{
@@ -101,20 +115,26 @@ class CreateEventViewModel  @Inject constructor(
         }
 
         createEventQuery.execute(object : DisposableCompletableObserver() {
+
             override fun onComplete() {
+                Log.d("test_createEventQuery","trye")
                 goToMapbox()
+
             }
+
             override fun onError(e: Throwable) {
-                Log.d("image_debug","Failed")
+                Log.d("createEventQuery","Failed")
             }
-        }, com.example.kmitlcompanion.domain.model.Event(
-            inputName = nameInput.value,
+
+        }, Triple(com.example.kmitlcompanion.domain.model.Event(
+            name = nameInput.value,
             description = detailInput.value,
-            status = "private",
+            startTime = sTime,
+            endTime = eTime,
             point = currentLocation.value!!.point,
             file = file,
             uri = uris
-        )
+        ),sTime,eTime)
         )
     }
 
@@ -145,6 +165,25 @@ class CreateEventViewModel  @Inject constructor(
         )
         )*/
     }
+
+    fun startDateTimePicker() {
+        _startDateTimePickEvent.value = Event(true)
+    }
+
+    fun getStartDateTimePick(cal : Calendar){
+        _startDateTimeValue.value = cal
+        Log.d("test_datetime",cal.toString())
+    }
+
+    fun endDateTimePicker() {
+        _endDateTimePickEvent.value = Event(true)
+    }
+
+    fun getEndDateTimePick(cal : Calendar){
+        _endDateTimeValue.value = cal
+        Log.d("test_datetime",cal.toString())
+    }
+
 
     //Navigation
     fun goToMapbox() {

@@ -42,7 +42,6 @@ class ViewCreateSheet @Inject constructor(
 
     fun openCreateSheetDialog() {
         bottomSheetDialog.setContentView(createMenuBinding.root)
-
         bottomSheetDialog.show()
     }
 

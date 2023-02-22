@@ -1,7 +1,5 @@
 package com.example.kmitlcompanion.data.store
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
-import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
@@ -18,12 +16,13 @@ class RemoteDataStore @Inject constructor(
     override fun createEventQuery(
         name: String,
         detail: String,
-        status : String,
+        startTime: String,
+        endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
         token: String
     ): Completable {
-        return remoteRepository.createEventQuery(name, detail,status, point, image, token)
+        return remoteRepository.createEventQuery(name, detail, startTime,endTime, point, image, token)
     }
 
     override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
@@ -150,9 +149,17 @@ class RemoteDataStore @Inject constructor(
     override fun getSearchDetailsQuery(
         text: String,
         typeList: MutableList<Int?>,
+        latitude: Double,
+        longitude: Double,
         token: String
     ): Observable<List<SearchDataDetails>> {
-         return remoteRepository.getSearchDetailsQuery(text = text, typeList = typeList,token = token)
+         return remoteRepository.getSearchDetailsQuery(
+             text = text,
+             typeList = typeList,
+             latitude = latitude,
+             longitude = longitude,
+             token = token
+         )
     }
 
     override fun getAllBookmaker(token: String): Observable<MutableList<Int>> {
@@ -165,5 +172,41 @@ class RemoteDataStore @Inject constructor(
         token: String
     ): Completable {
         return remoteRepository.updateBookmakerQuery(markerId = markerId, isBookmarked = isBookmarked,token = token)
+    }
+
+    override fun changeEventLikeLocationQuery(
+        eventId: String,
+        isLike: Boolean,
+        token: String
+    ): Completable {
+        return remoteRepository.changeEventLikeLocationQuery(eventId,isLike,token)
+    }
+
+    override fun changeEventBookmarkLocationQuery(
+        eventId: String,
+        isMark: Boolean,
+        token: String
+    ): Completable {
+        return remoteRepository.changeEventBookmarkLocationQuery(eventId,isMark,token)
+    }
+
+    override fun getEventDetailsLocationQuery(
+        id: String,
+        token: String
+    ): Observable<PinEventData> {
+        return remoteRepository.getEventDetailsLocationQuery(id,token)
+    }
+
+    override fun getAllEventBookMarker(token: String): Observable<MutableList<Int>> {
+        return remoteRepository.getAllEventBookMarker(token)
+    }
+
+
+    override fun deleteMarkerLocationQuery(id: String, token: String): Completable {
+        return remoteRepository.deleteMarkerLocationQuery(id,token)
+    }
+
+    override fun deleteEventLocationQuery(id: String, token: String): Completable {
+        return remoteRepository.deleteEventLocationQuery(id,token)
     }
 }

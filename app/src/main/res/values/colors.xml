@@ -10,4 +10,5 @@
     <color name="kmitl_color">#FF5E00</color>
     <color name="input_text">#CECECE</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="blacknotblack">#FF404040</color>
 </resources>

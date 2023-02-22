@@ -49,31 +49,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/layout_bg"
             app:layout_constraintBottom_toBottomOf="@+id/mapView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#FF5E00"
-                android:onClick="@{()->viewModel.goToCreateLocation()}"
-                android:text="เพิ่มสถานที่"
-                android:textSize="11dp"
-                app:cornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/linearLayoutCompat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/button3"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,22 +69,47 @@
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:paddingStart="16dp"
-                    android:paddingTop="3dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="3dp"
-                    android:text="Lat Long" />
+                    android:text="Lat Long"
+                    android:textColor="@color/kmitl_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_address"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="Location" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="Location"
+                    android:textColor="@color/kmitl_color"
+                    android:textSize="16sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#FF5E00"
+                android:onClick="@{()->viewModel.goToCreateLocation()}"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="เพิ่มสถานที่"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

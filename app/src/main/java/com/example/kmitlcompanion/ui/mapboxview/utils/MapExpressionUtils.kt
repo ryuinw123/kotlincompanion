@@ -48,5 +48,13 @@ class MapExpressionUtils @Inject constructor() {
         return ViewMap.TAG
     }
 
+    fun getLocationAreaLayersID() : String{
+        return ViewMap.AREA_LAYER_ID
+    }
+
+    fun getLocationAreaID() : String{
+        return ViewMap.AREA_ID
+    }
+
 
 }

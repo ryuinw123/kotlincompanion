@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.kmitlcompanion.R
@@ -10,14 +9,13 @@ import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.TimeCounterUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
-import com.mapbox.geojson.Polygon
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.extension.style.image.image
 import com.mapbox.maps.extension.style.layers.addLayer
-import com.mapbox.maps.extension.style.layers.generated.SymbolLayerDsl
 import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
@@ -29,10 +27,9 @@ import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import com.mapbox.maps.plugin.scalebar.scalebar
-import com.mapbox.maps.plugin.gestures.removeOnMapClickListener
-import com.mapbox.turf.TurfJoins
 import com.mapbox.turf.TurfMeasurement
 import java.lang.ref.WeakReference
+import java.util.*
 import javax.inject.Inject
 
 
@@ -40,12 +37,14 @@ class ViewMap @Inject constructor(
     private val mapper: MapperUtils,
     private val bitmapConverter: BitmapUtils,
     private val mapExpressionUtils: MapExpressionUtils,
-) : DefaultLifecycleObserver {
+    //private val timeCounterUtils: TimeCounterUtils,
+    //private val timeCounterUtilsOnFinishListener: TimeCounterUtils.OnFinishListener,
+    //private val timeCounterUtilsOnTickListener: TimeCounterUtils.OnTickListener,
+): DefaultLifecycleObserver,TimeCounterUtils.OnTickListener, TimeCounterUtils.OnFinishListener {
 
     private lateinit var viewModel: MapboxViewModel
 
     private var weakMapView: WeakReference<MapView?>? = null
-
 
     fun setup(viewModel: MapboxViewModel, mapView: MapView?, callback: (MapboxMap) -> Unit) {
 
@@ -93,13 +92,13 @@ class ViewMap @Inject constructor(
         ) {
             callback(mapView.getMapboxMap())
         }
-
+        TimeCounterUtils.stopTimer()
     }
 
     fun updateMap(
-        context: Context,
+        //context: Context,
         information: MapInformation,
-        locationId: Long
+        //locationId: Long
     ) {
         prepareMarkerToMap(information)
         //initialLocation(locationId)
@@ -110,42 +109,22 @@ class ViewMap @Inject constructor(
     fun updateEvent(
         eventInformation: EventInformation,
     ){
-
+        prepareEventToMap(eventInformation)
     }
 
 
     private fun prepareMarkerToMap(information: MapInformation) {
 
-        //mapView?.getMapboxMap()?.getStyle()?.let {
-            /* in testing */
             mapView?.getMapboxMap()?.getStyle {
-                //Log.d("add Source", information.mapPoints.toString().length.toString())
-                it.removeStyleLayer(AREA_LAYER_ID)
+
                 it.removeStyleLayer(LOCATION_LAYER_ID)
                 it.removeStyleSource(SOURCE_ID)
-                it.removeStyleSource(AREA_ID)
-                //Log.d("add Source","Add")
 
                 it.addSource(
                     geoJsonSource(SOURCE_ID) {
                         featureCollection(
                             mapper.mapToFeatureCollections(information.mapPoints)
                         )
-                    }
-                )
-
-                it.addSource(
-                    geoJsonSource(AREA_ID) {
-                        featureCollection(
-                            mapper.mapToAreaFeatureCollections(viewModel.mapEventResponse.value!!.eventPoints)
-                        )
-                    }
-                )
-
-                it.addLayer(
-                    fillLayer(AREA_LAYER_ID, AREA_ID) {
-                        fillColor("#fff000")
-                        fillOpacity(0.3)
                     }
                 )
 
@@ -159,13 +138,37 @@ class ViewMap @Inject constructor(
                         iconAnchor(IconAnchor.BOTTOM)
                     }
                 )
-                //it.setStyleLayerProperty(LOCATION_LAYER_ID,"visibility", Value.valueOf("none"))
             }
-        //}
 
+        addPointListener()
+    }
+
+    private fun prepareEventToMap(eventInformation: EventInformation) {
+
+        mapView?.getMapboxMap()?.getStyle {
+            it.removeStyleLayer(AREA_LAYER_ID)
+            it.removeStyleSource(AREA_ID)
+
+            it.addSource(
+                geoJsonSource(AREA_ID) {
+                    featureCollection(
+                        mapper.mapToAreaFeatureCollections(eventInformation.eventPoints)
+                    )
+                }
+            )
+
+            it.addLayer(
+                fillLayer(AREA_LAYER_ID, AREA_ID) {
+                    fillColor("#fff000")
+                    fillOpacity(0.3)
+                }
+            )
+
+        }
         addPointListener()
         //addEventListener()
     }
+
 
     private fun initialLocation(locationId : Long) {
         Log.d("test_locationId",locationId.toString())
@@ -197,7 +200,7 @@ class ViewMap @Inject constructor(
         }
     }
 
-    private fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
+    fun locationDetail(name : String ,id : String ,place : String ,address : String ,location : Point ,description : String ,imageList : List<String>) {
 
         viewModel.getDetailsLocationQuery(id)//get marker details
 
@@ -210,28 +213,64 @@ class ViewMap @Inject constructor(
         viewModel.updateAddressLocationLabel(address)
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
+        viewModel.setIconLocation(R.drawable.ic_location_on_red_24dp)
 
+        viewModel.changeEventState(false)
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
 
+        TimeCounterUtils.stopTimer()
+        //timeCounterUtils.timer?.cancel()
+    }
 
+    fun eventDetail(name : String ,eventId : String ,startTime : String,endTime : String,
+                            location : Point ,description : String ,imageList : List<String>) {
+
+        viewModel.getEventDetailsLocationQuery(eventId)//get marker details
+        //Log.d("test_event","$name $startTime $endTime $description $imageList")
+        viewModel.updateIdLocationLabel(eventId)
+        viewModel.updateCurrentLocationGps(location)
+        viewModel.updatePositionFlyer(location)
+
+        viewModel.updateNameLocationLabel(name)
+        viewModel.setStartTime(startTime)
+        viewModel.setEndTime(endTime)
+        viewModel.updateDescriptionLocationLabel(description)
+        viewModel.updateImageLink(imageList)
+        viewModel.setIconLocation(R.drawable.ic_event_48px)
+
+        viewModel.changeEventState(true)
+        viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+
+        TimeCounterUtils.startCountdownTimer(startTime, endTime, this, this)
+        //startCountdownTimer(endTime)
+        Log.d("test_time",endTime)
+
+    }
+
+    override fun onTick(formattedTime: String) {
+        viewModel.changeEventTimerEnd(formattedTime)
+    }
+
+    override fun onFinish() {
+        viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
     }
 
     private fun addPointListener() {
         val mapboxMap = mapView?.getMapboxMap()
 
+        if (viewModel.mapInformationResponse?.value != null || viewModel.mapEventResponse?.value != null){
+
+        //วอนมาช่วยแก้ฟังก์ชั่นนี้หน่อยครับจนปัญญา
+
         mapboxMap?.addOnMapClickListener {
             val screenPoint = mapboxMap.pixelForCoordinate(it)
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
-
-            //Log.d("Geofence" , "QueryOption 1")
 
             mapboxMap.queryRenderedFeatures(
                 RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
 
                 if (queriedFeature.isNotEmpty()) {
-
-                    //Log.d("Geofence" , "QueryOption 2 = $queriedFeature")
 
                     val selectedFeature = queriedFeature[0].feature
                     //Log.d("Selected Feature" , selectedFeature.toString())
@@ -270,6 +309,62 @@ class ViewMap @Inject constructor(
                             val description = selectedFeature.getStringProperty("description")
                             val id = selectedFeature.getStringProperty("id")
                             val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
+                            val startTime = selectedFeature.getStringProperty("startTime")
+                            val endTime = selectedFeature.getStringProperty("endTime")
+
+                            Log.d("test_event",selectedFeature.toString())
+
+                            eventDetail(
+                                name=name,
+                                eventId =id,
+                                startTime = startTime,
+                                endTime = endTime,
+                                location = center,
+                                description = description,
+                                imageList = imageList
+                            )
+
+                        }
+                        else{
+                            hiddenBottomSheetState()
+                        }
+                    }
+                }
+            }
+            true
+        }
+        }
+
+    }
+
+    private fun addEventListener() {
+        val mapboxMap = mapView?.getMapboxMap()
+
+        mapboxMap?.addOnMapClickListener {
+            val screenPoint = mapboxMap.pixelForCoordinate(it)
+            //val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
+            val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+            //Log.d("Geofence" , "QueryOption 1")
+
+//            mapboxMap.queryRenderedFeatures(
+//                RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+//                val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+//
+//                    //val queryOptions = RenderedQueryOptions(listOf(AREA_LAYER_ID) , null)
+//                    //Log.d("Geofence" , "QueryOption Step 1")
+
+                    mapboxMap.queryRenderedFeatures(
+                        RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
+                        val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
+                        if (queriedFeature.isNotEmpty()) {
+                            //Log.d("Geofence" , "QueryOptionArea 2 = $queriedFeature")
+                            //isFound = true
+                            val selectedFeature = queriedFeature[0].feature
+                            val center = TurfMeasurement.center(selectedFeature).geometry() as Point
+                            val name = selectedFeature.getStringProperty("name")
+                            val description = selectedFeature.getStringProperty("description")
+                            val id = selectedFeature.getStringProperty("id")
+                            val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
 
                             locationDetail(
                                 name=name,
@@ -285,16 +380,27 @@ class ViewMap @Inject constructor(
                         else{
                             hiddenBottomSheetState()
                         }
-                    }
-                }
+                //}
             }
-
-
-
             true
         }
-
     }
+
+//    fun startCountdownTimer(targetTime: String) {
+//        val targetDateTime = timeCounterUtils.timeFormat.parse(targetTime)
+//        timeCounterUtils.timer?.cancel()
+//        timeCounterUtils.timer = object : CountDownTimer(targetDateTime.time - System.currentTimeMillis(), timeCounterUtils.COUNTDOWNINTERVAL) {
+//            override fun onTick(millisUntilFinished: Long) {
+//                val result = timeCounterUtils.getFormattedTime(millisUntilFinished)
+//                viewModel.changeEventTimerEnd(result)
+//            }
+//
+//            override fun onFinish() {
+//                viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
+//            }
+//        }.start()
+//    }
+
 
     /*private fun addEventListener() {
         val mapboxMap = mapView?.getMapboxMap()
@@ -318,7 +424,7 @@ class ViewMap @Inject constructor(
                     val id = selectedFeature.getStringProperty("id")
                     val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
 
-                    locationDetail(
+                    eventDetail(
                         name=name,
                         id=id,
                         place= "",
@@ -374,6 +480,8 @@ class ViewMap @Inject constructor(
             }
         )
     }
+
+
 
 
     private val mapView

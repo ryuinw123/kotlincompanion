@@ -53,9 +53,9 @@ class CreatePolygonEventFragment : BaseFragment<FragmentCreatePolygonEventBindin
             binding.viewModel = this@CreatePolygonEventFragment.viewModel
         }
 
-        binding.createLocationButton.visibility = View.INVISIBLE
+        ///binding.createLocationButton.visibility = View.INVISIBLE
         bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
-
+        binding.createLocationButton.isEnabled = false
 
 
         return binding.root
@@ -65,9 +65,8 @@ class CreatePolygonEventFragment : BaseFragment<FragmentCreatePolygonEventBindin
         lifecycle.addObserver(mapHelper)
         this@CreatePolygonEventFragment.viewModel.run {
             activePoint.observe(viewLifecycleOwner, Observer {
-                if (it.size > 3) {
-                    createLocationButton.visibility = View.VISIBLE
-                }
+                //createLocationButton.visibility = View.VISIBLE
+                createLocationButton.isEnabled = it.size > 3
                 mapHelper.redraw()
             })
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     >
@@ -28,53 +29,78 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="500dp" />
+            app:layout_constraintGuide_begin="547dp" />
 
 
-        <TextView
-            android:id="@+id/circle_radius_textview"
-            android:layout_width="0dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:text="Radius : "
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mapView" />
-
-
-        <SeekBar
-            android:id="@+id/circle_radius_seekbar"
-            android:layout_width="395dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circle_radius_textview" />
-
-        <Button
-            android:id="@+id/createLocationButton"
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="#FF5E00"
-            android:onClick="@{()->viewModel.goToCreateLocation()}"
-            android:text="เพิ่มสถานที่"
-            android:textSize="11dp"
-            app:cornerRadius="20dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/layout_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/createLocationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="156dp"
+                android:layout_marginEnd="155dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#FF5E00"
+                android:onClick="@{()->viewModel.goToCreateLocation()}"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="เพิ่มสถานที่"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <SeekBar
+                android:id="@+id/circle_radius_seekbar"
+                android:layout_width="395dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_radius_textview" />
+
+            <TextView
+                android:id="@+id/circle_radius_textview"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="รัศมีวงกลม : "
+                android:textColor="@color/kmitl_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_radius_textview3" />
+
+            <TextView
+                android:id="@+id/circle_radius_textview3"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="สร้างพื้นที่ Circle"
+                android:textColor="@color/kmitl_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                mapbox:layout_constraintEnd_toEndOf="parent"
+                mapbox:layout_constraintStart_toStartOf="parent"
+                mapbox:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

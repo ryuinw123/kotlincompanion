@@ -1,8 +1,6 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
-import android.app.Activity
 import android.content.Context
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,22 +12,24 @@ import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mapboxview.adapter.OnTagClickListener
 import com.example.kmitlcompanion.ui.mapboxview.adapter.TagAdapter
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.TagZoomCalculateUtils
 import com.google.android.material.card.MaterialCardView
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.extension.style.expressions.generated.Expression
 import com.mapbox.maps.extension.style.layers.addLayer
+import com.mapbox.maps.extension.style.layers.generated.fillLayer
 import com.mapbox.maps.extension.style.layers.generated.symbolLayer
 import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
 import java.lang.ref.WeakReference
 import javax.inject.Inject
-import kotlin.math.*
 
 
 class ViewTag @Inject constructor(
     private val tagAdapter: TagAdapter,
     private val tagTypeListUtil: TagTypeListUtil,
     private val mapExpressionUtils: MapExpressionUtils,
+    private val tagZoomCalculateUtils: TagZoomCalculateUtils,
 ) {
 
     private lateinit var viewModel: MapboxViewModel
@@ -125,102 +125,85 @@ class ViewTag @Inject constructor(
 //
 //    }
 
+    private fun test(valueList: MutableList<Int?>){
+        val allEventData = viewModel.mapEventResponse.value?.eventPoints
+        val bookEventMarkId = viewModel.allEventBookmarkedIdList.value
+
+        var filteredMapEventData = allEventData?.filter {
+            (valueList.contains(100) && bookEventMarkId!!.any { id -> id.toLong() == it.id })||
+                    valueList.contains(tagTypeListUtil.getEventTagCode())
+        }
+
+        Log.d("test_event_cal",filteredMapEventData.toString())
+
+    }
+
     private fun tagFlyPosition(valueList: MutableList<Int?>) {
         val allMapData = viewModel.mapInformationResponse.value?.mapPoints
+        val allEventData = viewModel.mapEventResponse.value?.eventPoints
         val bookMarkId = viewModel.allMarkerBookmarked.value
+        val bookEventMarkId = viewModel.allEventBookmarkedIdList.value
         val currentPosition = viewModel.userLocation.value ?:Point.fromLngLat(100.77820011,13.73005564)
 
-        val filteredMapData = allMapData?.filter {
+        var filteredMapData = allMapData?.filter {
             (valueList.contains(100) && bookMarkId!!.any { id -> id.toLong() == it.id }) ||
                     valueList.contains(tagTypeListUtil.typeToTagCode(it.type))
         }
 
-        //calculate center of all point
-        val filteredPoints = filteredMapData?.filter {
-            isWithinKm(
-                it.latitude,
-                it.longitude,
-                currentPosition?.latitude() ?: 0.0,
-                currentPosition?.longitude() ?: 0.0
-            )
-        }?.map { Point.fromLngLat(it.longitude, it.latitude) }
+        var filteredMapEventData = allEventData?.filter {
+            (valueList.contains(100) && bookEventMarkId!!.any { id -> id.toLong() == it.id })||
+                    valueList.contains(tagTypeListUtil.getEventTagCode())
+        }
+        var filteredPoints : List<Point>?
+        var eventFilteredPoint : List<Point>?
 
-        var centerOfAllPoint = if (filteredPoints.isNullOrEmpty()) {
+        //ถ้าไม่ใช่ bookmark ให้ filter ระยะไม่เกิน x กิโลเมตร
+        if (!valueList.contains(100)){
+            filteredPoints = filteredMapData?.filter {
+                tagZoomCalculateUtils.isWithinKm(
+                    it.latitude,
+                    it.longitude,
+                    currentPosition?.latitude() ?: 0.0,
+                    currentPosition?.longitude() ?: 0.0
+                )
+            }?.map { Point.fromLngLat(it.longitude, it.latitude) }
+            var filteredAreaPoint = tagZoomCalculateUtils.filterEventAreasWithin(currentPosition,filteredMapEventData)
+            eventFilteredPoint = tagZoomCalculateUtils.extractPoints(filteredAreaPoint)
+        }else{
+            filteredPoints = filteredMapData?.map { Point.fromLngLat(it.longitude,it.latitude) }
+            eventFilteredPoint = filteredMapEventData?.let { tagZoomCalculateUtils.extractPoints(it) }
+        }
+
+        //calculate center of all marker point
+        var filteredAllPoints = (filteredPoints.orEmpty() + eventFilteredPoint.orEmpty()) as MutableList
+        filteredAllPoints.add(currentPosition)
+
+        Log.d("test_event",filteredPoints?.size.toString())
+        Log.d("test_event",eventFilteredPoint?.size.toString())
+        Log.d("test_event",filteredAllPoints?.size.toString())
+
+        var centerOfAllPoint = if (filteredAllPoints.isNullOrEmpty()) {
             Point.fromLngLat(0.0, 0.0)
         } else {
-            val sumLat = filteredPoints.sumOf { it.latitude() }
-            val sumLng = filteredPoints.sumOf { it.longitude() }
-            val avgLat = sumLat / filteredPoints.size
-            val avgLng = sumLng / filteredPoints.size
+            val sumLat = filteredAllPoints.sumOf { it.latitude() }
+            val sumLng = filteredAllPoints.sumOf { it.longitude() }
+            val avgLat = sumLat / filteredAllPoints.size
+            val avgLng = sumLng / filteredAllPoints.size
             Point.fromLngLat(avgLng, avgLat)
         }
-        centerOfAllPoint = if(valueList.isEmpty() || filteredPoints!!.isEmpty()) currentPosition else centerOfAllPoint
+        centerOfAllPoint = if(valueList.isEmpty() || filteredAllPoints!!.isEmpty()) currentPosition else centerOfAllPoint
 
-        Log.d("test_tagfly", filteredPoints.toString())
+        Log.d("test_tagfly", filteredAllPoints.toString())
 
-        val setOfMarkerPosition = filteredMapData?.map { Point.fromLngLat(it.longitude, it.latitude) }
-        val maxDistance = calculateMaxDistance(setOfMarkerPosition)
-        var zoomLevel = calculateZoomLevel(maxDistance,viewModel.screenSize.value?.width!!.toInt())
+        val setOfMarkerPosition = filteredAllPoints//filteredMapData?.map { Point.fromLngLat(it.longitude, it.latitude) }
+        val maxDistance = tagZoomCalculateUtils.calculateMaxDistance(setOfMarkerPosition)
+        var zoomLevel = tagZoomCalculateUtils.calculateZoomLevel(maxDistance,viewModel.screenSize.value?.width!!.toInt())
         zoomLevel = if(valueList.isNotEmpty()) zoomLevel else 18.0
 
-        Log.d("test_maxDistance",maxDistance.toString())
-        Log.d("test_zoomLV",zoomLevel.toString())
+        Log.d("test_eventmaxDistance",maxDistance.toString())
+        Log.d("test_eventzoomLV",zoomLevel.toString())
 
         viewModel.flyToTagLocation(centerOfAllPoint,zoomLevel)
-    }
-
-    private fun isWithinKm(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Boolean {
-        val earthRadius = 6371 // Radius of the earth in km
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLng = Math.toRadians(lng2 - lng1)
-        val a = sin(dLat / 2) * sin(dLat / 2) +
-                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
-                sin(dLng / 2) * sin(dLng / 2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        val distance = earthRadius * c
-
-        return distance <= 30
-    }
-
-    private fun calculateMaxDistance(setOfMarkerPosition: List<Point?>?) : Double{
-        var maxDistance = 0.0
-        if (setOfMarkerPosition != null){
-            for (i in 0 until setOfMarkerPosition?.size!! - 1) {
-                for (j in i + 1 until setOfMarkerPosition.size) {
-                    val distance = distanceBetween(setOfMarkerPosition[i]!!, setOfMarkerPosition[j]!!)
-                    if (distance > maxDistance) {
-                        maxDistance = distance
-                    }
-                }
-            }
-        }
-        return maxDistance
-    }
-
-    private fun distanceBetween(p1: Point, p2: Point): Double {
-        val earthRadius = 6371.0 //in kilometers
-        val lat1 = p1.latitude() * Math.PI / 180.0
-        val lat2 = p2.latitude() * Math.PI / 180.0
-        val lon1 = p1.longitude() * Math.PI / 180.0
-        val lon2 = p2.longitude() * Math.PI / 180.0
-        val deltaLat = lat2 - lat1
-        val deltaLon = lon2 - lon1
-        val a = sin(deltaLat / 2) * sin(deltaLat / 2) +
-                cos(lat1) * cos(lat2) *
-                sin(deltaLon / 2) * sin(deltaLon / 2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return earthRadius * c
-    }
-
-    private fun calculateZoomLevel(distance: Double, screenWidth: Int): Double {
-        val equatorLength = 40075004.0 // in meters
-        val widthInMeters = distance * screenWidth
-        var zoomLevel = ln(equatorLength / widthInMeters) / ln(2.35)
-
-        if (zoomLevel.isInfinite()){
-            zoomLevel = 18.0
-        }
-        return zoomLevel
     }
 
     fun setTagDisplay(valueList: MutableList<TagViewDataDetail>){
@@ -230,6 +213,9 @@ class ViewTag @Inject constructor(
                 newList.add(it.value.code)
             }
         }
+        Log.d("test_event",newList.toString())
+
+        showTagEventOnMap(newList)
         showTagOnMap(newList)
         tagFlyPosition(newList)
     }
@@ -298,6 +284,50 @@ class ViewTag @Inject constructor(
             )
         }
     }
+
+    private fun showTagEventOnMap(valueList: MutableList<Int?>){
+        var allEventBookmarkIdList = viewModel.allEventBookmarkedIdList.value
+
+        mapView?.getMapboxMap()?.getStyle { it ->
+            it.removeStyleLayer(mapExpressionUtils.getLocationAreaLayersID())
+
+            it.addLayer(
+                fillLayer(mapExpressionUtils.getLocationAreaLayersID()
+                    , mapExpressionUtils.getLocationAreaID()) {
+
+                    if (valueList.isNotEmpty()) {
+                        if (!valueList.contains(tagTypeListUtil.getEventTagCode())) {
+                            val ex = Expression.switchCase {
+                                if (valueList.contains(100)) { //100 = BOOKAMRK TAG CODE
+                                    allEventBookmarkIdList?.forEach { eventId ->
+                                        eq {
+                                            get("id")
+                                            literal(eventId.toLong())
+                                        }
+                                        literal(true)
+                                    }
+                                }
+
+                                eq {
+                                    get("id")
+                                    literal(999999999)
+                                }
+                                literal(true)
+
+                                literal(false)
+                            }
+                            filter(ex)
+                        }
+                    }
+
+                    fillColor("#fff000")
+                    fillOpacity(0.3)
+
+                }
+            )
+        }
+    }
+
 
 //    fun test() {
 //        val mapboxMap = mapView?.getMapboxMap()

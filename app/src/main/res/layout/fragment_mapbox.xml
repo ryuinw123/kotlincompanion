@@ -18,8 +18,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <com.mapbox.maps.MapView
             android:id="@+id/mapView"
@@ -281,14 +280,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         </com.mapbox.maps.MapView>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:clickable="true"
             android:elevation="8dp"
@@ -311,7 +309,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -333,11 +331,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
+                            app:tint="#FF5722"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.025"
                             app:layout_constraintStart_toStartOf="parent"
-                            mapbox:srcCompat="@drawable/ic_location_on_red_24dp" />
+                            app:srcCompat="@drawable/ic_location_on_red_24dp" />
 
                         <HorizontalScrollView
                             android:id="@+id/HScrollView"
@@ -410,23 +409,78 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--                    <Button-->
-<!--                        android:id="@+id/navigation"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"-->
-<!--                        android:text="Button"-->
-<!--                        android:visibility="visible"-->
-<!--                        tools:layout_editor_absoluteX="317dp"-->
-<!--                        tools:layout_editor_absoluteY="112dp" />-->
+                    <!--                    <Button-->
+                    <!--                        android:id="@+id/navigation"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:onClick="@{()->viewModel.updateApplicationMode(1)}"-->
+                    <!--                        android:text="Button"-->
+                    <!--                        android:visibility="visible"-->
+                    <!--                        tools:layout_editor_absoluteX="317dp"-->
+                    <!--                        tools:layout_editor_absoluteY="112dp" />-->
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/created_user_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                        <TextView
+                            android:id="@+id/crateduserhead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="สร้างโดย :"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/created_user_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:paddingEnd="5dp"
+                            android:text="...."
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/edit_delete_marker_button"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/crateduserhead"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/edit_delete_marker_button"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:onClick="@{()->viewModel.showMarkerMenu()}"
+                            android:layout_width="28dp"
+                            android:layout_height="0dp"
+                            android:layout_marginEnd="16dp"
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_drawer"
+                            app:iconGravity="textStart"
+                            app:iconSize="24dp"
+                            app:iconTint="#FF5722"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <Button
                         android:id="@+id/navigation"
                         android:layout_width="280dp"
                         android:layout_height="70dp"
-                        android:layout_marginTop="12dp"
-                        android:backgroundTint="@color/kmitl_color"
+                        android:layout_marginTop="5dp"
 
+                        android:backgroundTint="@color/kmitl_color"
                         android:onClick="@{()->viewModel.updateApplicationMode(1)}"
                         android:paddingRight="20dp"
                         android:strokeColor="#FF5E00"
@@ -436,72 +490,206 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:typeface="normal"
+                        android:visibility="visible"
                         app:cornerRadius="50dp"
                         app:icon="@drawable/ic_navigate"
                         app:iconTint="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                        app:layout_constraintTop_toBottomOf="@+id/created_user_bar"
                         app:strokeColor="@color/kmitl_color"
                         app:strokeWidth="5dp" />
 
-                    <TextView
-                        android:id="@+id/place_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:text="place_text"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constain_head"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/navigation" />
+                        app:layout_constraintTop_toBottomOf="@+id/navigation">
 
-                    <TextView
-                        android:id="@+id/address_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:maxLines="5"
-                        android:paddingLeft="50dp"
-                        android:paddingRight="20dp"
-                        android:text="address"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/place_text" />
+                        <TextView
+                            android:id="@+id/pin_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="205dp"
+                            android:text="รายละเอียด"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/address_text" />
 
-                    <TextView
-                        android:id="@+id/pin_header"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:text="รายละเอียดสถานที่"
-                        android:textColor="@color/black"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/address_text" />
+                        <TextView
+                            android:id="@+id/place_text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
+                            android:text="place_text"
+                            android:textColor="@color/black"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/address_text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:maxLines="5"
+                            android:paddingLeft="50dp"
+                            android:paddingRight="20dp"
+                            android:text="address"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/place_text" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/event_time_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/pin_header">
+
+                            <TextView
+                                android:id="@+id/event_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:paddingLeft="75dp"
+                                android:text="เวลาเริ่มอีเวนต์"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/event_start_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:paddingLeft="15dp"
+                                android:text="14/02/2565 18:18"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/event_start"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/event_end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:paddingLeft="75dp"
+                                android:text="เวลาจบอีเวนต์"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/event_start"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/event_end_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:paddingLeft="15dp"
+                                android:text="14/02/2565 18:18"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.06"
+                                app:layout_constraintStart_toEndOf="@+id/event_end"
+                                app:layout_constraintTop_toBottomOf="@+id/event_start_value"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/event_remain"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:text="**เหลือเวลาอีก"
+                                android:textColor="@color/kmitl_color"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:visibility="visible"
+                                app:layout_constraintEnd_toStartOf="@+id/event_remain_value"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/event_end"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/event_remain_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center_vertical"
+                                android:maxLines="100"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="12sp"
+                                android:text="..."
+                                android:textColor="@color/kmitl_color"
+                                android:textSize="14sp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/event_end_value"
+                                tools:ignore="HardcodedText" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2"
                         android:layout_width="match_parent"
                         android:layout_height="350dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="12dp"
                         android:visibility="visible"
-                        app:layout_constraintBottom_toTopOf="@+id/current_location_gps_tv"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/pin_header"
+                        app:layout_constraintTop_toBottomOf="@+id/constain_head"
                         tools:visibility="visible" />
 
                     <TextView
@@ -517,8 +705,7 @@
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@+id/viewPager2"
                         app:layout_constraintTop_toBottomOf="@+id/viewPager2"
-                        tools:ignore="HardcodedText"
-                        tools:visibility="gone" />
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/current_location_gps_tv"
@@ -530,8 +717,7 @@
                         android:visibility="gone"
                         app:layout_constraintBaseline_toBaselineOf="@+id/current_location_label_tv"
                         app:layout_constraintStart_toEndOf="@+id/current_location_label_tv"
-                        tools:text="Latitude: 45.23 Longitude 51.56"
-                        tools:visibility="gone" />
+                        tools:text="Latitude: 45.23 Longitude 51.56" />
 
                     <TextView
                         android:id="@+id/id_location_label_tv"
@@ -546,40 +732,49 @@
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@+id/current_location_label_tv"
                         app:layout_constraintTop_toBottomOf="@+id/current_location_label_tv"
-                        tools:ignore="HardcodedText"
-                        tools:visibility="gone" />
+                        tools:ignore="HardcodedText" />
 
 
-                    <TextView
-                        android:id="@+id/description_location_label_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center_vertical"
-                        android:maxLines="100"
-                        android:paddingLeft="50dp"
-                        android:paddingRight="50dp"
-                        android:text="pin_description"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:visibility="visible"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/description_zone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/id_location_label_tv"
-                        tools:ignore="HardcodedText"
-                        tools:visibility="visible" />
+                        app:layout_constraintTop_toBottomOf="@+id/viewPager2">
+
+                        <TextView
+                            android:id="@+id/description_location_label_tv"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:gravity="center_vertical"
+                            android:maxLines="100"
+                            android:paddingLeft="50dp"
+                            android:paddingRight="50dp"
+                            android:text="pin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_descriptionpin_description"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="HardcodedText" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <Button
                         android:id="@+id/pinlike_button"
                         android:layout_width="160dp"
                         android:layout_height="70dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginBottom="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="16dp"
+
                         android:backgroundTint="#FFFFFF"
                         android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
                         android:text="0"
-
                         android:textAlignment="center"
                         android:textColor="#FF5E00"
                         android:textSize="18sp"
@@ -590,11 +785,8 @@
                         app:iconPadding="10dp"
                         app:iconSize="30dp"
                         app:iconTint="@color/kmitl_color"
-                        app:layout_constraintBottom_toTopOf="@+id/comment_zone"
-                        app:layout_constraintEnd_toStartOf="@+id/pinbookmark_button"
-                        app:layout_constraintHorizontal_bias="0.50"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/description_location_label_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/description_zone"
                         app:strokeColor="#FF5E00"
                         app:strokeWidth="5dp" />
 
@@ -602,9 +794,10 @@
                         android:id="@+id/pinbookmark_button"
                         android:layout_width="160dp"
                         android:layout_height="70dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginBottom="25dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="25dp"
                         android:backgroundTint="#FFFFFF"
+                        android:onClick="@{()->viewModel.bookMarkOnClick()}"
                         android:text="เก็บ"
                         android:textAlignment="center"
                         android:textAllCaps="false"
@@ -616,13 +809,9 @@
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="35dp"
-                        android:onClick="@{()->viewModel.bookMarkUpdate()}"
                         app:iconTint="@color/kmitl_color"
-                        app:layout_constraintBottom_toTopOf="@+id/comment_zone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.88"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/description_location_label_tv"
+                        app:layout_constraintTop_toBottomOf="@+id/description_zone"
                         app:strokeColor="#FF5E00"
                         app:strokeWidth="5dp" />
 
@@ -632,6 +821,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="25dp"
                         android:background="@drawable/top_border"
+                        android:visibility="visible"
                         app:layout_constraintTop_toBottomOf="@+id/pinlike_button"
                         tools:layout_editor_absoluteX="1dp">
 
@@ -746,8 +936,8 @@
                         android:id="@+id/constraintLayout3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/comment_zone"
-                        tools:layout_editor_absoluteY="514dp">
+                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@id/comment_zone">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_comment"

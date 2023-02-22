@@ -11,18 +11,42 @@ class ViewBookMark @Inject constructor() {
     fun setup(viewModel: MapboxViewModel){
         this.viewModel = viewModel
         Log.d("test_updatebookmark","update")
-        viewModel.getAllBookMarker()
+        viewModel.getAllBookMarker() // for marker bookmark
+        viewModel.getAllEventBookMarker() //for event bookmark
     }
 
-    fun updateBookmark(markerId : Int?,status : Boolean?){
+    fun onBookmarkClickHelper(){
+        var eventState = viewModel.eventState.value
+        if (eventState == true){
+            viewModel.eventBookMarkUpdate()
+        }else if (eventState == false){
+            viewModel.bookMarkUpdate()
+        }
+
+    }
+
+    fun updateBookmark(id : Int?, bookmarkStatus : Boolean?, eventState : Boolean?){
         var bookmakerList = viewModel.allMarkerBookmarked.value
-        status?.let {
-            if (status){
-                bookmakerList?.add(markerId ?:0)
-            }else{
-                bookmakerList?.remove(markerId)
+        var bookmakerEventList = viewModel.allEventBookmarkedIdList.value
+        if (eventState == true){
+            bookmarkStatus?.let {
+                if (bookmarkStatus){
+                    bookmakerEventList?.add(id ?:0)
+                }else{
+                    bookmakerEventList?.remove(id)
+                }
+                Log.d("test_event_update_bookmark",bookmakerEventList.toString())
+            }
+        }else if (eventState == false){
+            bookmarkStatus?.let {
+                if (bookmarkStatus){
+                    bookmakerList?.add(id ?:0)
+                }else{
+                    bookmakerList?.remove(id)
+                }
             }
         }
+
     }
 
 

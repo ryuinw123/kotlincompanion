@@ -18,6 +18,7 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.mapbox.maps.Event
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
@@ -68,10 +69,12 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 this@MapboxFragment.viewModel.downloadLocationsEvent()
                 this@MapboxFragment.viewModel.downloadLocations()
             }
+            helper.like.setup(this@MapboxFragment.viewModel,requireContext())
             helper.navigation.setup(requireContext(),this@MapboxFragment.viewModel,mapView,soundButton,maneuverView,tripProgressView,recenter,stop,routeOverview,tripProgressCard)
             helper.tag.setup(mapView, this@MapboxFragment.viewModel, tagRecyclerView,clearTagCardView
                 , requireContext())
             helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
+            helper.editDeleteMarker.setup(this@MapboxFragment.viewModel,requireContext(),editDeleteMarkerButton)
 
             setupViewObservers()
 
@@ -102,18 +105,34 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         this@MapboxFragment.viewModel.run {
             mapInformationResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
-                    helper.map.updateMap(it,information,navArgs.locationId)
+                    helper.map.updateMap(information)
                 }
                 //helper.geofence.setup(information)
             })
 
             mapEventResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
-                    //helper.service.startService(it,this@MapboxFragment.viewModel)
-//                    if (information.eventPoints.isNotEmpty()){
-//
-//                    }
+                    helper.map.updateEvent(information)
                     helper.location.updateEventPermission(it)
+                }
+            })
+
+            //Refresh Map & Event
+            refreshEventLocations.observe(viewLifecycleOwner, Observer {
+                if (it == true) {
+                    clearItemTag()
+                    downloadLocationsEvent()
+                    refreshEventLocations.value = false
+
+                }
+            })
+
+            refreshMapLocations.observe(viewLifecycleOwner, Observer {
+                if (it == true) {
+                    clearItemTag()
+                    downloadLocations()
+                    refreshMapLocations.value = false
+
                 }
             })
 
@@ -126,6 +145,10 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
             currentLocationGps.observe(viewLifecycleOwner, Observer {
                 currentLocationGpsTv.text = it
+            })
+
+            iconLocation.observe(viewLifecycleOwner, Observer {
+                binding.imageView5.setImageResource(it)
             })
 
             idLocationLabel.observe(viewLifecycleOwner, Observer {
@@ -164,8 +187,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 onClicklikeLocation.value?.let { bool ->
                     if (bool){
                         when(isLiked.value!!){
-                            true -> removeLikeLocationQuery(idLocationLabel.value)
-                            false -> addLikeLocationQuery(idLocationLabel.value)
+                            true -> helper.like.removeLikeLocationQueryHelper(idLocationLabel.value)
+                            false -> helper.like.addLikeLocationQueryHelper(idLocationLabel.value)
                         }
                     }
                 }
@@ -188,6 +211,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     }
                 }
             })
+
 
 
             //update create bottomsheet event
@@ -253,12 +277,22 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
+            onBookmarkClick.observe(viewLifecycleOwner, Observer {
+                onBookmarkClick.value?.let { it ->
+                    if (it){
+                        Log.d("test_event_bookmark","onclick")
+                        helper.bookMark.onBookmarkClickHelper()
+                        onBookmarkClick.value = false
+                    }
+                }
+            })
+
             updateBookMark.observe(viewLifecycleOwner, Observer {
                 updateBookMark.value?.let {
                     if (it){
                         Log.d("test_updatebookmark","update")
                         //getAllBookMarker()
-                        helper.bookMark.updateBookmark(idLocationLabel.value?.toInt(),isMarkerBookmarked.value)
+                        helper.bookMark.updateBookmark(idLocationLabel.value?.toInt(),isMarkerBookmarked.value,eventState.value)
                         updateBookMark.value = false
                     }
                 }
@@ -352,6 +386,63 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             tagFly.observe(viewLifecycleOwner, Observer {
                 helper.map.flyToLocation(it.first,it.second,0.0,0.0,2000)
             })
+
+
+            //For Event
+            eventState.observe(viewLifecycleOwner, Observer {
+                val visibility = if (it == true) View.GONE else View.VISIBLE
+                binding.eventTimeLayout.visibility = if (it == false) View.GONE else View.VISIBLE
+                binding.navigation.visibility = visibility
+                binding.placeText.visibility = visibility
+                binding.addressText.visibility = visibility
+                binding.commentZone.visibility = visibility
+                binding.constraintLayout3.visibility = visibility
+            })
+
+            eventBindEnd.observe(viewLifecycleOwner, Observer {
+                binding.eventEndValue.text = it
+            })
+
+            eventBindStart.observe(viewLifecycleOwner, Observer {
+                binding.eventStartValue.text = it
+            })
+
+            displayTimer.observe(viewLifecycleOwner, Observer {
+                //Log.d("test_time",it)
+                eventRemainValue.text = it
+                //binding.eventStartValue.text = it
+            })
+
+            //Edit Delte Marker
+            isMyPin.observe(viewLifecycleOwner, Observer {
+                if (it != null){
+                    binding.editDeleteMarkerButton.visibility = if(it == true) View.VISIBLE else View.GONE
+                }
+                Log.d("test_mypin",isMyPin.value.toString())
+            })
+
+            createdUserName.observe(viewLifecycleOwner, Observer {
+                binding.createdUserName.text = it
+            })
+
+            showMarkerMenuEvent.observe(viewLifecycleOwner, Observer {
+                if (it.peekContent()){
+                    helper.editDeleteMarker.showMarkerMenu()
+                    showMarkerMenuEvent.value = com.example.kmitlcompanion.presentation.eventobserver.Event(content = false)
+                }
+            })
+
+            confirmDeleteMarkerDialog.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    helper.editDeleteMarker.showConfirmDeleteDialog()
+                    confirmDeleteMarkerDialog.value = false
+                    Log.d("test_bug",confirmDeleteMarkerDialog.value.toString())
+                }
+            })
+
+
+
+
 
         }
     }

@@ -57,7 +57,8 @@ class CreateCircleEventFragment : BaseFragment<FragmentCreateCircleEventBinding,
             bottomBar.setup(this@CreateCircleEventFragment.viewModel,guideline,circleRadiusSeekbar)
 
             bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
-            createLocationButton.visibility = View.INVISIBLE
+            //createLocationButton.visibility = View.INVISIBLE
+            createLocationButton.isEnabled = false
 
             setupViewObservers()
         }
@@ -80,7 +81,8 @@ class CreateCircleEventFragment : BaseFragment<FragmentCreateCircleEventBinding,
 
             currentPin.observe(viewLifecycleOwner,Observer{
                 mapHelper.redraw()
-                createLocationButton.visibility = View.VISIBLE
+                //createLocationButton.visibility = View.VISIBLE
+                createLocationButton.isEnabled = true
             })
 
             positionFlyer.observe(viewLifecycleOwner, Observer {

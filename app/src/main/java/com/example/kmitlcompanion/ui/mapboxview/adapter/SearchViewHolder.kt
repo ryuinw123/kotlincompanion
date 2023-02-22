@@ -18,7 +18,8 @@ class SearchViewHolder @Inject constructor(
     private fun initSearchListItem(search: SearchDetail){
             binding.eachItemSearch.text = search.name
             binding.eachPicture.setImageResource(tagTypeListUtil.getImageByCode(search.code))
-            binding.eachItemSearchDes.text = search.address
+            binding.eachItemSearchDistance.text = search.distance + " กิโลเมตร"
+            binding.eachItemSearchDes.text = search.address.chunked(25).first() + (if(search.address.length > 25) " ...." else "")
 
             binding.eachItemListSearch.setOnClickListener{
                 onSearchBackClickListener.onItemClick(search,adapterPosition)

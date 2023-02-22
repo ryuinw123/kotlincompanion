@@ -33,6 +33,7 @@ class CommentAdapter @Inject constructor()
             disLikeListener,
             menuListener
         )
+
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
