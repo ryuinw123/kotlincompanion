@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.kmitlcompanion.presentation.viewmodel.CreateEventViewModel" />
+            type="com.example.kmitlcompanion.presentation.viewmodel.EditEventViewModel" />
     </data>
 
     <ScrollView
@@ -48,7 +48,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="สร้างอีเวนต์บนแผนที่"
+                            android:text="แก้ไขอีเวนต์บนแผนที่"
                             android:textColor="@color/kmitl_color"
                             android:textSize="32dp"
                             tools:layout_editor_absoluteX="176dp"
@@ -101,6 +101,7 @@
                         android:layout_marginStart="40dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="40dp"
+                        android:background="@color/input_text"
                         android:textColorHint="@color/kmitl_color"
                         app:boxStrokeColor="@color/kmitl_color"
                         app:boxStrokeWidth="2dp"
@@ -119,7 +120,6 @@
                             android:focusable="false"
                             android:gravity="center_vertical"
                             android:hint="เวลาเริ่มอีเวนต์"
-                            android:onClick="@{() -> viewModel.startDateTimePicker()}"
                             android:paddingStart="10dp"
                             android:paddingLeft="0dp"
                             android:paddingTop="12dp"
@@ -150,6 +150,7 @@
                         android:layout_marginStart="40dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="40dp"
+                        android:background="@color/input_text"
                         android:textColorHint="@color/kmitl_color"
                         app:boxStrokeColor="@color/kmitl_color"
                         app:boxStrokeWidth="2dp"
@@ -170,7 +171,6 @@
                             android:gravity="center_vertical"
                             android:hint="เวลาจบอีเวนต์"
                             android:inputType="none"
-                            android:onClick="@{() -> viewModel.endDateTimePicker()}"
                             android:paddingStart="10dp"
                             android:paddingLeft="0dp"
                             android:paddingTop="12dp"
@@ -469,6 +469,7 @@
                         android:paddingRight="25dp"
                         android:text="* การสร้างอีเวนต์ จะแสดงผลแบบสาธารณะซึ่งจะมองเห็นได้ทุกคน"
                         android:textColor="@color/kmitl_color"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/select_image_group5" />
@@ -482,6 +483,7 @@
                         android:paddingRight="25dp"
                         android:text="* เมื่อผู้อื่นเข้ามาในบริเวณอีเวนต์ จะส่งแจ้งเตือนแสดงอีเวนต์"
                         android:textColor="@color/kmitl_color"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/warning_text"
                         app:layout_constraintStart_toStartOf="@+id/warning_text"
                         app:layout_constraintTop_toBottomOf="@+id/warning_text" />
@@ -501,10 +503,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:backgroundTint="@color/kmitl_color"
-                            android:onClick="@{()->viewModel.clickPrivateUpload()}"
+                            android:onClick="@{()->viewModel.editUploadLocation()}"
                             android:paddingLeft="50dp"
                             android:paddingRight="50dp"
-                            android:text="สร้างอีเวนต์" />
+                            android:text="แก้ไขอีเวนท์" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -120,6 +120,15 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
 
             })
 
+            uploadLoading.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    binding.allScreen.alpha = 0.5f
+                    val scrollView = binding.allScreen
+                    disableAllClicks(scrollView)
+                    uploadLoading.value = false
+                }
+            })
+
         }
 
     }
@@ -133,4 +142,13 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
         }
     }
 
+    private fun disableAllClicks(view: View) {
+        view.isEnabled = false
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val child = view.getChildAt(i)
+                disableAllClicks(child)
+            }
+        }
+    }
 }

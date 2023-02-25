@@ -64,6 +64,8 @@ class CreateEventViewModel  @Inject constructor(
     private val _endDateTimeValue = MutableLiveData<Calendar>()
     val endDateTimeValue : LiveData<Calendar> = _endDateTimeValue
 
+    private val _uploadLoading = MutableLiveData<Boolean>()
+    val uploadLoading : MutableLiveData<Boolean> = _uploadLoading
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -113,7 +115,7 @@ class CreateEventViewModel  @Inject constructor(
             file.add(ImagePicker.getFile(it))
             uris.add(it?.data)
         }
-
+        uploadLoading.value = true
         createEventQuery.execute(object : DisposableCompletableObserver() {
 
             override fun onComplete() {
@@ -124,6 +126,7 @@ class CreateEventViewModel  @Inject constructor(
 
             override fun onError(e: Throwable) {
                 Log.d("createEventQuery","Failed")
+                goToMapbox()
             }
 
         }, Triple(com.example.kmitlcompanion.domain.model.Event(

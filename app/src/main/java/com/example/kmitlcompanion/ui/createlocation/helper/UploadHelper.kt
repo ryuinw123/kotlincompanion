@@ -19,7 +19,7 @@ class UploadHelper @Inject constructor(
             true -> viewModel.publicLocation()
             false -> viewModel.privateLocation()
         }
-        viewModel.goToMapbox()
+        //viewModel.goToMapbox()
     }
 
 }

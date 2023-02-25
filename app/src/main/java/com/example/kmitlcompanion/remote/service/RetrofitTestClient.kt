@@ -135,4 +135,22 @@ interface RetrofitTestClient {
     @POST("deleteeventlocationquery")
     fun deleteEventLocationQuery(@Part("id") id : String,@Part("token") token: String) : Completable
 
+    @Multipart
+    @POST("editmarkerlocationquery")
+    fun editLocationQuery(@Part("id") id: String,
+                          @Part("name") name : String,
+                          @Part("type") type : String,
+                          @Part("description") description : String,
+                          @Part image :List<MultipartBody.Part?>,
+                          @Part("imageUrl") imageUrl : List<String?>,
+                          @Part("token")token: String) : Completable
+
+    @Multipart
+    @POST("editeventlocationquery")
+    fun editEventLocationQuery(@Part("eventId") eventId: String,
+                               @Part("name") name : String,
+                               @Part("description") description : String,
+                               @Part image :List<MultipartBody.Part?>,
+                               @Part("imageUrl") imageUrl : List<String?>,
+                               @Part("token")token: String) : Completable
 }

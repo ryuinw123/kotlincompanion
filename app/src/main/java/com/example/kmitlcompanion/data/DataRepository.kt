@@ -1,5 +1,7 @@
 package com.example.kmitlcompanion.data
 
+import android.content.Intent
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
@@ -10,6 +12,7 @@ import com.example.kmitlcompanion.data.util.ContentResolverUtil
 import com.example.kmitlcompanion.data.util.TimeUtils
 import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -290,4 +293,71 @@ class DataRepository @Inject constructor(
     override fun deleteEventLocationQuery(id: String): Completable {
         return dataStore.getRemoteData(true).deleteEventLocationQuery(id,getToken())
     }
+
+
+    override fun editLocationQuery(
+        id: String,
+        name: String,
+        type: String,
+        description: String,
+        image: MutableList<Pair<Int, Any>>
+    ): Completable {
+        var imageList : MutableList<MultipartBody.Part?> = mutableListOf()
+        var imageUrl : MutableList<String?> = mutableListOf()
+        image.forEach {
+            if (it.first == 0){
+                val file = ImagePicker.getFile(it.second as Intent)
+                val uri = (it.second as Intent).data
+                val requestFile = file?.asRequestBody(contentResolverUtil.getMediaType(uri!!))!!
+                imageList.add(MultipartBody.Part.createFormData("image",file!!.name,requestFile))
+                imageUrl.add("null")
+            }else if(it.first == 1){
+                imageList.add(MultipartBody.Part.createFormData("image","null"))
+                imageUrl.add(it.second.toString())
+            }
+        }
+        return dataStore.getRemoteData(true).editLocationQuery(
+            id,
+            name,
+            type,
+            description,
+            imageList ,
+            imageUrl,
+            getToken()
+        )
+    }
+
+
+    override fun editEventLocationQuery(
+        eventId: String,
+        name: String,
+        description: String,
+        image: MutableList<Pair<Int, Any>>
+    ): Completable {
+        var imageList : MutableList<MultipartBody.Part?> = mutableListOf()
+        var imageUrl : MutableList<String?> = mutableListOf()
+
+        image.forEach {
+            if (it.first == 0){
+                val file = ImagePicker.getFile(it.second as Intent)
+                val uri = (it.second as Intent).data
+                val requestFile = file?.asRequestBody(contentResolverUtil.getMediaType(uri!!))!!
+                imageList.add(MultipartBody.Part.createFormData("image",file!!.name,requestFile))
+                imageUrl.add("null")
+            }else if(it.first == 1){
+                imageList.add(MultipartBody.Part.createFormData("image","null"))
+                imageUrl.add(it.second.toString())
+            }
+        }
+
+        return dataStore.getRemoteData(true).editEventLocationQuery(
+            eventId,
+            name,
+            description,
+            imageList ,
+            imageUrl,
+            getToken()
+        )
+    }
+
 }

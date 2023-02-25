@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
+import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.DataRepository
 import com.example.kmitlcompanion.data.repository.RemoteRepository
@@ -208,5 +209,28 @@ class RemoteDataStore @Inject constructor(
 
     override fun deleteEventLocationQuery(id: String, token: String): Completable {
         return remoteRepository.deleteEventLocationQuery(id,token)
+    }
+
+    override fun editLocationQuery(
+        id: String,
+        name: String,
+        type: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+        return remoteRepository.editLocationQuery(id, name, type, description, image,imageUrl, token)
+    }
+
+    override fun editEventLocationQuery(
+        eventId: String,
+        name: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+        return remoteRepository.editEventLocationQuery(eventId, name, description, image,imageUrl, token)
     }
 }

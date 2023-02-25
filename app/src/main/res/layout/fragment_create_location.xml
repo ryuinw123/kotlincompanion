@@ -9,6 +9,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/all_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -229,8 +230,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
-                            />
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -275,8 +275,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
-                            />
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -321,8 +320,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48"
-                            />
+                            app:srcCompat="@drawable/upload_file_fill1_wght400_grad200_opsz48" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

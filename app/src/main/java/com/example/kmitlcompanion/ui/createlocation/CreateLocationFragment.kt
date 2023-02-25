@@ -108,6 +108,14 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
                 helper.upload.uploadLocation(public = false)
             })
 
+            uploadLoading.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    binding.allScreen.alpha = 0.5f
+                    val scrollView = binding.allScreen
+                    disableAllClicks(scrollView)
+                    uploadLoading.value = false
+                }
+            })
         }
 
     }
@@ -117,6 +125,16 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
         }
         detailInput.doAfterTextChanged {
             viewModel?.updateDetailInput(detailInput.text.toString())
+        }
+    }
+
+    private fun disableAllClicks(view: View) {
+        view.isEnabled = false
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val child = view.getChildAt(i)
+                disableAllClicks(child)
+            }
         }
     }
 }

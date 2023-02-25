@@ -194,4 +194,27 @@ class CacheDataStore @Inject constructor(
     override fun deleteEventLocationQuery(id: String, token: String): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+    override fun editLocationQuery(
+        id: String,
+        name: String,
+        type: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun editEventLocationQuery(
+        eventId: String,
+        name: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

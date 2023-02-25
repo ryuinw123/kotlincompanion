@@ -18,7 +18,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.mapbox.maps.Event
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
@@ -440,6 +439,17 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
+            editMarkerTrigger.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    helper.editDeleteMarker.hideMarkerMenu()
+                    if (eventState.value == true){
+                        goToEditEvent()
+                    }else if (eventState.value == false){
+                        goToEditMarker()
+                    }
+                    editMarkerTrigger.value = false
+                }
+            })
 
 
 

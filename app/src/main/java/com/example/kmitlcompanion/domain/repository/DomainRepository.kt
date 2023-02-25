@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.domain.repository
 
+import android.net.Uri
 import com.example.kmitlcompanion.data.model.LocationData
 import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
@@ -7,6 +8,7 @@ import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import java.io.File
 
 interface DomainRepository {
 
@@ -70,4 +72,10 @@ interface DomainRepository {
     fun deleteMarkerLocationQuery(id : String) : Completable
 
     fun deleteEventLocationQuery(id : String) : Completable
+
+    fun editLocationQuery(id: String, name : String, type : String, description : String, image : MutableList<Pair<Int,Any>>) : Completable
+
+    fun editEventLocationQuery(eventId: String, name : String, description : String, image : MutableList<Pair<Int,Any>>) : Completable
+
+
 }

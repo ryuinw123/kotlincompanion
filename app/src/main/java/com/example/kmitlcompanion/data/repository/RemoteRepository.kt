@@ -86,6 +86,10 @@ interface RemoteRepository {
 
     fun deleteEventLocationQuery(id : String,token: String) : Completable
 
+    fun editLocationQuery(id: String, name : String, type : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
+
+    fun editEventLocationQuery(eventId: String, name : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
+
 }
 
 

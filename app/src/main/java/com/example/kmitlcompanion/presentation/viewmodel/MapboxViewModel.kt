@@ -218,6 +218,10 @@ class MapboxViewModel @Inject constructor(
     private val _confirmDeleteMarkerDialog = MutableLiveData<Boolean>()
     val confirmDeleteMarkerDialog : MutableLiveData<Boolean> = _confirmDeleteMarkerDialog
 
+    private val _editMarkerTrigger = MutableLiveData<Boolean>()
+    val editMarkerTrigger : MutableLiveData<Boolean> = _editMarkerTrigger
+
+
     //For ??
 
     fun updateCreatePinEvent() {
@@ -703,7 +707,9 @@ class MapboxViewModel @Inject constructor(
     }
 
     fun editMarker(){
-        Log.d("test_","editPin")
+        _editMarkerTrigger.value = true
+        //navigate(MapboxFragmentDirections.actionMapboxFragmentToEditLocationFragment())
+        //Log.d("test_","editPin")
     }
 
     fun deleteMarker(){
@@ -760,5 +766,25 @@ class MapboxViewModel @Inject constructor(
         navigateBack()
     }
 
+    fun goToEditMarker(){
+        navigate(MapboxFragmentDirections.actionMapboxFragmentToEditLocationFragment(
+            _idLocationLabel.value,
+            _nameLocationLabel.value,
+            _mapInformationResponse.value?.mapPoints?.firstOrNull{ _idLocationLabel.value == it.id.toString() }?.type,
+            _descriptionLocationLabel.value,
+            _imageLink.value?.toTypedArray()
+        ))
+    }
+
+    fun goToEditEvent(){
+        navigate(MapboxFragmentDirections.actionMapboxFragmentToEditEventFragment(
+            _idLocationLabel.value,
+            _nameLocationLabel.value,
+            _descriptionLocationLabel.value,
+            _imageLink.value?.toTypedArray(),
+            _eventBindStart.value,
+            _eventBindEnd.value
+        ))
+    }
 
 }

@@ -58,6 +58,8 @@ class CreateLocationViewModel @Inject constructor(
     private val _publicUpload = MutableLiveData<Event<Boolean>>()
     val publicUpload : LiveData<Event<Boolean>>  = _publicUpload
 
+    private val _uploadLoading = MutableLiveData<Boolean>()
+    val uploadLoading : MutableLiveData<Boolean> = _uploadLoading
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -110,6 +112,7 @@ class CreateLocationViewModel @Inject constructor(
             uris.add(it?.data)
         }
 
+        uploadLoading.value = true
         createLocationQuery.execute(object : DisposableCompletableObserver() {
                 override fun onComplete() {
                     goToMapbox()
@@ -138,6 +141,7 @@ class CreateLocationViewModel @Inject constructor(
             uris.add(it?.data)
         }
 
+        uploadLoading.value = true
         createPublicLocationQuery.execute(object : DisposableCompletableObserver() {
                 override fun onComplete() {
                     goToMapbox()
@@ -156,6 +160,7 @@ class CreateLocationViewModel @Inject constructor(
                 uri = uris
             )
         )
+        Log.d("publicLocation","upload")
     }
 
     //Navigation

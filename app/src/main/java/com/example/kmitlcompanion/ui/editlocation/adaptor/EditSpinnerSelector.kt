@@ -1,4 +1,4 @@
-package com.example.kmitlcompanion.ui.createlocation.adaptor
+package com.example.kmitlcompanion.ui.editlocation.adaptor
 
 import android.view.View
 import android.widget.AdapterView
@@ -6,13 +6,13 @@ import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import com.example.kmitlcompanion.presentation.viewmodel.EditLocationViewModel
 import javax.inject.Inject
 
-class SpinnerSelector @Inject constructor(
+class EditSpinnerSelector @Inject constructor(
 
 ): AdapterView.OnItemSelectedListener {
 
-    lateinit var viewModel: CreateLocationViewModel
+    lateinit var viewModel: EditLocationViewModel
 
-    fun setup(viewModel: CreateLocationViewModel) {
+    fun setup(viewModel: EditLocationViewModel) {
         this.viewModel = viewModel
 
     }

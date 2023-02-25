@@ -44,6 +44,10 @@ class ViewEditDeleteMarker @Inject constructor(
         bottomSheetDialog.show()
     }
 
+    fun hideMarkerMenu(){
+        bottomSheetDialog.dismiss()
+    }
+
     fun showConfirmDeleteDialog(){
         bottomSheetDialog.dismiss()
         Log.d("test_","delete pin ")

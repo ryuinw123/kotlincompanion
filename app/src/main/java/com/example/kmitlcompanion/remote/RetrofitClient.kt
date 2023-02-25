@@ -183,4 +183,29 @@ class RetrofitClient @Inject constructor(
     override fun deleteEventLocationQuery(id: String, token: String): Completable {
         return retrofitTestClient.deleteEventLocationQuery(id,token)
     }
+
+
+    override fun editLocationQuery(
+        id: String,
+        name: String,
+        type: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+        return retrofitTestClient.editLocationQuery(id,name,type,description,image,imageUrl,token)
+    }
+
+    override fun editEventLocationQuery(
+        eventId: String,
+        name: String,
+        description: String,
+        image: List<MultipartBody.Part?>,
+        imageUrl: List<String?>,
+        token: String
+    ): Completable {
+
+        return retrofitTestClient.editEventLocationQuery(eventId,name,description,image,imageUrl,token)
+    }
 }
