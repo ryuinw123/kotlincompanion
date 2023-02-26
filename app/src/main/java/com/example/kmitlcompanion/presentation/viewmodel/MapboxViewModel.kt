@@ -204,6 +204,9 @@ class MapboxViewModel @Inject constructor(
     private val _displayTimer = MutableLiveData<String>()
     val displayTimer : MutableLiveData<String> = _displayTimer
 
+    private val _triggerGoogleCalender = MutableLiveData<Boolean>()
+    val triggerGoogleCalender : MutableLiveData<Boolean> = _triggerGoogleCalender
+
     //For Edit Delete Marker
 
     private val _isMyPin = MutableLiveData<Boolean>()
@@ -708,8 +711,6 @@ class MapboxViewModel @Inject constructor(
 
     fun editMarker(){
         _editMarkerTrigger.value = true
-        //navigate(MapboxFragmentDirections.actionMapboxFragmentToEditLocationFragment())
-        //Log.d("test_","editPin")
     }
 
     fun deleteMarker(){
@@ -744,6 +745,11 @@ class MapboxViewModel @Inject constructor(
                 Log.d("deleteMarkerLocationQuery",e.toString())
             }
         }, params = id)
+    }
+
+    //For open Goole Calendar
+    fun startGoogleCalendar(){
+        triggerGoogleCalender.value = true
     }
 
 

@@ -122,6 +122,9 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
     private fun FragmentCreateLocationBinding.setupTextChange() {
         nameInput.doAfterTextChanged {
             viewModel?.updateNameInput(nameInput.text.toString())
+
+            privateSubmit.isEnabled = (nameInput.text.toString().trim() != "")
+            publicSubmit.isEnabled = (nameInput.text.toString().trim() != "")
         }
         detailInput.doAfterTextChanged {
             viewModel?.updateDetailInput(detailInput.text.toString())

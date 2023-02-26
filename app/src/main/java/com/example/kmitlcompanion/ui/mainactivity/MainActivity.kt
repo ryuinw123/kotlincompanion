@@ -3,6 +3,7 @@ package com.example.kmitlcompanion.ui.mainactivity
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -32,19 +33,22 @@ import androidx.databinding.DataBindingUtil.setContentView as bindingSetContentV
 class MainActivity : AppCompatActivity() {
 
     @Inject lateinit var helper : NavHelper
-    @Inject  lateinit var bottomBarUtils: BottomBarUtils
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
 
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var navHostF: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = bindingSetContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
             helper = this@MainActivity.helper
-            this@MainActivity.helper.setup(window,navHostFragment,root, bottomNavigation, bottomMap)
+            navHostF = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+            this@MainActivity.helper.setup(this@MainActivity,window,navHostF.navController,root, bottomNavigation, bottomMap)
             bottomBarUtils.setup(coordinatorBottomNav)
 
         }
-
 
        val locationId : Long = intent.extras?.getLong("locationId") ?: -1
 
@@ -60,5 +64,9 @@ class MainActivity : AppCompatActivity() {
 
         //setContentView(R.layout.activity_main)
     }
+
+
+
+
 
 }

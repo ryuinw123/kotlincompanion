@@ -10,6 +10,8 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentSettingsBinding
 import com.example.kmitlcompanion.presentation.viewmodel.SettingsViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
+import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
+import com.example.kmitlcompanion.ui.mapboxview.MapboxFragment
 import com.example.kmitlcompanion.ui.settings.helper.SettingHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,26 +26,25 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
     override fun onReady(savedInstanceState: Bundle?) {
     }
-    @Inject
-    internal lateinit var helper: SettingHelper
+
+    @Inject lateinit var helper: SettingHelper
+
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        helper.setup(viewModel)
+        helper.setup(viewModel,requireActivity())
 
         binding = FragmentSettingsBinding.inflate(inflater,container, false).apply {
             viewModel = this@SettingsFragment.viewModel
             setupViewObservers()
         }
 
-        viewModel.setActivityContext(requireActivity())
-
         //show bottom navbar
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.visibility = View.VISIBLE
+        bottomBarUtils.bottomMap?.visibility = View.VISIBLE
         return binding.root
     }
 
@@ -51,7 +52,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     private fun FragmentSettingsBinding.setupViewObservers() {
         this@SettingsFragment.viewModel.run {
             updateUserRoom.observe(viewLifecycleOwner, Observer {
-                helper.updateUserRoom(it!!)
+               updateUser(it!!)
+            })
+
+            signOut.observe(viewLifecycleOwner, Observer {
+                helper.signOut()
+
+                //fragmentManager.beginTransaction().remove(MapboxFragment).commitAllowingStateLoss()
+                val fragment = MapboxFragment()
+
+                if (fragment != null) {
+                    childFragmentManager?.beginTransaction()?.remove(fragment)?.commit()
+                }
             })
         }
     }

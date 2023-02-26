@@ -2,36 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <item
-            android:id="@+id/settingsFragment"
+            android:id="@+id/bottomBarSettingsFragment"
             android:icon="@drawable/settings_48px"
             android:title="settings_menu"
-            app:showAsAction="ifRoom"/>
-
-<!--        <item-->
-<!--            android:id="@+id/notificationFragment"-->
-<!--            android:icon="@drawable/notifications_48px"-->
-<!--            android:name="noti_menu"-->
-<!--            app:showAsAction="ifRoom"/>-->
-
-
-<!--        <item-->
-<!--            android:commentId="@+commentId/feedFragment"-->
-<!--            android:icon="@drawable/feed_48px"-->
-<!--            android:name="feed_menu"-->
-<!--            app:showAsAction="ifRoom"/>-->
+            app:showAsAction="ifRoom"
+            />
 
         <item
-            android:id="@+id/eventPageFragment"
+            android:id="@+id/bottomBarNotficationLogFragment"
             android:icon="@drawable/notifications_48px"
             android:title="event_menu"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom"
+            />
 
         <item android:id="@+id/placeholder"
             android:title=""
             android:enabled="false"/>
 
-<!--        <item android:commentId="@+commentId/mapboxFragment2"-->
-<!--            android:name="map_menu"-->
-<!--            android:visible="false"-->
-<!--            android:enabled="true"/>-->
 </menu>

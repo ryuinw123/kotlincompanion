@@ -1,7 +1,9 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,8 @@ import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,6 +38,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
     private var mapView: MapView? = null
 
     override val viewModel : MapboxViewModel by viewModels()
+
     private val navArgs by navArgs<MapboxFragmentArgs>()
     override val layoutId :Int = R.layout.fragment_mapbox
 
@@ -48,7 +53,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        resources
         //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
         //requireActivity().actionBar?.show()
         //(activity as AppCompatActivity?)!!.supportActionBar?.subtitle = "hello world"
@@ -74,6 +78,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 , requireContext())
             helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
             helper.editDeleteMarker.setup(this@MapboxFragment.viewModel,requireContext(),editDeleteMarkerButton)
+            helper.googleCalendar.setup(this@MapboxFragment.viewModel,requireContext())
 
             setupViewObservers()
 
@@ -95,6 +100,34 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         val displayHeight = (displayMetrics.heightPixels / displayMetrics.density).toDouble()
         val displayWidth = (displayMetrics.widthPixels / displayMetrics.density).toDouble()
         viewModel.setScreenSize(ScreenSize(displayWidth,displayHeight))
+
+
+//        val dateString1 = "2023-02-25 23:30:00"
+//        val dateFormat1 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+//        val startTimeIn = dateFormat1.parse(dateString1)
+//        val startTime = Calendar.getInstance()
+//        startTime.time = startTimeIn
+//        val startTimeInMillis = startTime.timeInMillis
+//
+//        val dateString2 = "2023-02-27 23:30:00"
+//        val dateFormat2 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+//        val endTimeIn = dateFormat2.parse(dateString2)
+//        val endTime = Calendar.getInstance()
+//        endTime.time = endTimeIn
+//        val endTimeInMillis = endTime.timeInMillis
+//
+//        binding.pinToGoogleCalendar.setOnClickListener {
+//            val intent = Intent(Intent.ACTION_INSERT).apply {
+//                data = CalendarContract.Events.CONTENT_URI
+//                putExtra(CalendarContract.Events.TITLE, "น้องฟิมแฟนยัยเต่ายัยเถาแฟนยูล่าแฟนเอ่เอ้แฟนจิ่นจิ้นแฟนอีมีน")
+//                putExtra(CalendarContract.Events.EVENT_LOCATION, "ที่บ้านของพวกเรา")
+//                putExtra(CalendarContract.Events.DESCRIPTION, "Description งั้นเหรอ? ของแบบนั้นไม่จำเป็นสำหรับชั้นหรอกนะ")
+//                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTimeInMillis)
+//                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTimeInMillis)
+//            }
+//            startActivity(intent)
+//        }
+
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){
@@ -329,7 +362,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
 
-
+            //For search
             submitSearchValue.observe(viewLifecycleOwner, Observer {
                 Log.d("test_ss","search")
                 if (isSearch.value == true){
@@ -396,6 +429,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 binding.addressText.visibility = visibility
                 binding.commentZone.visibility = visibility
                 binding.constraintLayout3.visibility = visibility
+                binding.pinToGoogleCalendar.visibility = if (it == false) View.GONE else View.VISIBLE
             })
 
             eventBindEnd.observe(viewLifecycleOwner, Observer {
@@ -451,8 +485,13 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 }
             })
 
-
-
+            //For open google calendar
+            triggerGoogleCalender.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    helper.googleCalendar.startGoogleCalendar()
+                    triggerGoogleCalender.value = false
+                }
+            })
 
         }
     }
@@ -461,6 +500,28 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         super.onLowMemory()
         binding.mapView?.onLowMemory()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("test_debug" ,"onDestroyView")
+
+        // Clear the reference to the MapboxMap object
+//        this@MapboxFragment.mapView.let {
+//            it
+//        }
+        mapView?.onDestroy()
+        mapView = null
+
+    }
+
+    override fun onDestroy() {
+        mapView = null
+        Log.d("test_debug" ,"onDestroy")
+        super.onDestroy()
+    }
+
+
+
 
 
 }

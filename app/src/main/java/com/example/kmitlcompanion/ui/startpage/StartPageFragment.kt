@@ -12,6 +12,7 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentStartPageBinding
 import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
+import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.startpage.helper.StartPageFragmentHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,6 +27,7 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
 
     @Inject
     internal lateinit var helper: StartPageFragmentHelper
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
 
     override fun onReady(savedInstanceState: Bundle?) {
 
@@ -52,8 +54,8 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
 
 
         //hide bottom bar
-        val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
-        bottomNavigationView.visibility = View.GONE
+        //val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
+        bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
 
         return binding.root
     }

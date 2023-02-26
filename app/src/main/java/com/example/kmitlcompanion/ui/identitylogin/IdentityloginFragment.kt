@@ -12,6 +12,7 @@ import com.example.kmitlcompanion.databinding.FragmentIdentityloginBinding
 import com.example.kmitlcompanion.presentation.viewmodel.IdentityloginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.identitylogin.helper.IdentityHelper
+import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,6 +25,7 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
 
     override fun onReady(savedInstanceState: Bundle?) {
     }
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
 
     @Inject
     internal lateinit var helper: IdentityHelper
@@ -44,6 +46,7 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
         viewModel.listFieldAdapter()
         viewModel.inputListener()
 
+        bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
         return binding.root
     }
 

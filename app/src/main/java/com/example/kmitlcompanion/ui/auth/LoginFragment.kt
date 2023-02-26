@@ -17,6 +17,7 @@ import com.example.kmitlcompanion.presentation.utils.ActivityNavigation
 import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.auth.helpers.AuthHelper
+import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,6 +31,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
     override fun onReady(savedInstanceState: Bundle?) {
 
     }
+
+    @Inject lateinit var bottomBarUtils: BottomBarUtils
 
     @Inject
     internal lateinit var helper: AuthHelper
@@ -55,8 +58,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
         }
 
         //hide bottom bar
-        val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
-        bottomNavigationView.visibility = View.GONE
+//        val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
+//        bottomNavigationView.visibility = View.GONE
+        bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
 
         viewModel.setActivityContext(requireActivity())
         return binding.root

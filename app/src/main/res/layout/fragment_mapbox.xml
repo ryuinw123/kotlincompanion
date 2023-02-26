@@ -767,13 +767,13 @@
 
                     <Button
                         android:id="@+id/pinlike_button"
-                        android:layout_width="160dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="70dp"
-                        android:layout_marginLeft="25dp"
                         android:layout_marginTop="16dp"
-
                         android:backgroundTint="#FFFFFF"
                         android:onClick='@{()->viewModel.onClickLikeLocationQuery()}'
+                        android:paddingLeft="55dp"
+                        android:paddingRight="55dp"
                         android:text="0"
                         android:textAlignment="center"
                         android:textColor="#FF5E00"
@@ -785,6 +785,7 @@
                         app:iconPadding="10dp"
                         app:iconSize="30dp"
                         app:iconTint="@color/kmitl_color"
+                        app:layout_constraintEnd_toStartOf="@+id/pinbookmark_button"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/description_zone"
                         app:strokeColor="#FF5E00"
@@ -792,12 +793,14 @@
 
                     <Button
                         android:id="@+id/pinbookmark_button"
-                        android:layout_width="160dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="70dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="30dp"
                         android:backgroundTint="#FFFFFF"
                         android:onClick="@{()->viewModel.bookMarkOnClick()}"
+                        android:paddingLeft="45dp"
+                        android:paddingRight="45dp"
                         android:text="เก็บ"
                         android:textAlignment="center"
                         android:textAllCaps="false"
@@ -815,14 +818,43 @@
                         app:strokeColor="#FF5E00"
                         app:strokeWidth="5dp" />
 
+                    <Button
+                        android:id="@+id/pin_to_google_calendar"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="50dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:onClick="@{()->viewModel.startGoogleCalendar()}"
+                        android:text="เก็บใน Google Calendar"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="#FF5E00"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        android:visibility="visible"
+                        app:cornerRadius="50dp"
+                        app:icon="@drawable/google_calendar_icon__2020_"
+                        app:iconGravity="textStart"
+                        app:iconPadding="10dp"
+                        app:iconSize="35dp"
+                        app:iconTint="@null"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pinlike_button"
+                        app:strokeColor="#FF5E00"
+                        app:strokeWidth="5dp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/comment_zone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/top_border"
                         android:visibility="visible"
-                        app:layout_constraintTop_toBottomOf="@+id/pinlike_button"
+                        app:layout_constraintTop_toBottomOf="@+id/pin_to_google_calendar"
                         tools:layout_editor_absoluteX="1dp">
 
                         <TextView
