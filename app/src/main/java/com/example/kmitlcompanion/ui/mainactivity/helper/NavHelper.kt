@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
@@ -49,17 +50,25 @@ class  NavHelper  @Inject constructor(
         this.weakBottomMap = WeakReference(bottomMap)
         this.weakBottomNavigation = WeakReference(bottomNavigation)
 
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setEnterAnim(R.anim.fade_in_kmitl) // set enter animation
+            .setExitAnim(R.anim.fade_out_kmitl) // set exit animation
+            .setPopEnterAnim(R.anim.fade_in_kmitl) // set pop enter animation
+            .setPopExitAnim(R.anim.fade_out_kmitl) // set pop exit animation
+            .build()
+
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.bottomBarSettingsFragment -> navController.navigate(R.id.settingsFragment)
-                R.id.bottomBarNotficationLogFragment -> navController.navigate(R.id.eventPageFragment)
+                R.id.bottomBarSettingsFragment -> navController.navigate(R.id.settingsFragment,null,navOptions)
+                R.id.bottomBarNotficationLogFragment -> navController.navigate(R.id.eventPageFragment,null,navOptions)
             }
             true
         }
 
         bottomMap.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.bottomBarMapboxFragment -> navController.navigate(R.id.mapboxFragment)
+                R.id.bottomBarMapboxFragment -> navController.navigate(R.id.mapboxFragment,null,navOptions)
             }
             true
         }

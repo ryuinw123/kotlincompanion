@@ -8,26 +8,33 @@
     <fragment
         android:id="@+id/mapboxFragment"
         android:name="com.example.kmitlcompanion.ui.mapboxview.MapboxFragment"
-        android:label="MapboxFragment" >
+        android:label="MapboxFragment"
+        >
+
         <action
             android:id="@+id/action_mapboxFragment2_to_createMapboxLocationFragment2"
-            app:destination="@id/createMapboxLocationFragment2" />
+            app:destination="@id/createMapboxLocationFragment2"
+            />
         <argument
             android:name="locationId"
             app:argType="long"
             android:defaultValue="-1L" />
         <action
             android:id="@+id/action_mapboxFragment_to_createPolygonEventFragment"
-            app:destination="@id/createPolygonEventFragment" />
+            app:destination="@id/createPolygonEventFragment"
+            />
         <action
             android:id="@+id/action_mapboxFragment_to_createCircleEventFragment"
-            app:destination="@id/createCircleEventFragment" />
+            app:destination="@id/createCircleEventFragment"
+            />
         <action
             android:id="@+id/action_mapboxFragment_to_editLocationFragment"
-            app:destination="@id/editLocationFragment" />
+            app:destination="@id/editLocationFragment"
+            />
         <action
             android:id="@+id/action_mapboxFragment_to_editEventFragment"
-            app:destination="@id/editEventFragment" />
+            app:destination="@id/editEventFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -78,7 +85,8 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.kmitlcompanion.ui.settings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings"
+        >
         <action
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -87,7 +95,8 @@
         android:id="@+id/eventPageFragment"
         android:name="com.example.kmitlcompanion.ui.eventpage.EventPageFragment"
         android:label="fragment_event_page"
-        tools:layout="@layout/fragment_event_page" />
+        tools:layout="@layout/fragment_event_page"
+        />
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.example.kmitlcompanion.ui.feed.FeedFragment"

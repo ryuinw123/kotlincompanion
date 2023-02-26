@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.kmitlcompanion.BR
 import com.example.kmitlcompanion.presentation.BaseViewModel
@@ -30,6 +31,14 @@ abstract class BaseFragment<BINDING : ViewDataBinding,VM : BaseViewModel>(): Fra
 
     protected abstract fun onReady(savedInstanceState: Bundle?)
 
+    private var navOptions = NavOptions.Builder()
+                            .setLaunchSingleTop(true)
+                            .setEnterAnim(com.example.kmitlcompanion.R.anim.fade_in_kmitl) // set enter animation
+                            .setExitAnim(com.example.kmitlcompanion.R.anim.fade_out_kmitl) // set exit animation
+                            .setPopEnterAnim(com.example.kmitlcompanion.R.anim.fade_in_kmitl) // set pop enter animation
+                            .setPopExitAnim(com.example.kmitlcompanion.R.anim.fade_out_kmitl) // set pop exit animation
+                            .build()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +55,9 @@ abstract class BaseFragment<BINDING : ViewDataBinding,VM : BaseViewModel>(): Fra
             lifecycleOwner = viewLifecycleOwner
             setVariable(BR.viewModel,viewModel)
         }
+
+
+
 
         return binding.root
     }
@@ -67,7 +79,7 @@ abstract class BaseFragment<BINDING : ViewDataBinding,VM : BaseViewModel>(): Fra
 
     private fun handleNavigation(navCommand: NavigationCommand) {
         when (navCommand) {
-            is NavigationCommand.ToDirection -> findNavController().navigate(navCommand.directions)
+            is NavigationCommand.ToDirection -> findNavController().navigate(navCommand.directions,navOptions)
             is NavigationCommand.Back -> findNavController().navigateUp()
         }
     }
