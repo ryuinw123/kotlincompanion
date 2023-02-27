@@ -8,6 +8,7 @@ import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.usecases.*
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
+import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
@@ -142,7 +143,8 @@ class MapboxViewModel @Inject constructor(
     val createPinEvent : LiveData<Event<Boolean>> = _createPinEvent
 
 
-
+    val _flyLocationOnStart = SingleLiveData<Event<Boolean>>()
+    val flyLocationOnStart : SingleLiveData<Event<Boolean>> = _flyLocationOnStart
 
 
     //For Navigation
@@ -502,6 +504,7 @@ class MapboxViewModel @Inject constructor(
 
     fun updateUserLocation(point: Point) {
         _userLocation.value = point
+        _flyLocationOnStart.value = Event(true)
     }
 
     fun updatePermission(boolean: Boolean) {
@@ -546,6 +549,11 @@ class MapboxViewModel @Inject constructor(
 
     fun updatePositionFlyer(point: Point) {
         _positionFlyer.value = point
+    }
+
+
+    fun updatePositionFlyerByCurrentPosition() {
+        _positionFlyer.value = userLocation.value
     }
 
 

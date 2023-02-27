@@ -19,6 +19,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
             android:onClick="@{() -> viewModel.updateCreatePolygonAreaEvent()}"
             >
 
@@ -48,6 +49,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
             android:onClick="@{() -> viewModel.updateCreateCircleAreaEvent()}">
 
             <androidx.appcompat.widget.LinearLayoutCompat

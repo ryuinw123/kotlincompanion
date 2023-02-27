@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
@@ -101,33 +102,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         val displayWidth = (displayMetrics.widthPixels / displayMetrics.density).toDouble()
         viewModel.setScreenSize(ScreenSize(displayWidth,displayHeight))
 
-
-//        val dateString1 = "2023-02-25 23:30:00"
-//        val dateFormat1 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-//        val startTimeIn = dateFormat1.parse(dateString1)
-//        val startTime = Calendar.getInstance()
-//        startTime.time = startTimeIn
-//        val startTimeInMillis = startTime.timeInMillis
-//
-//        val dateString2 = "2023-02-27 23:30:00"
-//        val dateFormat2 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-//        val endTimeIn = dateFormat2.parse(dateString2)
-//        val endTime = Calendar.getInstance()
-//        endTime.time = endTimeIn
-//        val endTimeInMillis = endTime.timeInMillis
-//
-//        binding.pinToGoogleCalendar.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_INSERT).apply {
-//                data = CalendarContract.Events.CONTENT_URI
-//                putExtra(CalendarContract.Events.TITLE, "น้องฟิมแฟนยัยเต่ายัยเถาแฟนยูล่าแฟนเอ่เอ้แฟนจิ่นจิ้นแฟนอีมีน")
-//                putExtra(CalendarContract.Events.EVENT_LOCATION, "ที่บ้านของพวกเรา")
-//                putExtra(CalendarContract.Events.DESCRIPTION, "Description งั้นเหรอ? ของแบบนั้นไม่จำเป็นสำหรับชั้นหรอกนะ")
-//                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTimeInMillis)
-//                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTimeInMillis)
-//            }
-//            startActivity(intent)
-//        }
-
     }
 
     private fun FragmentMapboxBinding.setupViewObservers(){
@@ -147,6 +121,11 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     helper.map.updateEvent(information)
                     helper.location.updateEventPermission(it)
                 }
+            })
+
+            flyLocationOnStart.observe(viewLifecycleOwner, Observer {
+                helper.map.flyMapOnReady()
+                flyLocationOnStart.removeObservers(viewLifecycleOwner)
             })
 
             //Refresh Map & Event
@@ -389,6 +368,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                         }
                     }
                     button2.visibility = View.GONE
+                    resetPosition.visibility = View.GONE
                     appendDataToSearchList("",tagList)
                     helper.search.objectVisbility(View.VISIBLE)
                     bottomBarUtils.bottomMap?.visibility = View.GONE
@@ -396,6 +376,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     helper.search.objectVisbility(View.GONE)
                     bottomBarUtils.bottomMap?.visibility = View.VISIBLE
                     button2.visibility = View.VISIBLE
+                    resetPosition.visibility = View.VISIBLE
                 }
             })
 

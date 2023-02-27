@@ -52,8 +52,8 @@ class ViewMap @Inject constructor(
         weakMapView = WeakReference(mapView)
 
         mapView?.compass?.updateSettings {
-            marginTop = 350F
-            marginRight = 40F
+            marginTop = 500F
+            marginRight = 48F
         }
 
         mapView?.scalebar?.updateSettings {
@@ -169,7 +169,6 @@ class ViewMap @Inject constructor(
         //addEventListener()
     }
 
-
     private fun initialLocation(locationId : Long) {
         Log.d("test_locationId",locationId.toString())
         if (locationId != -1L) {
@@ -265,7 +264,6 @@ class ViewMap @Inject constructor(
         mapboxMap?.addOnMapClickListener {
             val screenPoint = mapboxMap.pixelForCoordinate(it)
             val queryOptions = RenderedQueryOptions(listOf(LOCATION_LAYER_ID) , null)
-
             mapboxMap.queryRenderedFeatures(
                 RenderedQueryGeometry(screenPoint),queryOptions)   { expect ->
                 val queriedFeature: List<QueriedFeature> = expect.value ?: emptyList()
@@ -336,6 +334,12 @@ class ViewMap @Inject constructor(
         }
 
     }
+
+    fun flyMapOnReady(){
+        Log.d("test_fly",viewModel.userLocation.value.toString())
+        viewModel.userLocation.value?.let { viewModel.updatePositionFlyer(it) }
+    }
+
 
     private fun addEventListener() {
         val mapboxMap = mapView?.getMapboxMap()
@@ -457,7 +461,7 @@ class ViewMap @Inject constructor(
                 //center(Point.fromLngLat(point.longitude(), point.latitude() + 0.01))
                 center(Point.fromLngLat(point.longitude(), point.latitude()))
                 zoom(18.0)
-                bearing(180.0)
+                bearing(0.0)
                 pitch(50.0)
             },
             MapAnimationOptions.mapAnimationOptions {

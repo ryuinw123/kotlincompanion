@@ -72,12 +72,18 @@ abstract class BaseFragment<BINDING : ViewDataBinding,VM : BaseViewModel>(): Fra
     private fun observeNavigation() {
         viewModel.navigation.observeNonNull(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { navigationCommand ->
-                handleNavigation(navigationCommand)
+
+                handleNavigation(navigationCommand,navOptions)
+            }
+        }
+        viewModel.navigationOption.observeNonNull(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { navigationObject ->
+                handleNavigation(navigationObject.first,navigationObject.second)
             }
         }
     }
 
-    private fun handleNavigation(navCommand: NavigationCommand) {
+    private fun handleNavigation(navCommand: NavigationCommand,navOptions: NavOptions) {
         when (navCommand) {
             is NavigationCommand.ToDirection -> findNavController().navigate(navCommand.directions,navOptions)
             is NavigationCommand.Back -> findNavController().navigateUp()

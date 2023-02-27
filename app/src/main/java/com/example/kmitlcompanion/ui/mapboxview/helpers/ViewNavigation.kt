@@ -32,6 +32,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.camera
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.base.TimeFormat
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
@@ -102,6 +103,7 @@ class ViewNavigation @Inject constructor(
     private val replayLocationEngine = ReplayLocationEngine(mapboxReplayer)
     private val replayProgressObserver = ReplayProgressObserver(mapboxReplayer)
     private lateinit var weakMapboxMap : WeakReference<MapboxMap>
+    private lateinit var weakMapView: WeakReference<MapView>
     private lateinit var weakSoundButton : WeakReference<MapboxSoundButton>
     private lateinit var weakManeuverView : WeakReference<MapboxManeuverView>
     private lateinit var weakTripProgressView : WeakReference<MapboxTripProgressView>
@@ -113,6 +115,9 @@ class ViewNavigation @Inject constructor(
     private lateinit var navigationCamera: NavigationCamera
     private lateinit var viewportDataSource: MapboxNavigationViewportDataSource
     private lateinit var viewModel : MapboxViewModel
+
+    private var navigateState = false
+
     private val pixelDensity = Resources.getSystem().displayMetrics.density
     private val overviewPadding: EdgeInsets by lazy {
         EdgeInsets(
@@ -310,6 +315,7 @@ class ViewNavigation @Inject constructor(
     fun setup(context: Context, viewModel: MapboxViewModel, mapView: MapView, soundButton: MapboxSoundButton, maneuverView: MapboxManeuverView, tripProgressView: MapboxTripProgressView , mapboxRecenterButton: MapboxRecenterButton,stop : ImageView , routeOverviewButton: MapboxRouteOverviewButton , tripProgressCard : CardView) {
         this.viewModel = viewModel
         this.weakMapboxMap = WeakReference(mapView.getMapboxMap())
+        this.weakMapView = WeakReference(mapView)
         this.weakSoundButton = WeakReference(soundButton)
         this.weakManeuverView = WeakReference(maneuverView)
         this.weakTripProgressView = WeakReference(tripProgressView)
@@ -350,7 +356,7 @@ class ViewNavigation @Inject constructor(
                 NavigationCameraState.FOLLOWING -> recenter?.visibility = View.INVISIBLE
                 NavigationCameraState.TRANSITION_TO_OVERVIEW,
                 NavigationCameraState.OVERVIEW,
-                NavigationCameraState.IDLE -> recenter?.visibility = View.VISIBLE
+                NavigationCameraState.IDLE -> recenter?.visibility = if(!navigateState) View.INVISIBLE else View.VISIBLE
             }
         }
 // set the padding values depending on screen orientation and visible view layout
@@ -556,6 +562,9 @@ class ViewNavigation @Inject constructor(
         soundButton?.visibility = View.VISIBLE
         routeOverview?.visibility = View.VISIBLE
         tripProgressCard?.visibility = View.VISIBLE
+        recenter?.visibility = View.VISIBLE
+        navigateState = true
+        mapView?.compass?.enabled = false
 
 // move the camera to overview when new route is available
         navigationCamera.requestNavigationCameraToOverview()
@@ -573,6 +582,9 @@ class ViewNavigation @Inject constructor(
         maneuverView?.visibility = View.INVISIBLE
         routeOverview?.visibility = View.INVISIBLE
         tripProgressCard?.visibility = View.INVISIBLE
+        recenter?.visibility = View.INVISIBLE
+        navigateState = false
+        mapView?.compass?.enabled = true
 
     }
 
@@ -591,6 +603,9 @@ class ViewNavigation @Inject constructor(
 
     private val mapboxMap
         get() = weakMapboxMap?.get()
+
+    private val mapView
+        get() = weakMapView?.get()
 
     private val soundButton
         get() = weakSoundButton?.get()

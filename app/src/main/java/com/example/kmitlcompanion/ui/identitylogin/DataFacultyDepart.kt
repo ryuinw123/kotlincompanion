@@ -72,4 +72,12 @@ class DataFacultyDepart @Inject constructor() {
         return FacultyMap[fac]!!
     }
 
+    fun getAllDepart():ArrayList<String>{
+        val allValuesList: ArrayList<String> = ArrayList()
+        for (list in FacultyMap.values) {
+            allValuesList.addAll(list)
+        }
+        return allValuesList
+    }
+
 }

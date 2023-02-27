@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kmitlcompanion.presentation.viewmodel.SettingsEditViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <TextView
+            android:id="@+id/text_settings_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:text="แก้ไขชื่อผู้ใช้"
+            android:textColor="@color/kmitl_color"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spiner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_bar">
+
+
+            <TextView
+                android:id="@+id/spin_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text="ชั้นปี"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/edit_spinner"
+                style="@style/spinner_style"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spin_head"
+                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/text_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_settings_header">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_helper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textColorHint="@color/kmitl_color"
+                app:boxStrokeColor="@color/kmitl_color"
+                app:boxStrokeWidth="2dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintTextColor="@color/kmitl_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FFFFFF"
+                    android:hint="ชื่อผู้ใช้"
+                    android:text="บานาน่า ฟิม" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layout_submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/kmitl_color"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:onClick="@{()->viewModel.saveEdit()}"
+                android:text="บันทึก" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
