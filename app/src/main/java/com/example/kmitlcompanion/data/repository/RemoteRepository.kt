@@ -3,6 +3,8 @@ package com.example.kmitlcompanion.data.repository
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.domain.model.PinEventDetail
 import com.example.kmitlcompanion.domain.model.SearchDetail
+import com.example.kmitlcompanion.domain.model.UserEditData
+import com.example.kmitlcompanion.domain.model.UserSettingsData
 import com.mapbox.geojson.Point
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -89,6 +91,10 @@ interface RemoteRepository {
     fun editLocationQuery(id: String, name : String, type : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
 
     fun editEventLocationQuery(eventId: String, name : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
+
+    fun settingsGetUserData(token: String) : Observable<UserSettingsDataModel>
+
+    fun settingsEditUpdateUserData(username : String,faculty:String,department:String,year : String, token: String) : Completable
 
 }
 

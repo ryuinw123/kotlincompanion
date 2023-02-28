@@ -208,4 +208,20 @@ class RetrofitClient @Inject constructor(
 
         return retrofitTestClient.editEventLocationQuery(eventId,name,description,image,imageUrl,token)
     }
+
+    override fun settingsGetUserData(token: String): Observable<UserSettingsDataModel> {
+        return retrofitTestClient.settingsGetUserData(token)
+    }
+
+    override fun settingsEditUpdateUserData(
+        username: String,
+        faculty: String,
+        department: String,
+        year: String,
+        token: String
+    ): Completable {
+        return retrofitTestClient.settingsEditUpdateUserData(
+            username,faculty,department,year,token
+        )
+    }
 }

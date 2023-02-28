@@ -217,4 +217,18 @@ class CacheDataStore @Inject constructor(
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+    override fun settingsGetUserData(token: String): Observable<UserSettingsDataModel> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun settingsEditUpdateUserData(
+        username: String,
+        faculty: String,
+        department: String,
+        year: String,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

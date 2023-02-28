@@ -77,5 +77,9 @@ interface DomainRepository {
 
     fun editEventLocationQuery(eventId: String, name : String, description : String, image : MutableList<Pair<Int,Any>>) : Completable
 
+    fun settingsGetUserData() : Observable<UserSettingsData>
+
+    fun settingsEditUpdateUserData(userEditData: UserEditData) : Completable
+
 
 }

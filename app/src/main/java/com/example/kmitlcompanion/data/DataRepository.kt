@@ -1,7 +1,6 @@
 package com.example.kmitlcompanion.data
 
 import android.content.Intent
-import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
@@ -360,4 +359,25 @@ class DataRepository @Inject constructor(
         )
     }
 
+    override fun settingsGetUserData(): Observable<UserSettingsData> {
+        return dataStore.getRemoteData(true).settingsGetUserData(getToken()).map {
+            UserSettingsData(
+                username = it.username,
+                faculty = it.faculty,
+                email = it.email,
+                department = it.department,
+                year = it.year,
+            )
+        }
+    }
+
+    override fun settingsEditUpdateUserData(userEditData: UserEditData): Completable {
+        return dataStore.getRemoteData(true).settingsEditUpdateUserData(
+            username = userEditData.username!!,
+            department = userEditData.department!!,
+            faculty = userEditData.faculty!!,
+            year = userEditData.year!!,
+            token = getToken()
+        )
+    }
 }

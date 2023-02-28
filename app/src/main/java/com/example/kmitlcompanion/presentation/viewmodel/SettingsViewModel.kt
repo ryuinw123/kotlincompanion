@@ -2,10 +2,17 @@ package com.example.kmitlcompanion.presentation.viewmodel
 
 import android.app.Activity
 import android.util.Log
+import android.util.LogPrinter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
+import com.example.kmitlcompanion.domain.model.ReturnAddComment
+import com.example.kmitlcompanion.domain.model.UserSettingsData
+import com.example.kmitlcompanion.domain.usecases.SettingsGetUserData
 import com.example.kmitlcompanion.domain.usecases.UpdateUser
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
@@ -18,11 +25,13 @@ import javax.inject.Inject
 import com.google.android.gms.tasks.OnCompleteListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
+import io.reactivex.rxjava3.observers.DisposableObserver
 import kotlin.math.E
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val updateUser: UpdateUser
+    private val updateUser: UpdateUser,
+    private val settingsGetUserData: SettingsGetUserData
     ) : BaseViewModel() {
 
 
@@ -33,6 +42,9 @@ class SettingsViewModel @Inject constructor(
     private val _signOut = SingleLiveData<Event<Boolean>>()
     val signOut: SingleLiveData<Event<Boolean>> = _signOut
 
+    private val _settingsUserData = MutableLiveData<UserSettingsData>()
+    val settingsUserData : LiveData<UserSettingsData> = _settingsUserData
+
     private val navOptions = NavOptions.Builder()
         .setLaunchSingleTop(true)
         .setEnterAnim(R.anim.slide_left) // set enter animation
@@ -40,6 +52,22 @@ class SettingsViewModel @Inject constructor(
         .setPopEnterAnim(R.anim.slide_left) // set pop enter animation
         .setPopExitAnim(R.anim.slide_right) // set pop exit animation
         .build()
+
+    fun downloadSettings(){
+        settingsGetUserData.execute(object : DisposableObserver<UserSettingsData>(){
+            override fun onNext(t: UserSettingsData) {
+                _settingsUserData.value = t
+            }
+
+            override fun onComplete() {
+                Log.d("settingsGetUserData","complete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("settingsGetUserData",e.toString())
+            }
+        })
+    }
 
     //room update user
     fun updateUser(userData: UserData) {
@@ -57,11 +85,11 @@ class SettingsViewModel @Inject constructor(
 
     fun nameEditClick(){
         navigate(SettingsFragmentDirections.actionSettingsFragmentToSettingsEditFragment(
-            username = "บานาน่า ฟิม",
-            email = "banana@kmitl.ac.th",
-            faculty = "คณะวิศวกรรมศาสตร์",
-            department = "วิศวกรรมคอมพิวเตอร์",
-            year = "4",
+            username = _settingsUserData.value?.username,
+            email = _settingsUserData.value?.email ?:"",
+            faculty = _settingsUserData.value?.faculty ?:"",
+            department = _settingsUserData.value?.department ?:"",
+            year = _settingsUserData.value?.year ?:"",
             0
         ),navOptions)
     }
@@ -79,33 +107,33 @@ class SettingsViewModel @Inject constructor(
 
     fun facultyEditClick(){
         navigate(SettingsFragmentDirections.actionSettingsFragmentToSettingsEditFragment(
-            username = "บานาน่า ฟิม",
-            email = "banana@kmitl.ac.th",
-            faculty = "คณะวิศวกรรมศาสตร์",
-            department = "วิศวกรรมคอมพิวเตอร์",
-            year = "4",
+            username = _settingsUserData.value?.username,
+            email = _settingsUserData.value?.email ?:"",
+            faculty = _settingsUserData.value?.faculty ?:"",
+            department = _settingsUserData.value?.department ?:"",
+            year = _settingsUserData.value?.year ?:"",
             2
         ),navOptions)
     }
 
     fun departmentEditClick(){
         navigate(SettingsFragmentDirections.actionSettingsFragmentToSettingsEditFragment(
-            username = "บานาน่า ฟิม",
-            email = "banana@kmitl.ac.th",
-            faculty = "คณะวิศวกรรมศาสตร์",
-            department = "วิศวกรรมคอมพิวเตอร์",
-            year = "4",
+            username = _settingsUserData.value?.username,
+            email = _settingsUserData.value?.email ?:"",
+            faculty = _settingsUserData.value?.faculty ?:"",
+            department = _settingsUserData.value?.department ?:"",
+            year = _settingsUserData.value?.year ?:"",
             3
         ),navOptions)
     }
 
     fun yearEditClick(){
         navigate(SettingsFragmentDirections.actionSettingsFragmentToSettingsEditFragment(
-            username = "บานาน่า ฟิม",
-            email = "banana@kmitl.ac.th",
-            faculty = "คณะวิศวกรรมศาสตร์",
-            department = "วิศวกรรมคอมพิวเตอร์",
-            year = "4",
+            username = _settingsUserData.value?.username,
+            email = _settingsUserData.value?.email ?:"",
+            faculty = _settingsUserData.value?.faculty ?:"",
+            department = _settingsUserData.value?.department ?:"",
+            year = _settingsUserData.value?.year ?:"",
             4
         ),navOptions)
     }

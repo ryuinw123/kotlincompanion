@@ -81,5 +81,9 @@ interface DataRepository {
 
     fun editEventLocationQuery(eventId: String, name : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
 
+    fun settingsGetUserData(token: String) : Observable<UserSettingsDataModel>
+
+    fun settingsEditUpdateUserData(username : String,faculty:String,department:String,year : String, token: String) : Completable
+
 
 }

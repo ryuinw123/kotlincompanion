@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.settingsedit.helper
 
 import android.content.Context
+import android.util.Log
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +26,7 @@ class SettingsEditHelper @Inject constructor(
               textBar : ConstraintLayout,
               spinner : ConstraintLayout,
               textInput : TextInputEditText,
+              textInput2 : TextInputEditText,
               spinHead : TextView,
               editSpinner : Spinner,
               navArgument: SettingsEditFragmentArgs,
@@ -37,7 +39,8 @@ class SettingsEditHelper @Inject constructor(
         viewModel.setState(navArgument.state)
         val state = navArgument.state
         textHeader.text = viewModel.headerText[state]
-        textInput.setText(navArgument.username)
+        textInput.setText(navArgument.username?.split(" ")?.get(0) ?:"")
+        textInput2.setText(navArgument.username?.split(" ")?.get(1) ?:"")
         textInput.hint = viewModel.headText[state]
         spinHead.text = viewModel.headText[state]
 
@@ -49,14 +52,18 @@ class SettingsEditHelper @Inject constructor(
         }
 
         //data
-        viewModel.updateUserNameInput(navArgument.username ?:"")
+        viewModel.updateUserFull(navArgument.username ?:" ")
         viewModel.updateFaculty(navArgument.faculty ?:"")
         viewModel.updateDepartment(navArgument.department ?:"")
         viewModel.updateYear(navArgument.year ?:"")
 
     }
 
+
+
+
     fun updateSpinnerByState(text : String){
+        Log.d("test_edit","update spinger")
         when(navArgument.state){
             2 -> viewModel.updateFaculty(text)
             3 -> viewModel.updateDepartment(text)

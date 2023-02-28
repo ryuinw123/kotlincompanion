@@ -72,6 +72,15 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
                     childFragmentManager?.beginTransaction()?.remove(fragment)?.commit()
                 }
             })
+
+            settingsUserData.observe(viewLifecycleOwner, Observer {
+                usernameValue.text = it.username
+                emailValue.text = it.email
+                facultyValue.text = it.faculty
+                departmentValue.text = it.department
+                departmentYear.text = it.year
+            })
+
         }
     }
 }

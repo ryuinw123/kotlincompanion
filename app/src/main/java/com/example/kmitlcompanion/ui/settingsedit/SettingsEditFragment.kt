@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -48,6 +49,7 @@ class SettingsEditFragment : BaseFragment<FragmentSettingsEditBinding,SettingsEd
                 textBar,
                 spiner,
                 textInput,
+                textInput2,
                 spinHead,
                 editSpinner,
                 navArgs
@@ -70,11 +72,11 @@ class SettingsEditFragment : BaseFragment<FragmentSettingsEditBinding,SettingsEd
 
             editState.observe(viewLifecycleOwner , Observer {
                 when (it){
-                    0 -> spiner.visibility = View.GONE
-                    1 -> spiner.visibility = View.GONE
-                    2 -> textBar.visibility = View.GONE
-                    3 -> textBar.visibility = View.GONE
-                    4 -> textBar.visibility = View.GONE
+                    0,1 -> spiner.visibility = View.GONE
+                    2,3,4 -> {
+                         textBar.visibility = View.GONE
+                         textBar2.visibility = View.GONE
+                        }
                 }
             })
 
@@ -86,13 +88,21 @@ class SettingsEditFragment : BaseFragment<FragmentSettingsEditBinding,SettingsEd
                 helper.updateSpinnerByState(it)
             })
 
+            blockSubmit.observe(viewLifecycleOwner, Observer {
+                submitButton.isEnabled = it.peekContent()
+            })
+
         }
     }
 
     private fun FragmentSettingsEditBinding.setupTextChange(){
         textInput.doAfterTextChanged {
-            viewModel?.updateUserNameInput(textInput.text.toString())
+            viewModel?.updateUserNameInput(textInput.text?.toString()?.replace(" ","") ?:" ")
             submitButton.isEnabled = (textInput.text.toString().trim() != "")
+        }
+        textInput2.doAfterTextChanged {
+            viewModel?.updateUserLastNameInput(textInput2.text?.toString()?.replace(" ","") ?:" ")
+            submitButton.isEnabled = (textInput2.text.toString().trim() != "")
         }
     }
 

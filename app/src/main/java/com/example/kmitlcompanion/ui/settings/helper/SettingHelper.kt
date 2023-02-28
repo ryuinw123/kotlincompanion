@@ -23,7 +23,7 @@ class SettingHelper @Inject constructor() : DefaultLifecycleObserver {
     fun setup(viewModel: SettingsViewModel,activity: Activity){
         this.viewModel = viewModel
         this.activity = activity
-
+        viewModel.downloadSettings()
     }
 
     fun signOut() {
