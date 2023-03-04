@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.marginEnd
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -20,13 +21,12 @@ internal class ViewList @Inject constructor(
     private val dpConverterUtils : DpConverterUtils
 ) {
     fun setupImageAdapter(viewPager2: ViewPager2 , imageList: MutableList<String>) {
-
         //if (!imageList[0].isNullOrEmpty()) {
         if (imageList.toString() != "[]") {
             imageAdapter.imageList = imageList
             imageAdapter.viewPager2 = viewPager2
             viewPager2.adapter = imageAdapter
-            viewPager2.offscreenPageLimit = 3
+            viewPager2.offscreenPageLimit = imageList.size
             viewPager2.clipToPadding = false
             viewPager2.clipChildren = false
             viewPager2.visibility = View.VISIBLE
@@ -60,5 +60,6 @@ internal class ViewList @Inject constructor(
         }
 
         viewPager2.setPageTransformer(transformer)
+        //viewPager2.offscreenPageLimit = 1
     }
 }

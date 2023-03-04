@@ -10,6 +10,9 @@
             type="com.example.kmitlcompanion.presentation.viewmodel.SettingsEditViewModel" />
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -74,7 +77,6 @@
             android:layout_marginTop="32dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_settings_header">
@@ -115,7 +117,6 @@
             android:layout_marginTop="32dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_bar">
@@ -153,10 +154,12 @@
             android:id="@+id/layout_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spiner">
 
             <Button
                 android:id="@+id/submit_button"
@@ -164,14 +167,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:backgroundTint="@color/kmitl_color"
+                android:onClick="@{()->viewModel.saveEdit()}"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
-                android:onClick="@{()->viewModel.saveEdit()}"
                 android:text="บันทึก" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

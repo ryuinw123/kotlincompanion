@@ -13,22 +13,31 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.data.util.PicassoUtils
+import com.example.kmitlcompanion.data.util.UnsafeOkHttpClientUtils
 import com.example.kmitlcompanion.presentation.viewmodel.EditEventViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class EditEventImageHelper @Inject constructor(){
+class EditEventImageHelper @Inject constructor(
+){
     private var listOfWeakImageView : MutableList<WeakReference<ImageView?>?>? = null
     private var listOfWeakDiscardImageView : MutableList<WeakReference<FloatingActionButton?>?>? = null
     private lateinit var viewModel: EditEventViewModel
     private var currentUploadIndex : Int? = null
 
     private val handler = Handler(Looper.getMainLooper())
+    private val client = UnsafeOkHttpClientUtils.getUnsafeOkHttpClient()
+    //private lateinit var picasso: Picasso
+    private lateinit var context : Context
+    //@Inject private lateinit var picassoUtils : PicassoUtils
+    //private val picasso = PicassoUtils.getPicasso(context)
 
-    fun setup(imageView: List<ImageView>, discardImageView: List<FloatingActionButton>, viewModel: EditEventViewModel){
+    fun setup(imageView: List<ImageView>, discardImageView: List<FloatingActionButton>, viewModel: EditEventViewModel,context: Context){
         this.listOfWeakImageView = mutableListOf()
         this.listOfWeakDiscardImageView = mutableListOf()
 
@@ -39,6 +48,8 @@ class EditEventImageHelper @Inject constructor(){
 
         this.currentUploadIndex = 0
         this.viewModel = viewModel
+        this.context = context
+
     }
 
     fun setupStartImage(urlList: List<String>){
@@ -48,32 +59,33 @@ class EditEventImageHelper @Inject constructor(){
         }
     }
 
-    fun loadingImage(urlList : MutableList<String>){
-        if (urlList.toString() != "[]") {
-            urlList.forEach {
+    fun loadingImage(urlList : MutableList<String>?){
+        Log.d("test_image",urlList.toString())
+        if (urlList.toString() != "[]"){
+            urlList?.forEach {
                 handler.post {
-                    Picasso.get().load(it)
+                    //Picasso.get().load(it)
+                    PicassoUtils.getPicasso(context).load(it)
                         .into(object : Target {
-                            override fun onBitmapLoaded(
-                                bitmap: Bitmap?,
-                                from: Picasso.LoadedFrom?
-                            ) {
+                            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                                Log.d("test_image","onBitmapLoaded $it")
                                 startImage(bitmap)
                             }
 
                             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+//                                Log.d("test_image","onBitmapFailed $it")
                                 startImage(null)
                                 // handle the error on the main thread
                             }
 
                             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+//                                Log.d("test_image","onPrepareLoad $it")
                                 // do something when the image is about to load on the main thread
                             }
                         })
                 }
             }
         }
-
     }
 
     fun startImage(bitmap: Bitmap?) {

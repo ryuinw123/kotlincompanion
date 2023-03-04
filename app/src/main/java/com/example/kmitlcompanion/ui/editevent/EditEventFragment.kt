@@ -7,9 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,7 +18,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.editevent.helper.EditEventHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -53,7 +49,8 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
             helper.image.setup(
                 listOf(selectImageView1,selectImageView2,selectImageView3,selectImageView4,selectImageView5),
                 listOf(discardImage1,discardImage2,discardImage3,discardImage4,discardImage5),
-                this@EditEventFragment.viewModel)
+                this@EditEventFragment.viewModel,requireContext()
+            )
             helper.upload.setup(this@EditEventFragment.viewModel)
 
             //helper.datetime.setup(requireContext(), this@EditEventFragment.viewModel,startTimeTextInput,endTimeTextInput)

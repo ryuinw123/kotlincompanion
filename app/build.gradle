@@ -125,4 +125,7 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    //okhttp3 from chat gtp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
 }

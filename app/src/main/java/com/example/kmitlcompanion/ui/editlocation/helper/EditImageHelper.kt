@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.data.util.PicassoUtils
 import com.example.kmitlcompanion.presentation.viewmodel.EditLocationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
@@ -28,9 +29,10 @@ class EditImageHelper @Inject constructor(){
     private var currentUploadIndex : Int? = null
 
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var context : Context
 
     fun setup(imageView: List<ImageView> ,discardImageView: List<FloatingActionButton>, viewModel: EditLocationViewModel
-        ){
+        ,context: Context){
         this.listOfWeakImageView = mutableListOf()
         this.listOfWeakDiscardImageView = mutableListOf()
 
@@ -41,12 +43,13 @@ class EditImageHelper @Inject constructor(){
 
         this.currentUploadIndex = 0
         this.viewModel = viewModel
+        this.context = context
 
     }
 
     fun setupStartImage(urlList: List<String>?){
         val newList = urlList?.toMutableList()
-        Log.d("test_image",newList.toString())
+        Log.d("test_image",newList.toString() + " gay ")
         if (newList.toString() != "[]"){
             viewModel.setStartImage(urlList?.toMutableList())
         }
@@ -91,29 +94,65 @@ class EditImageHelper @Inject constructor(){
         Log.d("test_image",urlList.toString())
         if (urlList.toString() != "[]"){
             urlList?.forEach {
-                Log.d("test_image",it)
                 handler.post {
-                    Picasso.get().load(it)
+                    //Picasso.get().load(it)
+                    PicassoUtils.getPicasso(context).load(it)
                         .into(object : Target {
                             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                                Log.d("test_image","onBitmapLoaded $it")
                                 startImage(bitmap)
                             }
 
                             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+//                                Log.d("test_image","onBitmapFailed $it")
                                 startImage(null)
                                 // handle the error on the main thread
                             }
 
                             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+//                                Log.d("test_image","onPrepareLoad $it")
                                 // do something when the image is about to load on the main thread
                             }
                         })
                 }
             }
        }
-
-
     }
+
+
+
+//    fun loadingImage(urlList : MutableList<String>?) {
+//        var imageTarget: Target? = null
+//        if (!urlList.isNullOrEmpty()){
+//            urlList.forEach { url ->
+//                imageTarget = object : Target {
+//                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                        Log.d("test_image", "onBitmapLoaded $url")
+//                        startImage(bitmap)
+//                        imageTarget = null // clear the reference
+//                    }
+//
+//                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+//                        Log.d("test_image", "onBitmapFailed $url")
+//                        startImage(null)
+//                        imageTarget = null // clear the reference
+//                    }
+//
+//                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+//                        Log.d("test_image", "onPrepareLoad $url")
+//                    }
+//                }
+//
+//                handler.post {
+//                    //Picasso.get().load(url).into(imageTarget as Target)
+//                    PicassoUtils.getPicasso(context).load(url).placeholder(R.drawable.cancel_fill1_wght400_grad200_opsz48)
+//                        .error(R.drawable.cancel_fill1_wght400_grad200_opsz48)
+//                        .noFade()
+//                        .priority(Picasso.Priority.LOW).into(imageTarget as Target)
+//                }
+//            }
+//        }
+//    }
 
 
     fun startImage(bitmap: Bitmap?) {

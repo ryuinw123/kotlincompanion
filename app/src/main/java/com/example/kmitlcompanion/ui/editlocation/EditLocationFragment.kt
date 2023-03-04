@@ -3,14 +3,10 @@ package com.example.kmitlcompanion.ui.editlocation
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -23,7 +19,6 @@ import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.editlocation.helper.EditLocationHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -59,7 +54,8 @@ class EditLocationFragment : BaseFragment<FragmentEditLocationBinding,EditLocati
             helper.image.setup(
                 listOf(selectImageView1,selectImageView2,selectImageView3,selectImageView4,selectImageView5),
                 listOf(discardImage1,discardImage2,discardImage3,discardImage4,discardImage5),
-                this@EditLocationFragment.viewModel)
+                this@EditLocationFragment.viewModel,requireContext()
+            )
 
             val itemList = tagTypeListUtil.getMutableListOfTagTypeString() as ArrayList<String>
             helper.spinner.setup(typeSpinner,itemList,requireContext(),this@EditLocationFragment.viewModel)

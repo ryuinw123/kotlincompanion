@@ -219,6 +219,7 @@ class ViewMap @Inject constructor(
 
         TimeCounterUtils.stopTimer()
         //timeCounterUtils.timer?.cancel()
+
     }
 
     fun eventDetail(name : String ,eventId : String ,startTime : String,endTime : String,

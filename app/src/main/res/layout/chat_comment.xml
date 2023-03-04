@@ -12,14 +12,16 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/menu"
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView"
-            tools:text="15/05/2021 at 12:25" />
+            tools:text="16/02/2083 10:99 - filmbanana wandeeeiwandeeendeeeiwandeeeindeeeiwandeeeii" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -107,21 +109,21 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="32dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
-            android:visibility="gone"
             app:icon="@drawable/ic_kebab_menu"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconTint="#FF5722"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tv_date"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView"
+            app:layout_constraintWidth_percent="0.1"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 

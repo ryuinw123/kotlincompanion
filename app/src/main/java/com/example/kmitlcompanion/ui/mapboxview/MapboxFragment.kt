@@ -184,6 +184,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             imageLink.observe(viewLifecycleOwner, Observer {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
             })
+
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
                     helper.service.setup(requireContext(),this@MapboxFragment.viewModel)
