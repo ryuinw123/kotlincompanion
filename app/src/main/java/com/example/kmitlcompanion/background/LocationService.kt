@@ -31,6 +31,7 @@ class LocationService : Service() {
         set(value) {
             field = value
             secretPolygon.filterArea(this,value ?: Point.fromLngLat(0.0, 0.0))
+
             //secretMap.filterArea(value!!)
         }
 
@@ -75,7 +76,6 @@ class LocationService : Service() {
                 )
             )
         }
-
 
         secretLocation.start(this)
         secretPolygon.start(eventList)

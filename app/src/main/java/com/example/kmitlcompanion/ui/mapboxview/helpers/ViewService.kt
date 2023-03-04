@@ -24,7 +24,9 @@ class ViewService @Inject constructor(
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         val nowTime = format.parse(dateUtils.shinGetTime())
         val filteredEventPoints = eventPoints?.filter { format.parse(it.startTime) < nowTime }?.toMutableList() ?: mutableListOf()
-
+//        Log.d("test_noti",nowTime.toString())
+//        Log.d("test_noti",format.parse(eventPoints?.get(0)?.startTime).toString())
+//        Log.d("test_noti",(format.parse(eventPoints?.get(0)?.startTime) < nowTime).toString())
 //        eventPoints?.forEach {
 //            val startEventTime = format.parse(it.startTime)
 //            val nowTime = format.parse(dateUtils.shinGetTime())

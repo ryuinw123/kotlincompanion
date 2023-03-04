@@ -14,11 +14,10 @@ class GeofenceReceiver : BroadcastReceiver() {
     @Inject lateinit var saveNotificationUtils: SaveNotificationUtils
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == "com.example.geofence.TRANSITION") {
+        if (intent.action == "com.example.geofence.EVENTAREA") {
             val id = intent.getLongExtra("id" , 0)
             val name = intent.getStringExtra("name")
 
-            Log.d("test_noti" , "ฉัน อารายา")
             notificationUtils.sendGeofenceEnteredNotification(id , name ?: "Error",NotificationUtils.GEO_CHANNEL_ID)
             saveNotificationUtils.saveNotificationToCache(intent)
             Log.d("Geofence" , "Transition In")

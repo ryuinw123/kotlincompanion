@@ -57,8 +57,6 @@ class NotificationUtils @Inject constructor(
         detail: String,
         channelId: String
     ) {
-        Log.d("test_noti",context.toString())
-
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val contentIntent = Intent(context, MainActivity::class.java)
         contentIntent.putExtra("locationId" , locationId)

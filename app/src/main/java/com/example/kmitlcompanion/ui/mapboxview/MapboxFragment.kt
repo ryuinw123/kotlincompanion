@@ -190,6 +190,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
+                    //Log.d("test_noti","gant")
                     helper.service.setup(requireContext(),this@MapboxFragment.viewModel)
                 }
             })

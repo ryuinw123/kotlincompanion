@@ -31,94 +31,94 @@ class ViewGeofence @Inject constructor(
     private val toasterUtil: ToasterUtil,
     private val notificationUtils: NotificationUtils
 ) {
-    private lateinit var geofencingClient: GeofencingClient
-    private lateinit var geofencePendingIntent: PendingIntent
+//    private lateinit var geofencingClient: GeofencingClient
+//    private lateinit var geofencePendingIntent: PendingIntent
 
-    fun setup(mapInformation : MapInformation) {
-        geofencingClient = LocationServices.getGeofencingClient(context)
-        val intent = Intent(context, GeofenceReceiver::class.java)
-        intent.action = "com.example.geofence.TRANSITION"
-        val gson = Gson()
-        val locationListJson = gson.toJson(mapInformation.mapPoints)
-        intent.putExtra("location_list", locationListJson)
-        Log.d("Geofence" , mapInformation.mapPoints.toString())
-        geofencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        notificationUtils.createChannel(NotificationUtils.GEO_CHANNEL_ID)
-        run(mapInformation.mapPoints)
-    }
-
-    private fun run(mapPoint : List<MapPoint>) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            generateGeofenceLocation(mapPoint)
-        }
-        else {
-            Dexter.withContext(context)
-                .withPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                .withListener(object : PermissionListener {
-
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                        generateGeofenceLocation(mapPoint)
-                    }
-
-                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                        if (response!!.isPermanentlyDenied) {
-                            toasterUtil.showToast("Permission Permanently Denied")
-                        }
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        permission: PermissionRequest?,
-                        token: PermissionToken?
-                    ) {
-                        token?.continuePermissionRequest()
-                    }
-                }
-                ).check()
-        }
-    }
-
-    private fun generateGeofenceLocation(mapInformation : List<MapPoint>) {
-        val geofenceList =  mutableListOf<Geofence>()
-        mapInformation.forEach {
-            val locationRadius = 1020f
-            val location = Geofence.Builder()
-                .setRequestId(it.id.toString())
-                .setCircularRegion(it.latitude,it.longitude,locationRadius)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                .build()
-            geofenceList.add(location)
-        }
-        createGeofenceLocation(geofenceList)
-    }
-
-    private fun createGeofenceLocation(geofenceList : MutableList<Geofence>) {
-        val geofenceRequest = GeofencingRequest.Builder()
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-            .addGeofences(geofenceList)
-            .build()
-
-        removeGeofence().run {
-            addGeofence(geofenceRequest,geofencePendingIntent)
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun addGeofence(geofenceRequest: GeofencingRequest,geofencePendingIntent: PendingIntent) {
-        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent)
-            .addOnSuccessListener {
-                Log.d("Geofence" , "Geofence Added")
-            }
-            .addOnFailureListener {
-                Log.d("Geofence" , "Geofence Added Fail")
-                Log.d("Geofence Exception", it.toString())
-            }
-    }
-
-    private fun removeGeofence() {
-        geofencingClient.removeGeofences(geofencePendingIntent).run {
-            addOnSuccessListener { Log.d("Geofence" , "Geofence Removed") }
-            addOnFailureListener { Log.d("Geofence" , "Geofence Removed Fail") }
-        }
-    }
+//    fun setup(mapInformation : MapInformation) {
+//        geofencingClient = LocationServices.getGeofencingClient(context)
+//        val intent = Intent(context, GeofenceReceiver::class.java)
+//        intent.action = "com.example.geofence.TRANSITION"
+//        val gson = Gson()
+//        val locationListJson = gson.toJson(mapInformation.mapPoints)
+//        intent.putExtra("location_list", locationListJson)
+//        Log.d("Geofence" , mapInformation.mapPoints.toString())
+//        geofencePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//        notificationUtils.createChannel(NotificationUtils.GEO_CHANNEL_ID)
+//        run(mapInformation.mapPoints)
+//    }
+//
+//    private fun run(mapPoint : List<MapPoint>) {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+//            generateGeofenceLocation(mapPoint)
+//        }
+//        else {
+//            Dexter.withContext(context)
+//                .withPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+//                .withListener(object : PermissionListener {
+//
+//                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+//                        generateGeofenceLocation(mapPoint)
+//                    }
+//
+//                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+//                        if (response!!.isPermanentlyDenied) {
+//                            toasterUtil.showToast("Permission Permanently Denied")
+//                        }
+//                    }
+//
+//                    override fun onPermissionRationaleShouldBeShown(
+//                        permission: PermissionRequest?,
+//                        token: PermissionToken?
+//                    ) {
+//                        token?.continuePermissionRequest()
+//                    }
+//                }
+//                ).check()
+//        }
+//    }
+//
+//    private fun generateGeofenceLocation(mapInformation : List<MapPoint>) {
+//        val geofenceList =  mutableListOf<Geofence>()
+//        mapInformation.forEach {
+//            val locationRadius = 1020f
+//            val location = Geofence.Builder()
+//                .setRequestId(it.id.toString())
+//                .setCircularRegion(it.latitude,it.longitude,locationRadius)
+//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+//                .build()
+//            geofenceList.add(location)
+//        }
+//        createGeofenceLocation(geofenceList)
+//    }
+//
+//    private fun createGeofenceLocation(geofenceList : MutableList<Geofence>) {
+//        val geofenceRequest = GeofencingRequest.Builder()
+//            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+//            .addGeofences(geofenceList)
+//            .build()
+//
+//        removeGeofence().run {
+//            addGeofence(geofenceRequest,geofencePendingIntent)
+//        }
+//    }
+//
+//    @SuppressLint("MissingPermission")
+//    private fun addGeofence(geofenceRequest: GeofencingRequest,geofencePendingIntent: PendingIntent) {
+//        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent)
+//            .addOnSuccessListener {
+//                Log.d("Geofence" , "Geofence Added")
+//            }
+//            .addOnFailureListener {
+//                Log.d("Geofence" , "Geofence Added Fail")
+//                Log.d("Geofence Exception", it.toString())
+//            }
+//    }
+//
+//    private fun removeGeofence() {
+//        geofencingClient.removeGeofences(geofencePendingIntent).run {
+//            addOnSuccessListener { Log.d("Geofence" , "Geofence Removed") }
+//            addOnFailureListener { Log.d("Geofence" , "Geofence Removed Fail") }
+//        }
+//    }
 }
