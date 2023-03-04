@@ -12,9 +12,11 @@
 
 
     <!-- Notification Strings-->
-    <string name="channel_name">GeofenceStatus</string>
-    <string name="content_text">คุณได้มาถึงตำแหน่ง <xliff:g id="geofence_location">%1$s</xliff:g>.</string>
+    <string name="channel_name">Kmitl Companion ติดตามตำแหน่ง</string>
+    <string name="noti_event">แจ้งเตือนอีเวนต์</string>
+    <string name="content_text">คุณได้มาถึงอีเวนต์ <xliff:g id="geofence_location">%1$s</xliff:g>.</string>
     <string name="notification_channel_description">Geofence status notification</string>
+    <string name="noti_tracking">กำลังติดตามตำแหน่งปัจจุบัน</string>
 
     <!-- Content Description Strings -->
     <string name="android_map_description">An Android robot with a map</string>

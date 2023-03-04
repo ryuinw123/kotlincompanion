@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.DEFAULT_SOUND
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mainactivity.MainActivity
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class NotificationUtils @Inject constructor(
             notificationChannel.lightColor = Color.RED
             notificationChannel.enableVibration(true)
             notificationChannel.description =
-                context.getString(R.string.notification_channel_description)
+                context.getString(R.string.noti_tracking)
 
             val notificationManager = context.getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(notificationChannel)
@@ -56,6 +57,7 @@ class NotificationUtils @Inject constructor(
         detail: String,
         channelId: String
     ) {
+        Log.d("test_noti",context.toString())
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val contentIntent = Intent(context, MainActivity::class.java)
@@ -69,7 +71,7 @@ class NotificationUtils @Inject constructor(
         )
         val mapImage = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.ic_location_on_red_24dp
+            R.drawable.ic_event_48px
         )
         val bigPicStyle = NotificationCompat.BigPictureStyle()
             .bigPicture(mapImage)
@@ -78,23 +80,22 @@ class NotificationUtils @Inject constructor(
         // We use the name resource ID from the LANDMARK_DATA along with content_text to create
         // a custom message when a Geofence triggers.
         val builder = NotificationCompat.Builder(context, channelId)
-            .setContentTitle(context.getString(R.string.app_name))
+            .setContentTitle(context.getString(R.string.noti_event))
             .setContentText(context.getString(R.string.content_text, detail))
             .setDefaults(3)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setContentIntent(contentPendingIntent)
-            .setSmallIcon(R.drawable.ic_location_on_red_24dp)
+            .setSmallIcon(R.drawable.ic_event_48px)
             //.setStyle(bigPicStyle)
             .setLargeIcon(mapImage)
-        Log.d("test_",context.getString(R.string.content_text, detail))
 
-            notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
+        notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
     }
 
     fun createNotification(channelId: String): Notification {
         val mapImage = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.ic_location_on_red_24dp
+            R.mipmap.ic_launcher_round
         )
         val bigPicStyle = NotificationCompat.BigPictureStyle()
             .bigPicture(mapImage)
@@ -105,12 +106,13 @@ class NotificationUtils @Inject constructor(
 
         return NotificationCompat.Builder(context, channelId)
             .setContentTitle(context.getString(R.string.app_name))
-            .setContentText("Tracking")
-            .setSmallIcon(R.drawable.ic_location_on_red_24dp)
-            .setStyle(bigPicStyle)
+            .setContentText(context.getString(R.string.noti_tracking))
+            .setSmallIcon(R.mipmap.ic_launcher_round)
+            //.setStyle(bigPicStyle)
             .setLargeIcon(mapImage)
             .build()
     }
+
 
     companion object {
         const val GEO_NOTIFICATION_ID = 33

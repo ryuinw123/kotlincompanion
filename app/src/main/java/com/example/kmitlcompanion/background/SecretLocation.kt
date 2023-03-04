@@ -16,6 +16,7 @@ class SecretLocation @Inject constructor(
     }
     lateinit var locationService : LocationService
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     private val locationCallback : LocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
@@ -26,6 +27,8 @@ class SecretLocation @Inject constructor(
             }
         }
     }
+
+
     @SuppressLint("MissingPermission")
     fun start(locationService: LocationService) {
         this.locationService = locationService

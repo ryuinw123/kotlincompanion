@@ -20,5 +20,6 @@ internal class ViewHelper @Inject constructor(
     val createSheet : ViewCreateSheet,
     val editDeleteMarker: ViewEditDeleteMarker,
     val googleCalendar: ViewGoogleCalendar,
+    val notiLog: ViewNotiLog,
 
 )

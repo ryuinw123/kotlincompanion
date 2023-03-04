@@ -39,6 +39,8 @@ class SecretPolygon @Inject constructor(
                     intent.action = "com.example.geofence.TRANSITION"
                     intent.putExtra("id", area.id)
                     intent.putExtra("name", area.name)
+                    intent.putExtra("startTime", area.startTime)
+                    intent.putExtra("startTime", area.endTime)
                     context.sendBroadcast(intent)
                     cancelArea.add(area)
                     //Log.d("Geofence" , "Inside Area")

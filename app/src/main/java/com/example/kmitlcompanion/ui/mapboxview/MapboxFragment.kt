@@ -81,6 +81,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.editDeleteMarker.setup(this@MapboxFragment.viewModel,requireContext(),editDeleteMarkerButton)
             helper.googleCalendar.setup(this@MapboxFragment.viewModel,requireContext())
 
+            //test
+            helper.notiLog.setup(this@MapboxFragment.viewModel,requireContext())
+
             setupViewObservers()
 
         }

@@ -59,13 +59,17 @@ class LocationService : Service() {
                 area.add(Point.fromLngLat(longitude, latitude))
             }
 
+            val name = eventObject.getString("name")
+            val startTime = eventObject.getString("startTime")
+            val endTime = eventObject.getString("endTime")
+
             eventList.add(
                 EventArea(
-                    name = "",
+                    name = name,
                     description = "",
                     imageLink = listOf(),
-                    startTime = "",
-                    endTime = "",
+                    startTime = startTime,
+                    endTime = endTime,
                     id = id,
                     area = area
                 )
