@@ -122,7 +122,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             mapEventResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
                     helper.map.updateEvent(information)
-                    helper.location.updateEventPermission(it)
+                    helper.location.updateEventPermission(requireContext())
                 }
             })
 
