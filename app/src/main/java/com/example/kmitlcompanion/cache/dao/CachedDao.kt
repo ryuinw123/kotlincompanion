@@ -7,10 +7,12 @@ import androidx.room.Query
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
+import com.example.kmitlcompanion.cache.entities.NotiLogEntity
 import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.http.DELETE
 
 @Dao
 abstract class CachedDao {
@@ -37,4 +39,15 @@ abstract class CachedDao {
         """
     )
     abstract fun getProperty(property: Long): Observable<String>
+
+
+
+    @Query("SELECT * FROM ${NameTable.EVENT_NOTI_LOG}")
+    abstract fun getEventNotiLog() : Observable<List<NotiLogEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun saveEventNotiLog(notiLogEntity: NotiLogEntity): Completable
+
+
+
 }

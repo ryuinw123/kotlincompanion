@@ -49,15 +49,16 @@ class SecretPolygon @Inject constructor(
                 val nowTime = Calendar.getInstance().time
                 val eventIdLastTimeNoti = cancelTimeArea.firstOrNull{ it.id == area.id }
 
-                if (eventIdLastTimeNoti != null && nowTime.time - eventIdLastTimeNoti.lastTime.time <= 180 * 60 * 1000) {
+                if (eventIdLastTimeNoti != null && nowTime.time - eventIdLastTimeNoti.lastTime.time <= 10 * 1000) {
                     // Do nothing, notification already sent within last 10 minutes
+                    Log.d("test_noti",(nowTime.time - eventIdLastTimeNoti.lastTime.time).toString())
                 } else {
                     val intent = Intent(context, GeofenceReceiver::class.java).apply {
                         action = "com.example.geofence.EVENTAREA"
                         putExtra("id", area.id)
                         putExtra("name", area.name)
                         putExtra("startTime", area.startTime)
-                        putExtra("startTime", area.endTime)
+                        putExtra("endTime", area.endTime)
                     }
                     context.sendBroadcast(intent)
                     cancelTimeArea.removeAll { it.id == area.id }
@@ -67,11 +68,11 @@ class SecretPolygon @Inject constructor(
 
 //                //if (area !in cancelArea) {
 //                val intent = Intent(context, GeofenceReceiver::class.java)
-//                intent.action = "com.example.geofence.TRANSITION"
+//                intent.action = "com.example.geofence.EVENTAREA"
 //                intent.putExtra("id", area.id)
 //                intent.putExtra("name", area.name)
 //                intent.putExtra("startTime", area.startTime)
-//                intent.putExtra("startTime", area.endTime)
+//                intent.putExtra("endTime", area.endTime)
 //                context.sendBroadcast(intent)
 //                //cancelArea.add(area)
 //                Log.d("test_noti" , "Inside Area")

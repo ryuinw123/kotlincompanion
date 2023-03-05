@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.kmitlcompanion.cache.dao.CachedDao
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
+import com.example.kmitlcompanion.cache.entities.NotiLogEntity
 import com.example.kmitlcompanion.cache.entities.User
 import javax.inject.Inject
 
@@ -14,7 +15,8 @@ import javax.inject.Inject
     entities = [
         MapPointEntity::class,
         DataProperty::class,
-        User::class
+        User::class,
+        NotiLogEntity::class,
     ],
     version = 1
 )

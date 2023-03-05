@@ -95,11 +95,10 @@
             app:destination="@id/settingsEditFragment" />
     </fragment>
     <fragment
-        android:id="@+id/eventPageFragment"
-        android:name="com.example.kmitlcompanion.ui.eventpage.EventPageFragment"
-        android:label="fragment_event_page"
-        tools:layout="@layout/fragment_event_page"
-        />
+        android:id="@+id/notiLogPageFragment"
+        android:name="com.example.kmitlcompanion.ui.eventpage.NotiLogPageFragment"
+        android:label="fragment_noti_log_page"
+        tools:layout="@layout/fragment_noti_log_page" />
     <fragment
         android:id="@+id/startPage"
         android:name="com.example.kmitlcompanion.ui.startpage.StartPageFragment"

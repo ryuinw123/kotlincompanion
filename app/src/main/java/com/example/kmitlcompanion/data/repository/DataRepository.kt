@@ -85,5 +85,8 @@ interface DataRepository {
 
     fun settingsEditUpdateUserData(username : String,faculty:String,department:String,year : String, token: String) : Completable
 
+    fun saveNotificationLogDetails(id : Long,name : String,startTime : String,endTime : String) : Completable
+
+    fun getNotificationLogDetails() : Observable<List<NotiLogData>>
 
 }

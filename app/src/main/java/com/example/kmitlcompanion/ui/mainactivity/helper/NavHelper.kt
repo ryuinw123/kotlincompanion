@@ -2,27 +2,12 @@ package com.example.kmitlcompanion.ui.mainactivity.helper
 
 import android.app.Activity
 import android.util.Log
-import android.view.View
 import android.view.Window
-import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
-import com.example.kmitlcompanion.ui.settings.SettingsFragmentDirections
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -61,7 +46,7 @@ class  NavHelper  @Inject constructor(
         bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.bottomBarSettingsFragment -> navController.navigate(R.id.settingsFragment,null,navOptions)
-                R.id.bottomBarNotficationLogFragment -> navController.navigate(R.id.eventPageFragment,null,navOptions)
+                R.id.bottomBarNotficationLogFragment -> navController.navigate(R.id.notiLogPageFragment,null,navOptions)
             }
             true
         }

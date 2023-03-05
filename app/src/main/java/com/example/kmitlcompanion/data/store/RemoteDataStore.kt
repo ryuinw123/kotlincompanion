@@ -247,4 +247,17 @@ class RemoteDataStore @Inject constructor(
     ): Completable {
         return remoteRepository.settingsEditUpdateUserData(username,faculty,department,year,token)
     }
+
+    override fun saveNotificationLogDetails(
+        id: Long,
+        name: String,
+        startTime: String,
+        endTime: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun getNotificationLogDetails(): Observable<List<NotiLogData>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

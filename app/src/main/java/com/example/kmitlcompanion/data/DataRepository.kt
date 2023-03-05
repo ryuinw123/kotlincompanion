@@ -380,4 +380,29 @@ class DataRepository @Inject constructor(
             token = getToken()
         )
     }
+
+    override fun saveNotificationLogDetails(
+        id: Long,
+        name: String,
+        startTime: String,
+        endTime: String
+    ): Completable {
+        return dataStore.getRemoteData(false).saveNotificationLogDetails(id,name,startTime,endTime)
+    }
+
+    override fun getNotificationLogDetails(): Observable<List<NotiLogDetails>> {
+        return dataStore.getRemoteData(false).getNotificationLogDetails().map { notiLogData ->
+            notiLogData.map {
+                NotiLogDetails(
+                    id = it.id,
+                    name = it.name,
+                    startTime = it.startTime,
+                    endTime = it.endTime,
+                )
+            }
+        }
+    }
+
+
+
 }

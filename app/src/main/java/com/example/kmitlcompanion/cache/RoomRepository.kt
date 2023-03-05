@@ -3,10 +3,12 @@ package com.example.kmitlcompanion.cache
 import com.example.kmitlcompanion.cache.database.AppDatabase
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
+import com.example.kmitlcompanion.cache.entities.NotiLogEntity
 import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.cache.mapper.MapPointMapper
 import com.example.kmitlcompanion.cache.mapper.UserMapper
 import com.example.kmitlcompanion.data.model.MapPointData
+import com.example.kmitlcompanion.data.model.NotiLogData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import io.reactivex.rxjava3.core.Completable
@@ -56,4 +58,32 @@ class RoomRepository @Inject constructor(
             }
     }
 
+    override fun saveNotificationLogDetails(
+        id: Long,
+        name: String,
+        startTime: String,
+        endTime: String
+    ): Completable {
+        return database.cachedDao().saveEventNotiLog(
+            NotiLogEntity(
+                id = id,
+                name = name,
+                startTime = startTime,
+                endTime = endTime,
+            )
+        )
+    }
+
+    override fun getNotificationLogDetails(): Observable<List<NotiLogData>> {
+        return database.cachedDao().getEventNotiLog().map { listNotiLog ->
+            listNotiLog.map {
+                NotiLogData(
+                    id = it.id,
+                    name = it.name,
+                    startTime = it.startTime,
+                    endTime = it.endTime
+                )
+            }
+        }
+    }
 }

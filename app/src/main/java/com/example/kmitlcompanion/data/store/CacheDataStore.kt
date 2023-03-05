@@ -231,4 +231,17 @@ class CacheDataStore @Inject constructor(
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+    override fun saveNotificationLogDetails(
+        id: Long,
+        name: String,
+        startTime: String,
+        endTime: String
+    ): Completable {
+        return cacheRepository.saveNotificationLogDetails(id,name,startTime,endTime)
+    }
+
+    override fun getNotificationLogDetails(): Observable<List<NotiLogData>> {
+        return cacheRepository.getNotificationLogDetails()
+    }
 }
