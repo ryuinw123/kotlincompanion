@@ -16,11 +16,11 @@ class SaveNotificationUtils @Inject constructor(
     fun saveNotificationToCache(intent: Intent){
         saveNotificationLogDetails.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
-                Log.d("test_noti_service","onComplete" + intent.toString())
+                Log.d("saveNotificationLogDetails","onComplete" + intent.toString())
             }
 
             override fun onError(e: Throwable) {
-                Log.d("test_noti_service",e.toString())
+                Log.d("saveNotificationLogDetails",e.toString())
             }
         }, params = NotiLogDetails(
             id = intent.getLongExtra("id",0),

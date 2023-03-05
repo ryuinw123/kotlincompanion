@@ -45,13 +45,11 @@ class SecretPolygon @Inject constructor(
         for (area in areas) {
             val polygon = Polygon.fromLngLats(listOf(area.area))
             if (TurfJoins.inside(point,polygon)) {
-                //val nowTime = format.parse(dateUtils.shinGetTime())
                 val nowTime = Calendar.getInstance().time
                 val eventIdLastTimeNoti = cancelTimeArea.firstOrNull{ it.id == area.id }
 
                 if (eventIdLastTimeNoti != null && nowTime.time - eventIdLastTimeNoti.lastTime.time <= 10 * 1000) {
-                    // Do nothing, notification already sent within last 10 minutes
-                    Log.d("test_noti",(nowTime.time - eventIdLastTimeNoti.lastTime.time).toString())
+                    // Do nothing, notification already sent within last 10 วิ
                 } else {
                     val intent = Intent(context, GeofenceReceiver::class.java).apply {
                         action = "com.example.geofence.EVENTAREA"

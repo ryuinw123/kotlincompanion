@@ -80,6 +80,7 @@ class LocationService : Service() {
         secretLocation.start(this)
         secretPolygon.start(eventList)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationUtils.createChannel(NotificationUtils.GEO_CHANNEL_ID)
             notificationUtils.createChannel(NotificationUtils.LOCATION_CHANNEL_ID)
             val notification = notificationUtils.createNotification(NotificationUtils.LOCATION_CHANNEL_ID)
             startForeground(123, notification)
