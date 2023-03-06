@@ -1,9 +1,6 @@
 package com.example.kmitlcompanion.cache.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
@@ -12,7 +9,6 @@ import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import retrofit2.http.DELETE
 
 @Dao
 abstract class CachedDao {
@@ -48,6 +44,10 @@ abstract class CachedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun saveEventNotiLog(notiLogEntity: NotiLogEntity): Completable
 
+    @Query("DELETE FROM ${NameTable.EVENT_NOTI_LOG}")
+    abstract fun deleteAllEventNotiLog(): Completable
 
+    @Query("DELETE FROM ${NameTable.EVENT_NOTI_LOG} WHERE ${NameTable.EVENT_ID} = :id")
+    abstract fun deleteEventNotiLogById(id: Long): Completable
 
 }

@@ -57,11 +57,12 @@ class SecretPolygon @Inject constructor(
                         putExtra("name", area.name)
                         putExtra("startTime", area.startTime)
                         putExtra("endTime", area.endTime)
+                        putExtra("imageLinks",area.imageLink.getOrNull(0))
                     }
                     context.sendBroadcast(intent)
                     cancelTimeArea.removeAll { it.id == area.id }
                     cancelTimeArea.add(NotiCollection(area.id, Calendar.getInstance().time))
-                    Log.d("test_noti" , "Inside Area")
+                    //Log.d("test_noti" , "Inside Area")
                 }
 
 //                //if (area !in cancelArea) {

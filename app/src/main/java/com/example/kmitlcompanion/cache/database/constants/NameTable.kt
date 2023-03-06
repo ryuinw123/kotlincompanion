@@ -27,5 +27,6 @@ object NameTable {
     const val EVENT_NAME = "event_name"
     const val EVENT_STARTTIME = "event_start_time"
     const val EVENT_ENDTIME = "event_end_time"
+    const val EVENT_IMAGE_LINKS = "event_image_link"
 
 }

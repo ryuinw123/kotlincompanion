@@ -103,7 +103,8 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
 
             imageData.observe(viewLifecycleOwner, Observer {
                 val fileURI = imageData.value?.data
-                helper.image.setImage(fileURI!!,requireContext())
+                val path = imageData.value?.data?.path
+                helper.image.setImage(fileURI!!,path, requireContext())
             })
 
             setStartImageUrl.observe(viewLifecycleOwner, Observer {

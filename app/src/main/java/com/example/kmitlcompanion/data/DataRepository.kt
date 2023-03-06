@@ -385,9 +385,16 @@ class DataRepository @Inject constructor(
         id: Long,
         name: String,
         startTime: String,
-        endTime: String
+        endTime: String,
+        imageLinks: String
     ): Completable {
-        return dataStore.getRemoteData(false).saveNotificationLogDetails(id,name,startTime,endTime)
+        return dataStore.getRemoteData(false).saveNotificationLogDetails(
+            id,
+            name,
+            startTime,
+            endTime,
+            imageLinks,
+        )
     }
 
     override fun getNotificationLogDetails(): Observable<List<NotiLogDetails>> {
@@ -398,11 +405,17 @@ class DataRepository @Inject constructor(
                     name = it.name,
                     startTime = it.startTime,
                     endTime = it.endTime,
+                    imageLinks = it.imageLinks,
                 )
             }
         }
     }
 
+    override fun deleteAllNotificationLogDetails(): Completable {
+        return dataStore.getRemoteData(false).deleteAllNotificationLogDetails()
+    }
 
-
+    override fun deleteByIDNotificationLogDetails(id: Long): Completable {
+        return dataStore.getRemoteData(false).deleteByIDNotificationLogDetails(id)
+    }
 }

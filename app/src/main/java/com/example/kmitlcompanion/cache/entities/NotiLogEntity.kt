@@ -17,6 +17,7 @@ data class NotiLogEntity(
     val startTime: String,
     @ColumnInfo(name = NameTable.EVENT_ENDTIME)
     val endTime: String,
-
+    @ColumnInfo(name = NameTable.EVENT_IMAGE_LINKS)
+    val imageLinks: String,
 
 )

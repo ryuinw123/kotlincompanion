@@ -252,12 +252,21 @@ class RemoteDataStore @Inject constructor(
         id: Long,
         name: String,
         startTime: String,
-        endTime: String
+        endTime: String,
+        imageLinks: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
 
     override fun getNotificationLogDetails(): Observable<List<NotiLogData>> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun deleteAllNotificationLogDetails(): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun deleteByIDNotificationLogDetails(id: Long): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
 }

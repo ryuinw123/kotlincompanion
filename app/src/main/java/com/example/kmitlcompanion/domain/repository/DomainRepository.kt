@@ -81,9 +81,11 @@ interface DomainRepository {
 
     fun settingsEditUpdateUserData(userEditData: UserEditData) : Completable
 
-    fun saveNotificationLogDetails(id : Long,name : String,startTime : String,endTime : String) : Completable
+    fun saveNotificationLogDetails(id : Long,name : String,startTime : String,endTime : String,imageLinks : String) : Completable
 
     fun getNotificationLogDetails() : Observable<List<NotiLogDetails>>
 
+    fun deleteAllNotificationLogDetails() : Completable
 
+    fun deleteByIDNotificationLogDetails(id : Long) : Completable
 }

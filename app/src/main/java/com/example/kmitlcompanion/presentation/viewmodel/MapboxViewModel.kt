@@ -143,7 +143,7 @@ class MapboxViewModel @Inject constructor(
     val createPinEvent : LiveData<Event<Boolean>> = _createPinEvent
 
 
-    val _flyLocationOnStart = SingleLiveData<Event<Boolean>>()
+    private val _flyLocationOnStart = SingleLiveData<Event<Boolean>>()
     val flyLocationOnStart : SingleLiveData<Event<Boolean>> = _flyLocationOnStart
 
 

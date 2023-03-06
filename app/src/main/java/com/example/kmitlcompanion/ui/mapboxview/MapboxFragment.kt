@@ -54,9 +54,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
-        //requireActivity().actionBar?.show()
-        //(activity as AppCompatActivity?)!!.supportActionBar?.subtitle = "hello world"
         binding = FragmentMapboxBinding.inflate(inflater,container,false).apply {
             this@MapboxFragment.mapView = mapView
 
@@ -82,8 +79,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.googleCalendar.setup(this@MapboxFragment.viewModel,requireContext())
 
             //test
-            helper.notiLog.setup(this@MapboxFragment.viewModel,requireContext())
-
             setupViewObservers()
 
         }
@@ -121,14 +116,16 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             mapEventResponse.observe(viewLifecycleOwner, Observer { information ->
                 this@MapboxFragment.context?.let {
-                    helper.map.updateEvent(information)
+                    helper.map.updateEvent(information,navArgs.id)
                     helper.location.updateEventPermission(requireContext())
                 }
             })
 
             flyLocationOnStart.observe(viewLifecycleOwner, Observer {
-                helper.map.flyMapOnReady()
-                flyLocationOnStart.removeObservers(viewLifecycleOwner)
+                if (navArgs.id == 0L){
+                    helper.map.flyMapOnReady()
+                    flyLocationOnStart.removeObservers(viewLifecycleOwner)
+                }
             })
 
             //Refresh Map & Event

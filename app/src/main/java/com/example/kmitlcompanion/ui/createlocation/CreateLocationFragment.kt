@@ -16,7 +16,6 @@ import com.example.kmitlcompanion.databinding.FragmentCreateLocationBinding
 import com.example.kmitlcompanion.presentation.viewmodel.CreateLocationViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.createlocation.helper.CreateLocationHelper
-import com.example.kmitlcompanion.ui.createlocation.helper.ImageHelper
 import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,7 +95,8 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
                 //if (imageData.value!!.isNotEmpty()){
                 //val fileURI = imageData.value?.last()?.data
                 val fileURI = imageData.value?.data
-                helper.image.setImage(fileURI!!,requireContext())
+                val path = imageData.value?.data?.path
+                helper.image.setImage(fileURI!!,path, requireContext())
                //}
             })
 

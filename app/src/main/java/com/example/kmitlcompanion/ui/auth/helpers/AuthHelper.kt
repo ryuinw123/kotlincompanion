@@ -1,8 +1,10 @@
 package com.example.kmitlcompanion.ui.auth.helpers
 
 import android.content.Context
+import android.view.View
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 import dagger.hilt.android.scopes.ActivityScoped
@@ -38,6 +40,10 @@ class AuthHelper @Inject constructor(
         viewModel.signOut()
     }
 
+
+    fun showDialog(text : String,view : View){
+        Snackbar.make(view,text, Snackbar.LENGTH_SHORT).show()
+    }
 
 
 

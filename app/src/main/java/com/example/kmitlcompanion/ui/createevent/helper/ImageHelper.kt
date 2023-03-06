@@ -2,6 +2,7 @@ package com.example.kmitlcompanion.ui.createevent.helper
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.MediaStore
@@ -40,19 +41,25 @@ class ImageHelper @Inject constructor(){
         viewModel.updateImage(intent)
     }
 
-    fun setImage(uri: Uri, context : Context) {
+    fun setImage(uri: Uri,path : String?, context : Context) {
         Log.d("currentUploadIndex",currentUploadIndex.toString())
         if (currentUploadIndex!! >= 5){
             currentUploadIndex = 4
         }
 
+        val options = BitmapFactory.Options().apply {
+            inSampleSize = 12 // Set the sampling rate here
+        }
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             val source = ImageDecoder.createSource(context.contentResolver, uri)
-            val bitmap = ImageDecoder.decodeBitmap(source)
+            //val bitmap = ImageDecoder.decodeBitmap(source)
+            val bitmap = BitmapFactory.decodeFile(path,options)
             listOfWeakImageView?.get(currentUploadIndex!!)?.get()?.setImageBitmap(bitmap)
         } else {
-            @Suppress("DEPRECATION") val bitmap =
-                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+//            @Suppress("DEPRECATION") val bitmap =
+//                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+            val bitmap = BitmapFactory.decodeFile(path,options)
             listOfWeakImageView?.get(currentUploadIndex!!)?.get()?.setImageBitmap(bitmap)
         }
 

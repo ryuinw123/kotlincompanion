@@ -63,12 +63,18 @@ class LocationService : Service() {
             val name = eventObject.getString("name")
             val startTime = eventObject.getString("startTime")
             val endTime = eventObject.getString("endTime")
+            val imageLinkArray = eventObject.getJSONArray("imageLink")
+            val imageLinks = mutableListOf<String>()
+            for (i in 0 until imageLinkArray.length()) {
+                imageLinks.add(imageLinkArray.getString(i))
+            }
+
 
             eventList.add(
                 EventArea(
                     name = name,
                     description = "",
-                    imageLink = listOf(),
+                    imageLink = imageLinks,
                     startTime = startTime,
                     endTime = endTime,
                     id = id,

@@ -1,6 +1,5 @@
 package com.example.kmitlcompanion.ui.eventpage
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,8 +13,6 @@ import com.example.kmitlcompanion.presentation.viewmodel.NotiLogPageViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.eventpage.helper.NotiLogHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
-import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
-import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -37,10 +34,10 @@ class NotiLogPageFragment : BaseFragment<FragmentNotiLogPageBinding,NotiLogPageV
     ): View? {
         binding = FragmentNotiLogPageBinding.inflate(inflater,container,false).apply {
             viewModel = this@NotiLogPageFragment.viewModel
-            helper.viewNotiLog.setup(this@NotiLogPageFragment.viewModel,requireContext())
+            helper.viewNotiLog.setup(this@NotiLogPageFragment.viewModel,requireContext(),recyclerView)
+            //helper.viewClearItem.setup(requireContext(),this@NotiLogPageFragment.viewModel,recyclerView)
             setupViewObservers()
         }
-
 
         //show bottom bar
         bottomBarUtils.bottomMap?.visibility = View.VISIBLE
@@ -49,9 +46,33 @@ class NotiLogPageFragment : BaseFragment<FragmentNotiLogPageBinding,NotiLogPageV
 
     private fun FragmentNotiLogPageBinding.setupViewObservers(){
         this@NotiLogPageFragment.viewModel.run {
+
             notiLogData.observe(viewLifecycleOwner , Observer {
-                Log.d("test_noti_log",it.toString())
+                helper.viewNotiLog.update(it)
+
+                if (it.isEmpty()){
+                    notiEmpty.visibility = View.VISIBLE
+                    clearAllNotiLog.visibility = View.INVISIBLE
+                }else{
+                    notiEmpty.visibility = View.INVISIBLE
+                    clearAllNotiLog.visibility = View.VISIBLE
+                }
+
             })
+
+            deleteAllNotiLog.observe(viewLifecycleOwner, Observer {
+                helper.viewNotiLog.deleteAllItems(requireActivity())
+                //helper.viewClearItem.deleteAllItems(requireActivity())
+            })
+
+            deleteNotiLogByID.observe(viewLifecycleOwner,Observer{
+                deleteNotiLogById(it)
+            })
+
+            goToNoti.observe(viewLifecycleOwner,Observer{
+                helper.viewNotiLog.filterGoToMapBox(it,requireView())
+            })
+
         }
     }
 

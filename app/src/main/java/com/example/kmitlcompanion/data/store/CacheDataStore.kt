@@ -236,12 +236,21 @@ class CacheDataStore @Inject constructor(
         id: Long,
         name: String,
         startTime: String,
-        endTime: String
+        endTime: String,
+        imageLinks: String
     ): Completable {
-        return cacheRepository.saveNotificationLogDetails(id,name,startTime,endTime)
+        return cacheRepository.saveNotificationLogDetails(id, name, startTime, endTime,imageLinks)
     }
 
     override fun getNotificationLogDetails(): Observable<List<NotiLogData>> {
         return cacheRepository.getNotificationLogDetails()
+    }
+
+    override fun deleteAllNotificationLogDetails(): Completable {
+        return cacheRepository.deleteAllNotificationLogDetails()
+    }
+
+    override fun deleteByIDNotificationLogDetails(id: Long): Completable {
+        return cacheRepository.deleteByIDNotificationLogDetails(id)
     }
 }

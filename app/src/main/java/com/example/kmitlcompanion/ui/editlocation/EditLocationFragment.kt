@@ -113,7 +113,8 @@ class EditLocationFragment : BaseFragment<FragmentEditLocationBinding,EditLocati
             imageData.observe(viewLifecycleOwner, Observer {
                 Log.d("nulllcheck","fragment")
                 val fileURI = imageData.value?.data
-                helper.image.setImage(fileURI!!,requireContext())
+                val path = imageData.value?.data?.path
+                helper.image.setImage(fileURI!!,path, requireContext())
             })
 
             setStartImageUrl.observe(viewLifecycleOwner, Observer {

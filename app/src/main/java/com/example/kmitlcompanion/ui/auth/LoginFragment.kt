@@ -18,6 +18,7 @@ import com.example.kmitlcompanion.presentation.viewmodel.LoginViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.auth.helpers.AuthHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -88,10 +89,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
             })
             signOutFailedResponse.observe(viewLifecycleOwner, Observer {
                 helper.signOut_failed()
+                helper.showDialog("เกิดข้อผิดพลาด ต้องใช้ Email ของสถาบันในการเข้าใช้งาน",requireView())
             })
 
             signInHome.observe(viewLifecycleOwner, Observer {
                 helper.signInHome()
+                helper.showDialog("ลงชื่อเข้าใช้สำเร็จ",requireView())
             })
 
             signInIdentity.observe(viewLifecycleOwner, Observer {

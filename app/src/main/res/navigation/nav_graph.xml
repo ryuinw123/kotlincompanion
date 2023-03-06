@@ -35,6 +35,10 @@
             android:id="@+id/action_mapboxFragment_to_editEventFragment"
             app:destination="@id/editEventFragment"
             />
+        <argument
+            android:name="id"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -98,7 +102,11 @@
         android:id="@+id/notiLogPageFragment"
         android:name="com.example.kmitlcompanion.ui.eventpage.NotiLogPageFragment"
         android:label="fragment_noti_log_page"
-        tools:layout="@layout/fragment_noti_log_page" />
+        tools:layout="@layout/fragment_noti_log_page" >
+        <action
+            android:id="@+id/action_notiLogPageFragment_to_mapboxFragment"
+            app:destination="@id/mapboxFragment" />
+    </fragment>
     <fragment
         android:id="@+id/startPage"
         android:name="com.example.kmitlcompanion.ui.startpage.StartPageFragment"

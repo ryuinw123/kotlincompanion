@@ -9,4 +9,5 @@ data class NotiLogData(
     val name : String,
     val startTime : String,
     val endTime : String,
+    val imageLinks :String,
 ): Parcelable

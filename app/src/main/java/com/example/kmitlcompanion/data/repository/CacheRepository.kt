@@ -20,8 +20,12 @@ interface CacheRepository {
 
     fun getUser(): Observable<List<UserData>>
 
-    fun saveNotificationLogDetails(id : Long,name : String,startTime : String,endTime : String) : Completable
+    fun saveNotificationLogDetails(id : Long,name : String,startTime : String,endTime : String,imageLinks : String) : Completable
 
     fun getNotificationLogDetails() : Observable<List<NotiLogData>>
+
+    fun deleteAllNotificationLogDetails() : Completable
+
+    fun deleteByIDNotificationLogDetails(id : Long) : Completable
 
 }

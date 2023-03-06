@@ -62,7 +62,8 @@ class RoomRepository @Inject constructor(
         id: Long,
         name: String,
         startTime: String,
-        endTime: String
+        endTime: String,
+        imageLinks: String
     ): Completable {
         return database.cachedDao().saveEventNotiLog(
             NotiLogEntity(
@@ -70,6 +71,7 @@ class RoomRepository @Inject constructor(
                 name = name,
                 startTime = startTime,
                 endTime = endTime,
+                imageLinks = imageLinks,
             )
         )
     }
@@ -81,9 +83,18 @@ class RoomRepository @Inject constructor(
                     id = it.id,
                     name = it.name,
                     startTime = it.startTime,
-                    endTime = it.endTime
+                    endTime = it.endTime,
+                    imageLinks = it.imageLinks,
                 )
             }
         }
+    }
+
+    override fun deleteAllNotificationLogDetails(): Completable {
+        return database.cachedDao().deleteAllEventNotiLog()
+    }
+
+    override fun deleteByIDNotificationLogDetails(id: Long): Completable {
+        return database.cachedDao().deleteEventNotiLogById(id)
     }
 }

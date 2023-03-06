@@ -11,6 +11,8 @@ import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
 import com.example.kmitlcompanion.ui.mapboxview.utils.TimeCounterUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.MultiPoint
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.dsl.cameraOptions
@@ -108,8 +110,10 @@ class ViewMap @Inject constructor(
 
     fun updateEvent(
         eventInformation: EventInformation,
+        id : Long
     ){
-        prepareEventToMap(eventInformation)
+        prepareEventToMap(eventInformation,id)
+        initialEvent(id)
     }
 
 
@@ -143,7 +147,7 @@ class ViewMap @Inject constructor(
         addPointListener()
     }
 
-    private fun prepareEventToMap(eventInformation: EventInformation) {
+    private fun prepareEventToMap(eventInformation: EventInformation,id : Long) {
 
         mapView?.getMapboxMap()?.getStyle {
             it.removeStyleLayer(AREA_LAYER_ID)
@@ -167,6 +171,20 @@ class ViewMap @Inject constructor(
         }
         addPointListener()
         //addEventListener()
+    }
+
+    private fun initialEvent(eventId : Long){
+        if (eventId != 0L){
+            val eventInformation = viewModel.mapEventResponse.value
+            val eventData = eventInformation?.eventPoints?.firstOrNull{ it.id == eventId }
+            Log.d("test_noti",eventId.toString())
+            eventData?.let {
+                val pointsList = it.area
+                val pointsFeature = Feature.fromGeometry(MultiPoint.fromLngLats(pointsList))
+                val center = TurfMeasurement.center(pointsFeature).geometry() as Point
+                eventDetail(it.name,it.id.toString(),it.startTime,it.endTime,center,it.description,it.imageLink)
+            }
+        }
     }
 
     private fun initialLocation(locationId : Long) {

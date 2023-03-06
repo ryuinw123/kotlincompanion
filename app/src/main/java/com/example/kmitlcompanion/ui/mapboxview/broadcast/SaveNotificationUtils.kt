@@ -2,11 +2,9 @@ package com.example.kmitlcompanion.ui.mapboxview.broadcast
 
 import android.content.Intent
 import android.util.Log
-import com.example.kmitlcompanion.domain.model.EventInformation
 import com.example.kmitlcompanion.domain.model.NotiLogDetails
 import com.example.kmitlcompanion.domain.usecases.SaveNotificationLogDetails
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
-import io.reactivex.rxjava3.observers.DisposableObserver
 import javax.inject.Inject
 
 class SaveNotificationUtils @Inject constructor(
@@ -27,6 +25,7 @@ class SaveNotificationUtils @Inject constructor(
             name = intent.getStringExtra("name") ?:"",
             startTime = intent.getStringExtra("startTime") ?:"",
             endTime = intent.getStringExtra("endTime") ?:"",
+            imageLinks = intent.getStringExtra("imageLinks") ?:"",
         ))
     }
 

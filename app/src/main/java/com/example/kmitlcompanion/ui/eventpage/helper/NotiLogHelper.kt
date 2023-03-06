@@ -6,4 +6,5 @@ import javax.inject.Inject
 @ActivityScoped
 internal class NotiLogHelper @Inject constructor(
     val viewNotiLog: ViewNotiLog,
+    val viewClearItem: ViewClearItem,
 )
