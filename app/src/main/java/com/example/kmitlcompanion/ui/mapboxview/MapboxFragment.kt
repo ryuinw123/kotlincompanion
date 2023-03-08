@@ -80,7 +80,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             //test
             setupViewObservers()
-
+            //setSeachBarOnQueryTextFocusChange()
         }
 
 
@@ -365,7 +365,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
             isSearch.observe(viewLifecycleOwner, Observer {
-                Log.d("test_issearch","search")
                 if (it){
                     val tagList = mutableListOf<Int?>()
                     itemTagList.value?.forEach {
@@ -375,6 +374,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     }
                     button2.visibility = View.GONE
                     resetPosition.visibility = View.GONE
+                    tdPosition.visibility = View.GONE
                     appendDataToSearchList("",tagList)
                     helper.search.objectVisbility(View.VISIBLE)
                     bottomBarUtils.bottomMap?.visibility = View.GONE
@@ -383,6 +383,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     bottomBarUtils.bottomMap?.visibility = View.VISIBLE
                     button2.visibility = View.VISIBLE
                     resetPosition.visibility = View.VISIBLE
+                    tdPosition.visibility = View.VISIBLE
                 }
             })
 
@@ -482,6 +483,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
         }
     }
+
 
     override fun onLowMemory() {
         super.onLowMemory()

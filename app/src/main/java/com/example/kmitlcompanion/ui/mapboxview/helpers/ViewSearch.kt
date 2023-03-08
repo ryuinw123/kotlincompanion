@@ -65,6 +65,7 @@ class ViewSearch @Inject constructor(
         this.weekClearTagCardView = WeakReference(clearTagCardView)
 
         this.isSearch = false
+        search.clearFocus()
         viewModel.updateSearchStatus(false)
 
         // เกิดมา เติมค่า ***************************
@@ -101,8 +102,8 @@ class ViewSearch @Inject constructor(
 
         search.setOnQueryTextFocusChangeListener { _, hasFocus ->
             when (hasFocus){
-                true -> viewModel.updateSearchStatus(true)//objectVisbility(View.GONE)
-                false -> viewModel.updateSearchStatus(false)//objectVisbility(View.VISIBLE)
+                true -> {viewModel.updateSearchStatus(true)}//objectVisbility(View.GONE)
+                false -> {viewModel.updateSearchStatus(false)}//objectVisbility(View.VISIBLE)
             }
         }
 
@@ -243,21 +244,6 @@ class ViewSearch @Inject constructor(
     override fun onFinish() {
         viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
     }
-
-//    fun startCountdownTimer(targetTime: String) {
-//        val targetDateTime = timeCounterUtils.timeFormat.parse(targetTime)
-//        timeCounterUtils.timer?.cancel()
-//        timeCounterUtils.timer = object : CountDownTimer(targetDateTime.time - System.currentTimeMillis(), timeCounterUtils.COUNTDOWNINTERVAL) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                val result = timeCounterUtils.getFormattedTime(millisUntilFinished)
-//                viewModel.changeEventTimerEnd(result)
-//            }
-//
-//            override fun onFinish() {
-//                viewModel.changeEventTimerEnd("อีเวนต์จบแล้ว")
-//            }
-//        }.start()
-//    }
 
     fun resetDataToList(){
         //var mList = mutableListOf<SearchDetail>()

@@ -180,7 +180,7 @@ class MapboxViewModel @Inject constructor(
     val submitSearchValue : LiveData<Pair<String?,MutableList<Int?>>> = _submitSearchValue
 
     private val _isSearch = MutableLiveData<Boolean>()
-    val isSearch : MutableLiveData<Boolean> = _isSearch
+    val isSearch : LiveData<Boolean> = _isSearch
 
     //For Tag
     private val _itemTagList = MutableLiveData<MutableList<TagViewDataDetail>>()
