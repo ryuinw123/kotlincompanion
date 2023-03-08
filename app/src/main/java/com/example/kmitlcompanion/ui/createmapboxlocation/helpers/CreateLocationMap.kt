@@ -28,7 +28,7 @@ internal class CreateLocationMap @Inject constructor() : DefaultLifecycleObserve
         weakMapView = WeakReference(mapView)
         mapView?.compass?.enabled = false
         mapView?.scalebar?.enabled = false
-        mapView?.location?.enabled = false
+        mapView?.location?.enabled = true
 
         //mapView?.gestures?.rotateEnabled = false
 

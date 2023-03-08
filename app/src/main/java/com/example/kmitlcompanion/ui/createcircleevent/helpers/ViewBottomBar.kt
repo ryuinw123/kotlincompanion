@@ -13,7 +13,7 @@ class ViewBottomBar @Inject constructor(
 
     private val RADIUS_SEEKBAR_DIFFERENCE = 1
     private val RADIUS_SEEKBAR_MAX = 150
-    private val RADIUS_INITIAL = 5
+    private val RADIUS_INITIAL = 1
 
     lateinit var viewModel: CreateCircleEventViewModel
     lateinit var weakGuideline: WeakReference<Guideline>

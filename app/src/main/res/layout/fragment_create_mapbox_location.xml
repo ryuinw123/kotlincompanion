@@ -23,11 +23,8 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_locationComponentEnabled = "true"
-            mapbox:mapbox_locationComponentPuckBearingSource = "heading"
-            app:mapbox_cameraTargetLat="13.736717"
-            app:mapbox_cameraTargetLng="100.523186"
-            app:mapbox_cameraZoom="9.0"
+            mapbox:mapbox_locationComponentEnabled="true"
+            mapbox:mapbox_locationComponentPuckBearingSource="heading"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 

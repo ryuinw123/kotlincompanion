@@ -29,8 +29,11 @@ internal class CreateLocationCamera @Inject constructor(
         viewModel.updateCurrentMapLocation(center)
     }
 
-    fun setCamera(point: Point) {
-        weakMapboxMap?.get()?.setCamera(CameraOptions.Builder().center(point).build())
+    fun setCamera(point: Point,zoom : Double) {
+        weakMapboxMap?.get()?.setCamera(CameraOptions.Builder()
+            .center(point)
+            .zoom(zoom)
+            .build())
     }
 
 

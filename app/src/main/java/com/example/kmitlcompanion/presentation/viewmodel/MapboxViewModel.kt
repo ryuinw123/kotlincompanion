@@ -92,6 +92,9 @@ class MapboxViewModel @Inject constructor(
     private val _positionFlyer = MutableLiveData<Point>()
     val positionFlyer: LiveData<Point> = _positionFlyer
 
+    private val _pitchFlyer = MutableLiveData<Double>(50.0)
+    val pitchFlyer: LiveData<Double> = _pitchFlyer
+
     private val _imageLink = MutableLiveData<List<String>?>()
     val imageLink : LiveData<List<String>?> = _imageLink
 
@@ -556,6 +559,10 @@ class MapboxViewModel @Inject constructor(
         _positionFlyer.value = userLocation.value
     }
 
+    fun updatePitch() {
+        _pitchFlyer.value = if(_pitchFlyer.value!! == 50.0) 0.0 else 50.0
+    }
+
 
     //For Search
     fun resetDataToSearchList(){
@@ -764,6 +771,7 @@ class MapboxViewModel @Inject constructor(
 
     //For page navigate
     fun goToCreateMapBox(){
+        Log.d("test_mapbox",userLocation.value.toString())
         navigate(MapboxFragmentDirections.actionMapboxFragment2ToCreateMapboxLocationFragment2(userLocation.value))
     }
 

@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.createmapboxlocation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import com.example.kmitlcompanion.presentation.viewmodel.CreateMapboxLocationVie
 import com.example.kmitlcompanion.ui.createmapboxlocation.helpers.CreateLocationHelper
 import com.example.kmitlcompanion.ui.createmapboxlocation.utils.ApiRunnable
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
-import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentArgs
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -32,6 +32,7 @@ class CreateMapboxLocationFragment : BaseFragment<FragmentCreateMapboxLocationBi
     override fun onReady(savedInstanceState: Bundle?) {
 
         navArgs.location?.let {
+            Log.d("test_mapbox",it.toString())
             viewModel.updatePositionFlyer(it)
         }
 
@@ -70,7 +71,7 @@ class CreateMapboxLocationFragment : BaseFragment<FragmentCreateMapboxLocationBi
                 tvAddress.text = it.address
             })
             positionFlyer.observe(viewLifecycleOwner, Observer {
-                helper.camera.setCamera(it)
+                helper.camera.setCamera(it,18.0)
             })
 
         }

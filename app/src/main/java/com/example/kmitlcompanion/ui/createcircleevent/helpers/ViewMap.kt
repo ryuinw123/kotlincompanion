@@ -47,7 +47,7 @@ class ViewMap @Inject constructor(
 
         mapView?.compass?.enabled = false
         mapView?.scalebar?.enabled = false
-        mapView?.location?.enabled = false
+        mapView?.location?.enabled = true
 
         mapView?.getMapboxMap()?.loadStyleUri(
             Style.MAPBOX_STREETS,
@@ -78,8 +78,10 @@ class ViewMap @Inject constructor(
 
     }
 
-    fun setCamera(point: Point) {
-        weakMapView?.get()?.getMapboxMap()?.setCamera(CameraOptions.Builder().center(point).build())
+    fun setCamera(point: Point,zoom : Double) {
+        weakMapView?.get()?.getMapboxMap()?.setCamera(CameraOptions.Builder().center(point)
+            .zoom(zoom)
+            .build())
     }
 
     override fun onMapLongClick(point: Point): Boolean {

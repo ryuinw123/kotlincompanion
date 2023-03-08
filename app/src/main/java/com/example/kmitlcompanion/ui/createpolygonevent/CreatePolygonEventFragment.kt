@@ -72,7 +72,7 @@ class CreatePolygonEventFragment : BaseFragment<FragmentCreatePolygonEventBindin
 
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 Log.d("createEvent" , "SetPolygonCamera position = $it")
-                mapHelper.setCamera(it)
+                mapHelper.setCamera(it,18.0)
             })
 
 

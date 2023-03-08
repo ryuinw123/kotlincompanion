@@ -10,13 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentCreateCircleEventBinding
-import com.example.kmitlcompanion.databinding.FragmentMapboxBinding
 import com.example.kmitlcompanion.presentation.viewmodel.CreateCircleEventViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.createcircleevent.helpers.ViewBottomBar
 import com.example.kmitlcompanion.ui.createcircleevent.helpers.ViewMap
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
-import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -75,7 +73,7 @@ class CreateCircleEventFragment : BaseFragment<FragmentCreateCircleEventBinding,
         lifecycle.addObserver(mapHelper)
         this@CreateCircleEventFragment.viewModel.run {
             currentRadius.observe(viewLifecycleOwner, Observer {
-                circleRadiusTextview.text = "Radius : $it km"
+                circleRadiusTextview.text = "รัศมี : $it กิโลเมตร"
                 mapHelper.redraw()
             })
 
@@ -87,7 +85,7 @@ class CreateCircleEventFragment : BaseFragment<FragmentCreateCircleEventBinding,
 
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 Log.d("createEvent" , "Set Circle position = $it")
-                mapHelper.setCamera(it)
+                mapHelper.setCamera(it,18.0)
             })
 
         }

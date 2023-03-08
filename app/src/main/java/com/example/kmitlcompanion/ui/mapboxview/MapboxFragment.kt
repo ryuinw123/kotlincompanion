@@ -180,6 +180,10 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             positionFlyer.observe(viewLifecycleOwner, Observer {
                 helper.map.flyToLocation(it)
             })
+            pitchFlyer.observe(viewLifecycleOwner, Observer {
+                helper.map.flyToPitch(it)
+                Log.d("test_pitch",it.toString())
+            })
 
             imageLink.observe(viewLifecycleOwner, Observer {
                 helper.list.setupImageAdapter(viewPager2,it?.toMutableList() ?: mutableListOf())
@@ -399,7 +403,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
             tagFly.observe(viewLifecycleOwner, Observer {
-                helper.map.flyToLocation(it.first,it.second,0.0,0.0,2000)
+                helper.map.flyToLocation(it.first,it.second,0.0,pitchFlyer.value!!,2000)
             })
 
 

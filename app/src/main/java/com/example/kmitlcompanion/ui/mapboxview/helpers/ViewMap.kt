@@ -54,7 +54,7 @@ class ViewMap @Inject constructor(
         weakMapView = WeakReference(mapView)
 
         mapView?.compass?.updateSettings {
-            marginTop = 500F
+            marginTop = 700F
             marginRight = 48F
         }
 
@@ -481,7 +481,7 @@ class ViewMap @Inject constructor(
                 center(Point.fromLngLat(point.longitude(), point.latitude()))
                 zoom(18.0)
                 bearing(0.0)
-                pitch(50.0)
+                pitch(viewModel.pitchFlyer.value)
             },
             MapAnimationOptions.mapAnimationOptions {
                 duration(2000)
@@ -500,6 +500,17 @@ class ViewMap @Inject constructor(
             },
             MapAnimationOptions.mapAnimationOptions {
                 duration(duration)
+            }
+        )
+    }
+
+    fun flyToPitch(pitch : Double){
+        mapView?.getMapboxMap()?.flyTo(
+            cameraOptions {
+                pitch(pitch)
+            },
+            MapAnimationOptions.mapAnimationOptions {
+                duration(2000)
             }
         )
     }
