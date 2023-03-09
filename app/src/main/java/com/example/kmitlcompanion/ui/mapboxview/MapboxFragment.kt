@@ -1,16 +1,13 @@
 package com.example.kmitlcompanion.ui.mapboxview
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.kmitlcompanion.R
@@ -24,8 +21,6 @@ import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -64,7 +59,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                                 materialCardViewBG, materialTagCardView, textTagDescription, clearTagCardView,
                                 requireContext())
             helper.bookMark.setup(this@MapboxFragment.viewModel)
-            helper.location.setup(this@MapboxFragment.viewModel,requireContext(),mapView)
+            helper.location.setup(this@MapboxFragment.viewModel, requireContext(), mapView)
             helper.map.setup(this@MapboxFragment.viewModel,mapView) {
                 viewModel = this@MapboxFragment.viewModel
                 this@MapboxFragment.viewModel.downloadLocationsEvent()
@@ -78,7 +73,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.editDeleteMarker.setup(this@MapboxFragment.viewModel,requireContext(),editDeleteMarkerButton)
             helper.googleCalendar.setup(this@MapboxFragment.viewModel,requireContext())
 
-            //test
             setupViewObservers()
             //setSeachBarOnQueryTextFocusChange()
         }
@@ -134,7 +128,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                     clearItemTag()
                     downloadLocationsEvent()
                     refreshEventLocations.value = false
-
                 }
             })
 
@@ -191,7 +184,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             permissionGrand.observe(viewLifecycleOwner , Observer {
                 if (it) {
-                    //Log.d("test_noti","gant")
+                    Log.d("test_bug","gant $it")
                     helper.service.setup(requireContext(),this@MapboxFragment.viewModel)
                 }
             })
@@ -492,12 +485,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("test_debug" ,"onDestroyView")
-
-        // Clear the reference to the MapboxMap object
-//        this@MapboxFragment.mapView.let {
-//            it
-//        }
         mapView?.onDestroy()
         mapView = null
 
@@ -505,7 +492,6 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     override fun onDestroy() {
         mapView = null
-        Log.d("test_debug" ,"onDestroy")
         super.onDestroy()
     }
 

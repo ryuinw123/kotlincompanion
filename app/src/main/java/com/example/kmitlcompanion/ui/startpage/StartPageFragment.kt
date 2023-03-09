@@ -1,11 +1,14 @@
 package com.example.kmitlcompanion.ui.startpage
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
@@ -14,6 +17,8 @@ import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.startpage.helper.StartPageFragmentHelper
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -49,15 +54,22 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
         }
 
 
-        viewModel.loginWithToken()
-
-
+//        helper.checkPermission(requireContext(),requireActivity()) {
+//            Log.d("test_permsiss","calleld back")
+//        viewModel.loginWithToken()
+//        }
 
         //hide bottom bar
-        //val bottomNavigationView = requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator_bottom_nav)
         bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        helper.checkPermission(requireContext(),requireActivity()){
+            viewModel.loginWithToken()
+        }
     }
 
     private fun FragmentStartPageBinding.setupViewObservers() {

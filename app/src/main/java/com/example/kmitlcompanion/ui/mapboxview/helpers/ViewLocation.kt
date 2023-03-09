@@ -1,15 +1,12 @@
 package com.example.kmitlcompanion.ui.mapboxview.helpers
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.kmitlcompanion.R
-import com.example.kmitlcompanion.background.LocationService
-import com.example.kmitlcompanion.background.WorkManagerUtils
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
 import com.example.kmitlcompanion.ui.mapboxview.utils.LocationPermissionHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.ToasterUtil
@@ -28,7 +25,7 @@ import javax.inject.Inject
 
 class ViewLocation @Inject constructor(
     private val toaster: ToasterUtil,
-    private val locationPermissionHelper: LocationPermissionHelper
+    private val locationPermissionHelper: LocationPermissionHelper,
 ) : DefaultLifecycleObserver {
 
     private lateinit var viewModel : MapboxViewModel
@@ -69,7 +66,7 @@ class ViewLocation @Inject constructor(
     fun updateEventPermission(context: Context){
         locationPermissionHelper.checkPermissions {
             onMapReady(context)
-            Log.d("test_permsiss","perm")
+            Log.d("test_permsiss","get perm")
             this.viewModel.updatePermission(true)
         }
     }

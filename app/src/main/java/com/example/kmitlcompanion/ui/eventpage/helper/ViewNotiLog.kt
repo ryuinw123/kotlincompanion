@@ -15,12 +15,14 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.NotiLogDetails
 import com.example.kmitlcompanion.presentation.viewmodel.NotiLogPageViewModel
 import com.example.kmitlcompanion.ui.eventpage.adaptor.NotiItemLogAdapter
+import com.example.kmitlcompanion.ui.mapboxview.utils.ToasterUtil
 import com.google.android.material.snackbar.Snackbar
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 
 class ViewNotiLog @Inject constructor(
+    private val toasterUtil: ToasterUtil,
 ) : ItemTouchHelper.SimpleCallback(
     0,
     ItemTouchHelper.LEFT
@@ -104,7 +106,8 @@ class ViewNotiLog @Inject constructor(
         if (pair.second){
             viewModel.goToMapBox(pair.first)
         }else{
-            Snackbar.make(view,"อีเวนต์นี้จบลงแล้ว", Snackbar.LENGTH_SHORT).show()
+            toasterUtil.showToast("อีเวนต์นี้จบลงแล้ว")
+            //Snackbar.make(view,"อีเวนต์นี้จบลงแล้ว", Snackbar.LENGTH_SHORT).show()
         }
     }
 
