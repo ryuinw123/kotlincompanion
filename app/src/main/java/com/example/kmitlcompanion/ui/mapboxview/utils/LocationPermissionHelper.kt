@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -75,9 +76,9 @@ class LocationPermissionHelper @Inject constructor(
                 }
             })
 
-            if ((!shouldShowRequestPermissionRationale(activity,Manifest.permission.ACCESS_FINE_LOCATION) ||
+            if (!shouldShowRequestPermissionRationale(activity,Manifest.permission.ACCESS_FINE_LOCATION) ||
                  !shouldShowRequestPermissionRationale(activity,Manifest.permission.ACCESS_COARSE_LOCATION) ||
-                 !shouldShowRequestPermissionRationale(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION))){
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !shouldShowRequestPermissionRationale(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION))) {
                 permissionsManager.requestLocationPermissions(activity)
             }else{
                 val builder = AlertDialog.Builder(activity)
@@ -93,6 +94,12 @@ class LocationPermissionHelper @Inject constructor(
                     .create()
                     .show()
             }
+
+//            // Request ACCESS_BACKGROUND_LOCATION permission if it is not already granted
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsManager.areLocationPermissionsGranted(context)) {
+//                permissionsManager.requestLocationPermissions(activity)
+//            }
+
         }
     }
 

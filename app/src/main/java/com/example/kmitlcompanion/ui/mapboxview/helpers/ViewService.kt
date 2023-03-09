@@ -42,4 +42,8 @@ class ViewService @Inject constructor(
         context.startService(intent)
     }
 
+    fun destroy(context : Context){
+        val intent = Intent(context,LocationService::class.java)
+        context.stopService(intent)
+    }
 }

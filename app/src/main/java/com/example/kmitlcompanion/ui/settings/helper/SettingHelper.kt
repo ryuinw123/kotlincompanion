@@ -1,11 +1,13 @@
 package com.example.kmitlcompanion.ui.settings.helper
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.presentation.viewmodel.SettingsViewModel
+import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -14,7 +16,11 @@ import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class SettingHelper @Inject constructor() : DefaultLifecycleObserver {
+class SettingHelper @Inject constructor(
+    private val viewService: ViewService
+) : DefaultLifecycleObserver {
+
+
 
     private lateinit var viewModel: SettingsViewModel
     private lateinit var activity: Activity
@@ -51,4 +57,9 @@ class SettingHelper @Inject constructor() : DefaultLifecycleObserver {
 
             })
     }
+
+    fun destroyService(context: Context){
+        viewService.destroy(context)
+    }
+
 }

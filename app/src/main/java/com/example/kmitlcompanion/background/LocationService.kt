@@ -26,12 +26,14 @@ class LocationService : Service() {
     @Inject
     lateinit var notificationUtils: NotificationUtils
 
+    private var isDestroyed = false
 
     var location: Point? = null
         set(value) {
             field = value
-            secretPolygon.filterArea(this,value ?: Point.fromLngLat(0.0, 0.0))
-
+            if (!isDestroyed) {
+                secretPolygon.filterArea(this, value ?: Point.fromLngLat(0.0, 0.0))
+            }
             //secretMap.filterArea(value!!)
         }
 
@@ -98,4 +100,13 @@ class LocationService : Service() {
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isDestroyed = true
+        Log.d("test_bugnoti","here")
+        stopForeground(true)
+        stopSelf()
+    }
+
 }

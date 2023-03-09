@@ -64,10 +64,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
             signOut.observe(viewLifecycleOwner, Observer {
                 helper.signOut()
-
+                helper.destroyService(requireContext())
                 //fragmentManager.beginTransaction().remove(MapboxFragment).commitAllowingStateLoss()
-                val fragment = MapboxFragment()
 
+                val fragment = MapboxFragment()
                 if (fragment != null) {
                     childFragmentManager?.beginTransaction()?.remove(fragment)?.commit()
                 }
