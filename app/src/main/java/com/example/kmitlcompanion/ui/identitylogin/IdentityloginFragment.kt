@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
@@ -34,17 +35,19 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        helper.setup(viewModel)
-
-        //(activity as AppCompatActivity?)?.getSupportActionBar()?.hide()
         binding = FragmentIdentityloginBinding.inflate(inflater,container, false).apply{
             viewModel = this@IdentityloginFragment.viewModel
-            setupViewObservers()
-        }
-        viewModel.setActivityBinding(binding,requireActivity())
 
-        viewModel.listFieldAdapter()
-        viewModel.inputListener()
+            helper.setup(this@IdentityloginFragment.viewModel, requireContext(), requireActivity(),textNameValue,textSurnameValue
+                ,facultyList,departmentList,yearList,textinputName,textinputSurname,faculty,department,year,signinButton)
+
+            setupViewObservers()
+            setupListener()
+        }
+        //viewModel.setActivityBinding(binding,requireActivity())
+
+//        viewModel.listFieldAdapter()
+//        viewModel.inputListener()
 
         bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
         return binding.root
@@ -52,18 +55,44 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
 
     private fun FragmentIdentityloginBinding.setupViewObservers(){
         this@IdentityloginFragment.viewModel.run {
-            saveUserDataResponse.observe(viewLifecycleOwner,{
-                helper.postUserData(it!!)
+            saveUserDataResponse.observe(viewLifecycleOwner,Observer{
+                postUserData(it)
             })
 
-            getUserRoom.observe(viewLifecycleOwner,{
-                helper.getUserRoom(it!!)
-            })
-
-            nextHomepage.observe(viewLifecycleOwner, Observer {
-                helper.nextHomePage()
-            })
+//            nextHomepage.observe(viewLifecycleOwner, Observer {
+//                nextHomePage()
+//            })
         }
+    }
+
+    private fun FragmentIdentityloginBinding.setupListener(){
+        helper.inputListener()
+
+        textNameValue?.doAfterTextChanged {
+            nameValue = textNameValue?.text?.toString()?.replace(" ", "")
+            helper.checkAllFieldValid()
+        }
+
+        textSurnameValue?.doAfterTextChanged {
+            surnameValue = textSurnameValue?.text?.trim().toString()?.replace(" ", "")
+            helper.checkAllFieldValid()
+        }
+
+        facultyList?.doAfterTextChanged{
+            facultyValue = facultyList?.text?.toString()
+            helper.checkAllFieldValid()
+        }
+
+        departmentList?.doAfterTextChanged {
+            departmentValue = departmentList?.text?.toString()
+            helper.checkAllFieldValid()
+        }
+
+        yearList?.doAfterTextChanged {
+            yearValue = yearList?.text?.toString()
+            helper.checkAllFieldValid()
+        }
+
     }
 
 

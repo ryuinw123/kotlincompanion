@@ -6,10 +6,7 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.domain.model.EventInformation
 import com.example.kmitlcompanion.domain.model.MapInformation
 import com.example.kmitlcompanion.presentation.viewmodel.MapboxViewModel
-import com.example.kmitlcompanion.ui.mapboxview.utils.BitmapUtils
-import com.example.kmitlcompanion.ui.mapboxview.utils.MapExpressionUtils
-import com.example.kmitlcompanion.ui.mapboxview.utils.MapperUtils
-import com.example.kmitlcompanion.ui.mapboxview.utils.TimeCounterUtils
+import com.example.kmitlcompanion.ui.mapboxview.utils.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.MultiPoint
@@ -39,6 +36,7 @@ class ViewMap @Inject constructor(
     private val mapper: MapperUtils,
     private val bitmapConverter: BitmapUtils,
     private val mapExpressionUtils: MapExpressionUtils,
+    private val toasterUtil: ToasterUtil,
     //private val timeCounterUtils: TimeCounterUtils,
     //private val timeCounterUtilsOnFinishListener: TimeCounterUtils.OnFinishListener,
     //private val timeCounterUtilsOnTickListener: TimeCounterUtils.OnTickListener,
@@ -177,12 +175,16 @@ class ViewMap @Inject constructor(
         if (eventId != 0L){
             val eventInformation = viewModel.mapEventResponse.value
             val eventData = eventInformation?.eventPoints?.firstOrNull{ it.id == eventId }
-            Log.d("test_noti",eventId.toString())
             eventData?.let {
                 val pointsList = it.area
                 val pointsFeature = Feature.fromGeometry(MultiPoint.fromLngLats(pointsList))
                 val center = TurfMeasurement.center(pointsFeature).geometry() as Point
                 eventDetail(it.name,it.id.toString(),it.startTime,it.endTime,center,it.description,it.imageLink)
+            }
+
+            if (eventData == null){
+                toasterUtil.showToast("อีเวนต์นี้ถูกลบไปแล้ว")
+                viewModel.deleteByIdNotiLog(eventId)
             }
         }
     }

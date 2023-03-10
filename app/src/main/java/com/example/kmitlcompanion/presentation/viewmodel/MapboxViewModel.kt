@@ -40,6 +40,7 @@ class MapboxViewModel @Inject constructor(
     private val getEventPinDetailsLocationQuery: GetEventPinDetailsLocationQuery,
     private val deleteMarkerLocationQuery: DeleteMarkerLocationQuery,
     private val deleteEventLocationQuery: DeleteEventLocationQuery,
+    private val deleteByIDNotificationLogDetails: DeleteByIDNotificationLogDetails,
 ) : BaseViewModel() {
 
     //For Marker & Location
@@ -758,6 +759,18 @@ class MapboxViewModel @Inject constructor(
 
             override fun onError(e: Throwable) {
                 Log.d("deleteMarkerLocationQuery",e.toString())
+            }
+        }, params = id)
+    }
+
+    fun deleteByIdNotiLog(id : Long?){
+        deleteByIDNotificationLogDetails.execute(object : DisposableCompletableObserver(){
+            override fun onComplete() {
+                Log.d("deleteByIdNotiLog","delete complete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("deleteByIdNotiLog","$e")
             }
         }, params = id)
     }

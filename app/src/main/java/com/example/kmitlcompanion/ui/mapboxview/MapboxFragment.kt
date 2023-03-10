@@ -116,7 +116,9 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             })
 
             flyLocationOnStart.observe(viewLifecycleOwner, Observer {
-                if (navArgs.id == 0L){
+                val eventInformation = mapEventResponse.value
+                val eventData = eventInformation?.eventPoints?.firstOrNull{ it.id == navArgs.id }
+                if (navArgs.id == 0L || eventData == null){
                     helper.map.flyMapOnReady()
                     flyLocationOnStart.removeObservers(viewLifecycleOwner)
                 }

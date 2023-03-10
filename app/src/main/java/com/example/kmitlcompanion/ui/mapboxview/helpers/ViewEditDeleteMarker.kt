@@ -62,11 +62,11 @@ class ViewEditDeleteMarker @Inject constructor(
         alertBuilder.setPositiveButton("ใช่", DialogInterface.OnClickListener { _, _ ->
             viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
             if (viewModel.eventState.value == true){
+                viewModel.deleteByIdNotiLog(viewModel.idLocationLabel.value?.toLong())
                 viewModel.sendDeleteEventMarker()
             }else if(viewModel.eventState.value == false){
                 viewModel.sendDeleteMarker()
             }
-
         })
         alertBuilder.show()
     }
