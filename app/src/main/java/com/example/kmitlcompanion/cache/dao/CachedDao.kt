@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
+import com.example.kmitlcompanion.cache.entities.EventTime
 import com.example.kmitlcompanion.cache.entities.MapPointEntity
 import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.data.model.UserData
@@ -14,6 +15,12 @@ import io.reactivex.rxjava3.core.Observable
 
 @Dao
 abstract class CachedDao {
+
+    @Query("SELECT event_notification_time FROM ${NameTable.EVENT_TABLE} WHERE event_id=(:event_id) and user_id=(:user_id)")
+    abstract fun getLastestNotificationTime(event_id : Int , user_id : Int) : Observable<Long?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateNotificationTime(event : EventTime) : Completable
 
     @Query("SELECT * FROM ${NameTable.MAP_POINT_TABLE}")
     abstract fun getMapPoints(): Observable<List<MapPointEntity>>

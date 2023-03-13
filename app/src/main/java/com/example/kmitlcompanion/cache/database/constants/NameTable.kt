@@ -21,4 +21,8 @@ object NameTable {
     const val USER_ID = "user_id"
     const val USER_EMAIL = "user_email"
     const val USER_TOKEN = "user_token"
+
+    const val EVENT_TABLE = "EventTimeTable"
+    const val EVENT_ID = "event_id"
+    const val EVENT_NOTIFICATION_TIME = "event_notification_time"
 }

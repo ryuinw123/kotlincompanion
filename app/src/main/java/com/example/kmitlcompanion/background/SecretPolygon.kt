@@ -36,7 +36,7 @@ class SecretPolygon @Inject constructor(
             if (TurfJoins.inside(point,polygon)) {
                 if (area !in cancelArea) {
                     val intent = Intent(context, GeofenceReceiver::class.java)
-                    intent.action = "com.example.geofence.TRANSITION"
+                    intent.action = "com.example.kmitl.geofence"
                     intent.putExtra("id", area.id)
                     intent.putExtra("name", area.name)
                     context.sendBroadcast(intent)
