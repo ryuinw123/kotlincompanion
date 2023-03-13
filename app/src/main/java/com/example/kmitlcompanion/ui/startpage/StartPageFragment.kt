@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.startpage
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.kmitlcompanion.R
+import com.example.kmitlcompanion.background.LocationService
 import com.example.kmitlcompanion.databinding.FragmentStartPageBinding
 import com.example.kmitlcompanion.presentation.viewmodel.StartPageViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
+import com.example.kmitlcompanion.ui.mainactivity.MainActivity
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.startpage.helper.StartPageFragmentHelper
 import com.mapbox.android.core.permissions.PermissionsListener
@@ -36,10 +39,12 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
 
     override fun onReady(savedInstanceState: Bundle?) {
 
-        val locationId = arguments?.getLong("locationId") ?: -1L
-        Log.d("Geofence","locationId From StartFragment = $locationId")
+        //val locationId = arguments?.getLong("locationId") ?: -1L
+        //Log.d("Geofence","locationId From StartFragment = $locationId")
 
-        viewModel.updateLocationId(locationId)
+        val intent = activity?.intent
+        val eventId : Long = intent?.extras?.getLong("locationId") ?: 0
+        viewModel.updateEventId(eventId)
 
     }
 

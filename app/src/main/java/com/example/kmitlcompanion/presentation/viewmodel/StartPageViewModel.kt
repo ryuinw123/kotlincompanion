@@ -36,8 +36,8 @@ class StartPageViewModel @Inject constructor(
     private val _updateUserRoom = SingleLiveData<UserData>()
     val updateUserRoom: SingleLiveData<UserData> = _updateUserRoom
 
-    private val _locationId = SingleLiveData<Long>()
-    val locationId : SingleLiveData<Long> = _locationId
+    private val _eventId = SingleLiveData<Long>()
+    val eventId : SingleLiveData<Long> = _eventId
 
     fun loginWithToken(){
         //get user token and login
@@ -45,8 +45,8 @@ class StartPageViewModel @Inject constructor(
 
     }
 
-    fun updateLocationId(id : Long) {
-        _locationId.value = id
+    fun updateEventId(id : Long) {
+        _eventId.value = id
     }
 
     fun postLogin(authCode : String){
@@ -57,7 +57,7 @@ class StartPageViewModel @Inject constructor(
             override fun onNext(t: ReturnLoginData) {
                 if (t.status == 1){
                     //goto homepage
-                    navigate(StartPageFragmentDirections.actionStartPageToMapboxFragment2(locationId.value ?: -1L))
+                    navigate(StartPageFragmentDirections.actionStartPageToMapboxFragment2(id = eventId.value ?: -1L))
                 }else if(t.status == 0){
                     //goto login page
                     navigate(StartPageFragmentDirections.actionStartPageToLoginFragment())
