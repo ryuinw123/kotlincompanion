@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.cache
 
 import android.media.metrics.Event
+import android.util.Log
 import com.example.kmitlcompanion.cache.database.AppDatabase
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
@@ -23,7 +24,7 @@ class RoomRepository @Inject constructor(
     private val mapPointMapper: MapPointMapper,
     private val userMapper: UserMapper
 ) : CacheRepository {
-    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<List<Long>> {
         return database.cachedDao().getLastestNotificationTime(event_id , user_id)
     }
 

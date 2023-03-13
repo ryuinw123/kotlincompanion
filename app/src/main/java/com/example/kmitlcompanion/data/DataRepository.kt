@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.data
 
 import android.content.Intent
+import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
@@ -41,10 +42,14 @@ class DataRepository @Inject constructor(
 
     override fun getLastestNotificationTime(event_id: Int): Observable<Timestamp> {
         val user_id = getUserId()
-        return dataStore.getRemoteData(false).getLastestNotificationTime(event_id , user_id).map {
-            Timestamp(it ?: 0L)
+
+        return dataStore.getRemoteData(false).getLastestNotificationTime(event_id , user_id).map { list ->
+            list.firstOrNull()?.let {
+                Timestamp(it)
+            } ?: Timestamp(0L)
         }
     }
+
 
     override fun updateNotificationTime(eventTime: EventTime): Completable {
         val user_id = getUserId()

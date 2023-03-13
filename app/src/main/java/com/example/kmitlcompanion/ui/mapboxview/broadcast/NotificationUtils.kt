@@ -87,6 +87,8 @@ class NotificationUtils @Inject constructor(
             //.setStyle(bigPicStyle)
             .setLargeIcon(mapImage)
 
+        Log.d("test_noti","sendGeofenceEnteredNotification")
+
         notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
     }
 

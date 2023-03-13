@@ -12,7 +12,7 @@ import java.net.URI
 
 interface DataRepository {
 
-    fun getLastestNotificationTime(event_id : Int , user_id : Int):Observable<Long?>
+    fun getLastestNotificationTime(event_id : Int , user_id : Int):Observable<List<Long>>
 
     fun updateNotificationTime(eventData: EventTimeData) : Completable
 

@@ -13,7 +13,7 @@ class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
     
-    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<List<Long>> {
         throw IllegalStateException("Function not currently supported!")
     }
 

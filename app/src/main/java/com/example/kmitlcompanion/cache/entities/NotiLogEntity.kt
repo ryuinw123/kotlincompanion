@@ -8,7 +8,7 @@ import com.example.kmitlcompanion.cache.database.constants.NameTable
 @Entity(tableName = NameTable.EVENT_NOTI_LOG)
 data class NotiLogEntity(
     @PrimaryKey
-    @ColumnInfo(name = NameTable.EVENT_ID)
+    @ColumnInfo(name = NameTable.EVENT_ID_LOG)
     val id: Long,
 
     @ColumnInfo(name = NameTable.EVENT_NAME)

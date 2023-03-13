@@ -65,7 +65,7 @@ class ViewNotiLog @Inject constructor(
             if (itemCount > 0){
                 itemCount -= 1
                 val view = recyclerView?.findViewHolderForAdapterPosition(itemCount)!!.itemView
-                deleteItem(view, itemCount )
+                deleteItem(view, itemCount ,activity)
                 handler.postDelayed(runnable, 300)
             }else{
                 handler.removeCallbacks(runnable)
@@ -74,16 +74,18 @@ class ViewNotiLog @Inject constructor(
         activity.runOnUiThread(runnable)
     }
 
-    private fun deleteItem(rowView: View, position: Int) {
+    private fun deleteItem(rowView: View, position: Int,activity: Activity) {
         val anim: Animation = AnimationUtils.loadAnimation(
             context,
             R.anim.slide_out_left
         )
         anim.duration = 250
-        rowView.startAnimation(anim)
-        handler.postDelayed({
-            viewModel.removeItemByPosting(position)
-        }, anim.duration)
+        rowView.post {
+            rowView.startAnimation(anim)
+            handler.postDelayed({
+                viewModel.removeItemByPosting(position)
+            }, anim.duration)
+        }
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

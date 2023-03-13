@@ -8,7 +8,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.example.kmitlcompanion.domain.model.EventTime
 import com.example.kmitlcompanion.domain.usecases.GetLastestNotificationTime
 import com.example.kmitlcompanion.domain.usecases.UpdateNotificationTime
-import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import io.reactivex.rxjava3.observers.DisposableObserver
 import java.sql.Time
@@ -30,32 +29,40 @@ class GeofenceReceiver : BroadcastReceiver() {
             val name = intent.getStringExtra("name")
             val thistime = Timestamp(System.currentTimeMillis())
 
+
+
             getLastestNotificationTime.execute(object : DisposableObserver<Timestamp>() {
                 override fun onNext(t: Timestamp) {
+                    dispose()
                     val lastesttime = t
 
-                    val diffInMillis: Long = Math.abs(thistime.getTime() - lastesttime.getTime())
-                    val oneDayInMillis = (24 * 60 * 60 * 1000).toLong()
+                    var diffInMillis: Long = Math.abs(Timestamp(System.currentTimeMillis()).getTime() - lastesttime.getTime())
+                    //val oneDayInMillis = (24 * 60 * 60 * 1000).toLong()
+                    val oneDayInMillis = (10 * 1000).toLong()
+
+                    //Log.d("test_noti","$diffInMillis and $oneDayInMillis")
+                    Log.d("test_bug_poly",id.toString())
 
                     if (diffInMillis > oneDayInMillis) {
                         notificationUtils.sendGeofenceEnteredNotification(id , name ?: "Error",NotificationUtils.GEO_CHANNEL_ID)
                         saveNotificationUtils.saveNotificationToCache(intent)
-                        Log.d("Geofence" , "Transition In")
+                        Log.d("Geofence" , "Transition In $id")
 
                         updateNotificationTime.execute(object : DisposableCompletableObserver() {
                             override fun onComplete() {
+                                dispose()
+                                //Log.d("test_noti","onComplete")
                             }
 
                             override fun onError(e: Throwable) {
+                                //Log.d("test_noti",e.toString())
                             }
 
                         } , params = EventTime(
                             id = id.toInt(),
-                            time = thistime
+                            time = Timestamp(System.currentTimeMillis())
                         ))
                     }
-
-
                 }
 
                 override fun onError(e: Throwable) {

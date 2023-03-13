@@ -1,6 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
-import com.example.kmitlcompanion.cache.entities.EventTime
+import android.util.Log
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
@@ -14,7 +14,7 @@ class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
 ) :DataRepository {
     
-    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<List<Long>> {
         return cacheRepository.getLastestNotificationTime(event_id,user_id)
     }
 
@@ -260,6 +260,7 @@ class CacheDataStore @Inject constructor(
     }
 
     override fun deleteByIDNotificationLogDetails(id: Long): Completable {
+        Log.d("test_noti","deleteByIDNotificationLogDetails")
         return cacheRepository.deleteByIDNotificationLogDetails(id)
     }
 }

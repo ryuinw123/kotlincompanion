@@ -37,9 +37,9 @@ class NotiLogPageViewModel @Inject constructor(
 
     fun removeItem(position:Int) {
         var newList = _notiLogData.value ?: mutableListOf()
-        _deleteNotiLogByID.value = newList[position].id
+        _deleteNotiLogByID.postValue(newList[position].id)
         newList.removeAt(position)
-        _notiLogData.value = newList
+        _notiLogData.postValue(newList)
     }
 
     fun removeItemByPosting(position:Int) {
@@ -53,7 +53,7 @@ class NotiLogPageViewModel @Inject constructor(
         getNotificationLogDetails.execute(object : DisposableObserver<List<NotiLogDetails>>(){
             override fun onNext(t: List<NotiLogDetails>) {
                 _notiLogData.value = t as MutableList<NotiLogDetails>
-                Log.d("test_noti",t.toString())
+                Log.d("test_noti","query " + t.toString())
             }
 
             override fun onError(e: Throwable) {
@@ -84,11 +84,11 @@ class NotiLogPageViewModel @Inject constructor(
     fun deleteNotiLogById(id : Long){
         deleteByIdNotificationLogDetails.execute(object : DisposableCompletableObserver(){
             override fun onComplete() {
-                Log.d("deleteNotiLogById","delete complete")
+                Log.d("test_noti","delete complete")
             }
 
             override fun onError(e: Throwable) {
-                Log.d("deleteAllNotificationLogDetails","$e")
+                Log.d("test_noti","$e")
             }
         }, params = id)
     }

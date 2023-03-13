@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.domain.usecases
 
+import android.util.Log
 import com.example.kmitlcompanion.domain.ObservableUseCase
 import com.example.kmitlcompanion.domain.executor.PostExecutionThread
 import com.example.kmitlcompanion.domain.repository.DomainRepository

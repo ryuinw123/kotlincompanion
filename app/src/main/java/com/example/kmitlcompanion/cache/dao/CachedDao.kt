@@ -14,8 +14,11 @@ import io.reactivex.rxjava3.core.Observable
 @Dao
 abstract class CachedDao {
 
-    @Query("SELECT event_notification_time FROM ${NameTable.EVENT_TABLE} WHERE event_id=(:event_id) and user_id=(:user_id)")
-    abstract fun getLastestNotificationTime(event_id : Int , user_id : Int) : Observable<Long?>
+    @Query("SELECT event_notification_time FROM ${NameTable.EVENT_TABLE} WHERE event_id = :event_id AND user_id = :user_id")
+    abstract fun getLastestNotificationTime(event_id : Int , user_id : Int) : Observable<List<Long>>
+
+//    @Query("SELECT event_notification_time FROM ${NameTable.EVENT_TABLE} WHERE event_id = :event_id AND user_id = :user_id")
+//    abstract fun getLastestNotificationTime2(event_id : Int , user_id : Int) : Observable<List<Long?>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun updateNotificationTime(event : EventTime) : Completable
@@ -44,7 +47,6 @@ abstract class CachedDao {
     abstract fun getProperty(property: Long): Observable<String>
 
 
-
     @Query("SELECT * FROM ${NameTable.EVENT_NOTI_LOG}")
     abstract fun getEventNotiLog() : Observable<List<NotiLogEntity>>
 
@@ -54,7 +56,7 @@ abstract class CachedDao {
     @Query("DELETE FROM ${NameTable.EVENT_NOTI_LOG}")
     abstract fun deleteAllEventNotiLog(): Completable
 
-    @Query("DELETE FROM ${NameTable.EVENT_NOTI_LOG} WHERE ${NameTable.EVENT_ID} = :id")
+    @Query("DELETE FROM ${NameTable.EVENT_NOTI_LOG} WHERE ${NameTable.EVENT_ID_LOG} = :id")
     abstract fun deleteEventNotiLogById(id: Long): Completable
 
 }

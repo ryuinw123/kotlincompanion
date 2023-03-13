@@ -45,16 +45,19 @@ class SecretPolygon @Inject constructor(
         for (area in areas) {
             val polygon = Polygon.fromLngLats(listOf(area.area))
             if (TurfJoins.inside(point,polygon)) {
-                if (area !in cancelArea) {
+                //if (area !in cancelArea) {
                     val intent = Intent(context, GeofenceReceiver::class.java)
                     intent.action = "com.example.kmitl.geofence"
                     intent.putExtra("id", area.id)
                     intent.putExtra("name", area.name)
+                    intent.putExtra("startTime", area.startTime)
+                    intent.putExtra("endTime", area.endTime)
+                    intent.putExtra("imageLinks",area.imageLink.getOrNull(0))
                     context.sendBroadcast(intent)
  //                   cancelTimeArea.removeAll { it.id == area.id }
  //                   cancelTimeArea.add(NotiCollection(area.id, Calendar.getInstance().time))
                     //Log.d("test_noti" , "Inside Area")
-                }
+                //}
 
 //                //if (area !in cancelArea) {
 //                val intent = Intent(context, GeofenceReceiver::class.java)
