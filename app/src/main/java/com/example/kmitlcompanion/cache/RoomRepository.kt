@@ -1,12 +1,15 @@
 package com.example.kmitlcompanion.cache
 
+import android.media.metrics.Event
 import com.example.kmitlcompanion.cache.database.AppDatabase
 import com.example.kmitlcompanion.cache.database.constants.NameTable
 import com.example.kmitlcompanion.cache.entities.DataProperty
 import com.example.kmitlcompanion.cache.entities.NotiLogEntity
+import com.example.kmitlcompanion.cache.entities.EventTime
 import com.example.kmitlcompanion.cache.entities.User
 import com.example.kmitlcompanion.cache.mapper.MapPointMapper
 import com.example.kmitlcompanion.cache.mapper.UserMapper
+import com.example.kmitlcompanion.data.model.EventTimeData
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.NotiLogData
 import com.example.kmitlcompanion.data.model.UserData
@@ -20,6 +23,15 @@ class RoomRepository @Inject constructor(
     private val mapPointMapper: MapPointMapper,
     private val userMapper: UserMapper
 ) : CacheRepository {
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+        return database.cachedDao().getLastestNotificationTime(event_id , user_id)
+    }
+
+    override fun updateNotificationTime(eventData: EventTimeData): Completable {
+        return database.cachedDao().updateNotificationTime(
+            EventTime(eventData.event_id,eventData.user_id,eventData.time)
+        )
+    }
 
     override fun getMapPoints(token: String): Observable<List<MapPointData>> {
         return database.cachedDao().getMapPoints()

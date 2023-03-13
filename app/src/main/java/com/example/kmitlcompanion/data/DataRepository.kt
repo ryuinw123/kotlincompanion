@@ -17,6 +17,8 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.sql.Time
+import java.sql.Timestamp
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -31,6 +33,26 @@ class DataRepository @Inject constructor(
 
     private fun getToken(): String{
         return dataStore.getRemoteData(false).getUser().blockingFirst()[0].token
+    }
+
+    private fun getUserId() : Int {
+        return  dataStore.getRemoteData(false).getUser().blockingFirst()[0].id
+    }
+
+    override fun getLastestNotificationTime(event_id: Int): Observable<Timestamp> {
+        val user_id = getUserId()
+        return dataStore.getRemoteData(false).getLastestNotificationTime(event_id , user_id).map {
+            Timestamp(it ?: 0L)
+        }
+    }
+
+    override fun updateNotificationTime(eventTime: EventTime): Completable {
+        val user_id = getUserId()
+        return dataStore.getRemoteData(false).updateNotificationTime(EventTimeData(
+            eventTime.id,
+            user_id,
+            eventTime.time.time
+        ))
     }
 
     override fun createEventQuery(event: Event): Completable {

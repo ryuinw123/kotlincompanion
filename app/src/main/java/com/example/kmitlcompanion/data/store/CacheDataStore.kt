@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.store
 
+import com.example.kmitlcompanion.cache.entities.EventTime
 import com.example.kmitlcompanion.data.model.*
 import com.example.kmitlcompanion.data.repository.CacheRepository
 import com.example.kmitlcompanion.data.repository.DataRepository
@@ -12,6 +13,14 @@ import javax.inject.Inject
 class CacheDataStore @Inject constructor(
     private val cacheRepository: CacheRepository
 ) :DataRepository {
+    
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+        return cacheRepository.getLastestNotificationTime(event_id,user_id)
+    }
+
+    override fun updateNotificationTime(eventData: EventTimeData): Completable {
+        return cacheRepository.updateNotificationTime(eventData)
+    }
 
     override fun createEventQuery(
         name: String,

@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.data.repository
 
+import com.example.kmitlcompanion.data.model.EventTimeData
 import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.data.model.NotiLogData
 import com.example.kmitlcompanion.data.model.UserData
@@ -9,6 +10,10 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
 interface CacheRepository {
+
+    fun getLastestNotificationTime(event_id : Int , user_id :  Int):Observable<Long?>
+
+    fun updateNotificationTime(eventData: EventTimeData) : Completable
 
     fun getMapPoints(token: String): Observable<List<MapPointData>>
 

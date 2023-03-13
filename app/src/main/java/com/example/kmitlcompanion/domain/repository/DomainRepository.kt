@@ -9,8 +9,13 @@ import com.example.kmitlcompanion.domain.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import java.io.File
+import java.sql.Timestamp
 
 interface DomainRepository {
+
+    fun getLastestNotificationTime(id : Int):Observable<Timestamp>
+
+    fun updateNotificationTime(eventTime: EventTime) : Completable
 
     fun createEventQuery(event : Event) : Completable
 

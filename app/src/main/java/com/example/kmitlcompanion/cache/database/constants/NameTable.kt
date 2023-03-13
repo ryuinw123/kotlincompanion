@@ -29,4 +29,7 @@ object NameTable {
     const val EVENT_ENDTIME = "event_end_time"
     const val EVENT_IMAGE_LINKS = "event_image_link"
 
+    const val EVENT_TABLE = "EventTimeTable"
+    const val EVENT_ID = "event_id"
+    const val EVENT_NOTIFICATION_TIME = "event_notification_time"
 }

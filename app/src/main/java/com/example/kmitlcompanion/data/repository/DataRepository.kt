@@ -12,6 +12,10 @@ import java.net.URI
 
 interface DataRepository {
 
+    fun getLastestNotificationTime(event_id : Int , user_id : Int):Observable<Long?>
+
+    fun updateNotificationTime(eventData: EventTimeData) : Completable
+
     fun createEventQuery(name : String, detail: String,startTime : String,endTime : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
 
     fun getLocationQuery(latitude: Double,longitude: Double , token : String) : Observable<LocationQuery>

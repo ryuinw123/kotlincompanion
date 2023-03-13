@@ -45,23 +45,14 @@ class SecretPolygon @Inject constructor(
         for (area in areas) {
             val polygon = Polygon.fromLngLats(listOf(area.area))
             if (TurfJoins.inside(point,polygon)) {
-                val nowTime = Calendar.getInstance().time
-                val eventIdLastTimeNoti = cancelTimeArea.firstOrNull{ it.id == area.id }
-
-                if (eventIdLastTimeNoti != null && nowTime.time - eventIdLastTimeNoti.lastTime.time <= 10 * 1000) {
-                    // Do nothing, notification already sent within last 10 วิ
-                } else {
-                    val intent = Intent(context, GeofenceReceiver::class.java).apply {
-                        action = "com.example.geofence.EVENTAREA"
-                        putExtra("id", area.id)
-                        putExtra("name", area.name)
-                        putExtra("startTime", area.startTime)
-                        putExtra("endTime", area.endTime)
-                        putExtra("imageLinks",area.imageLink.getOrNull(0))
-                    }
+                if (area !in cancelArea) {
+                    val intent = Intent(context, GeofenceReceiver::class.java)
+                    intent.action = "com.example.kmitl.geofence"
+                    intent.putExtra("id", area.id)
+                    intent.putExtra("name", area.name)
                     context.sendBroadcast(intent)
-                    cancelTimeArea.removeAll { it.id == area.id }
-                    cancelTimeArea.add(NotiCollection(area.id, Calendar.getInstance().time))
+ //                   cancelTimeArea.removeAll { it.id == area.id }
+ //                   cancelTimeArea.add(NotiCollection(area.id, Calendar.getInstance().time))
                     //Log.d("test_noti" , "Inside Area")
                 }
 

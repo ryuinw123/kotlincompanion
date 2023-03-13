@@ -12,6 +12,14 @@ import javax.inject.Inject
 class RemoteDataStore @Inject constructor(
     private val remoteRepository: RemoteRepository
 ) : DataRepository {
+    
+    override fun getLastestNotificationTime(event_id: Int, user_id: Int): Observable<Long?> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun updateNotificationTime(eventData: EventTimeData): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 
     override fun createEventQuery(
         name: String,
