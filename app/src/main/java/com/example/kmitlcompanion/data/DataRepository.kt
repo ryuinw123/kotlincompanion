@@ -14,6 +14,7 @@ import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.mapbox.geojson.Point
+import com.mapbox.maps.extension.style.expressions.dsl.generated.get
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -444,5 +445,21 @@ class DataRepository @Inject constructor(
 
     override fun deleteByIDNotificationLogDetails(id: Long): Completable {
         return dataStore.getRemoteData(false).deleteByIDNotificationLogDetails(id)
+    }
+
+    override fun reportEventLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String
+    ): Completable {
+        return dataStore.getRemoteData(true).reportEventLocationQueryDetails(id,reason,details,getToken())
+    }
+
+    override fun reportMarkerLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String
+    ): Completable {
+        return dataStore.getRemoteData(true).reportMarkerLocationQueryDetails(id,reason,details, getToken())
     }
 }

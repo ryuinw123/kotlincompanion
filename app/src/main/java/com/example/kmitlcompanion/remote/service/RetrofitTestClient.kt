@@ -224,4 +224,20 @@ interface RetrofitTestClient {
         @Part("year") year : String,
         @Part("token") token: String) : Completable
 
+    @Multipart
+    @POST("reporteventlocationquery")
+    fun reportEventLocationQueryDetails(
+                                        @Part("id") id : Long,
+                                        @Part("reason") reason : String,
+                                        @Part("details") details : String,
+                                        @Part("token") token: String) : Completable
+
+    @Multipart
+    @POST("reportmarkerlocationquery")
+    fun reportMarkerLocationQueryDetails(
+                                        @Part("id") id : Long,
+                                        @Part("reason") reason : String,
+                                        @Part("details") details : String,
+                                        @Part("token") token: String) : Completable
+
 }

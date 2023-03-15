@@ -892,6 +892,36 @@
                         app:strokeColor="#FF5E00"
                         app:strokeWidth="5dp" />
 
+                    <Button
+                        android:id="@+id/pin_to_report_event"
+                        android:layout_width="0dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="50dp"
+                        android:backgroundTint="#FFFFFF"
+                        android:onClick="@{()->viewModel.startReport()}"
+                        android:text="รายงาน"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="#FF5E00"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        android:visibility="visible"
+                        app:cornerRadius="50dp"
+                        app:icon="@drawable/ic_report"
+                        app:iconGravity="textStart"
+                        app:iconPadding="10dp"
+                        app:iconSize="35dp"
+                        app:iconTint="#FF5722"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pin_to_google_calendar"
+                        app:layout_constraintWidth_percent="0.4"
+                        app:strokeColor="#FF5E00"
+                        app:strokeWidth="5dp" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/comment_zone"
                         android:layout_width="match_parent"
@@ -899,7 +929,7 @@
                         android:layout_marginTop="16dp"
                         android:background="@drawable/top_border"
                         android:visibility="visible"
-                        app:layout_constraintTop_toBottomOf="@+id/pin_to_google_calendar"
+                        app:layout_constraintTop_toBottomOf="@+id/pin_to_report_event"
                         tools:layout_editor_absoluteX="1dp">
 
                         <TextView

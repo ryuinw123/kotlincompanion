@@ -224,4 +224,22 @@ class RetrofitClient @Inject constructor(
             username,faculty,department,year,token
         )
     }
+
+    override fun reportEventLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        return retrofitTestClient.reportEventLocationQueryDetails(id,reason,details,token)
+    }
+
+    override fun reportMarkerLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        return retrofitTestClient.reportMarkerLocationQueryDetails(id,reason,details,token)
+    }
 }

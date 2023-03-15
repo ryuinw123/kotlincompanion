@@ -93,4 +93,8 @@ interface DomainRepository {
     fun deleteAllNotificationLogDetails() : Completable
 
     fun deleteByIDNotificationLogDetails(id : Long) : Completable
+
+    fun reportEventLocationQueryDetails(id : Long,reason : String,details : String) : Completable
+
+    fun reportMarkerLocationQueryDetails(id : Long,reason : String,details : String) : Completable
 }

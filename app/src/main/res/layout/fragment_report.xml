@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kmitlcompanion.presentation.viewmodel.ReportViewModel" />
+    </data>
+
+    <ScrollView
+        android:id="@+id/report_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="รายงาน"
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                style="@style/CustomCardViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/linearLayoutCompat2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/report_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="รายงานสถานที่"
+                            android:textColor="@color/kmitl_color"
+                            android:textSize="32dp"
+                            tools:layout_editor_absoluteX="176dp"
+                            tools:layout_editor_absoluteY="0dp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_report_helper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="40dp"
+                        android:background="@color/input_text"
+                        android:textColorHint="@color/kmitl_color"
+                        app:boxStrokeColor="@color/kmitl_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/name_icon"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_report"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
+                            android:enabled="false"
+                            android:hint="ชื่ออีเวนต์"
+                            android:text="name"
+                            android:textColor="@color/kmitl_color" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/report_spinner"
+                        style="@style/spinner_style"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="@+id/name_report_helper"
+                        app:layout_constraintStart_toStartOf="@+id/name_report_helper"
+                        app:layout_constraintTop_toBottomOf="@+id/name_report_helper"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+                    <ImageView
+                        android:id="@+id/name_icon"
+                        android:layout_width="42dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="30dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/name_report_helper"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/name_report_helper"
+                        app:srcCompat="@drawable/ic_drawer" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/detail_helper"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:textColorHint="#FF5722"
+                        app:boxStrokeColor="@color/kmitl_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/report_spinner"
+                        app:layout_constraintStart_toStartOf="@+id/report_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/report_spinner">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/detail_report_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
+                            android:hint="รายละเอียดเพิ่มเติม"
+                            android:lines="10" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/details_report_icon"
+                        android:layout_width="43dp"
+                        android:layout_height="41dp"
+                        app:layout_constraintStart_toStartOf="@+id/name_icon"
+                        app:layout_constraintTop_toTopOf="@+id/report_spinner"
+                        app:srcCompat="@drawable/ic_report"
+                        app:tint="#FF5722" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/layout_report_submit_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/detail_helper">
+
+                        <Button
+                            android:id="@+id/report_submit_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:backgroundTint="@color/kmitl_color"
+                            android:onClick="@{() -> viewModel.onClickSubmitReport() }"
+                            android:paddingLeft="50dp"
+                            android:paddingRight="50dp"
+                            android:text="รายงาน" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
+
+
+
+
+

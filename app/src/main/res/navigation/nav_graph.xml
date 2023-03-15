@@ -39,6 +39,9 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_mapboxFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -255,5 +258,26 @@
         <action
             android:id="@+id/action_settingsEditFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="com.example.kmitlcompanion.ui.report.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" >
+        <argument
+            android:name="id"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="type"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_reportFragment_to_mapboxFragment"
+            app:destination="@id/mapboxFragment" />
     </fragment>
 </navigation>

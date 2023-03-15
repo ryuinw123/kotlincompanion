@@ -12,6 +12,7 @@ import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
@@ -230,6 +231,9 @@ class MapboxViewModel @Inject constructor(
     private val _editMarkerTrigger = MutableLiveData<Boolean>()
     val editMarkerTrigger : MutableLiveData<Boolean> = _editMarkerTrigger
 
+    //For report event & marker
+    private val _reportTrigger = MutableLiveData<Boolean>()
+    val reportTrigger : MutableLiveData<Boolean> = _reportTrigger
 
     //For ??
 
@@ -780,6 +784,18 @@ class MapboxViewModel @Inject constructor(
         triggerGoogleCalender.value = true
     }
 
+    //for report event & marker
+
+    fun startReport(){
+        _reportTrigger.value = true
+    }
+
+    fun goToReportPage(){
+        navigate(MapboxFragmentDirections.actionMapboxFragmentToReportFragment(
+            id = _idLocationLabel.value!!.toLong(),
+            type = _eventState.value!!,
+            name = _nameLocationLabel.value))
+    }
 
 
     //For page navigate

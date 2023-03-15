@@ -96,6 +96,11 @@ interface RemoteRepository {
 
     fun settingsEditUpdateUserData(username : String,faculty:String,department:String,year : String, token: String) : Completable
 
+    fun reportEventLocationQueryDetails(id : Long,reason : String,details : String,token: String) : Completable
+
+    fun reportMarkerLocationQueryDetails(id : Long,reason : String,details : String,token: String) : Completable
+
+
 }
 
 

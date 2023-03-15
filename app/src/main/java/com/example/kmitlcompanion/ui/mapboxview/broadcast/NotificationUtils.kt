@@ -59,6 +59,7 @@ class NotificationUtils @Inject constructor(
     ) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val contentIntent = Intent(context, MainActivity::class.java)
+        //val contentIntent = Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/"))
         contentIntent.putExtra("locationId" , locationId)
         //contentIntent.putExtra(GeofencingConstants.EXTRA_GEOFENCE_INDEX, foundIndex)
         val contentPendingIntent = PendingIntent.getActivity(

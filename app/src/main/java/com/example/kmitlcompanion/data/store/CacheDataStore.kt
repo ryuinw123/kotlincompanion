@@ -263,4 +263,23 @@ class CacheDataStore @Inject constructor(
         Log.d("test_noti","deleteByIDNotificationLogDetails")
         return cacheRepository.deleteByIDNotificationLogDetails(id)
     }
+
+
+    override fun reportEventLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun reportMarkerLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

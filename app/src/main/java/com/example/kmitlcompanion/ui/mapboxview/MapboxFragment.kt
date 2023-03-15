@@ -18,6 +18,7 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
@@ -144,6 +145,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             bottomSheetState.observe(viewLifecycleOwner, Observer {
                 helper.slider.setState(it)
+                nestedScrollView.scrollTo(0, 0)
                 Log.d("Navigation" , "BottomSheet state change to $it")
                 if (isSearch.value == false){
                     bottomBarUtils.sliderState = it
@@ -473,6 +475,15 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 if (it == true){
                     helper.googleCalendar.startGoogleCalendar()
                     triggerGoogleCalender.value = false
+                }
+            })
+
+            //For report
+            reportTrigger.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    //updateBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
+                    goToReportPage()
+                    reportTrigger.value = false
                 }
             })
 

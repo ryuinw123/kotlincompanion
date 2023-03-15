@@ -277,4 +277,22 @@ class RemoteDataStore @Inject constructor(
     override fun deleteByIDNotificationLogDetails(id: Long): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+    override fun reportEventLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        return remoteRepository.reportEventLocationQueryDetails(id,reason,details,token)
+    }
+
+    override fun reportMarkerLocationQueryDetails(
+        id: Long,
+        reason: String,
+        details: String,
+        token: String
+    ): Completable {
+        return remoteRepository.reportMarkerLocationQueryDetails(id,reason,details,token)
+    }
 }
