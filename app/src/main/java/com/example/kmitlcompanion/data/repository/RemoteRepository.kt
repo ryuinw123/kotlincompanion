@@ -14,7 +14,7 @@ import java.net.URI
 
 interface RemoteRepository {
 
-    fun createEventQuery(name : String, detail: String,startTime : String,endTime : String, point : List<Point>, image: List<MultipartBody.Part>, token: String) : Completable
+    fun createEventQuery(name : String, detail: String,startTime : String,endTime : String, point : List<Point>, image: List<MultipartBody.Part>,type: Int,url: String, token: String) : Completable
 
     fun getEventLocations(token: String) : Observable<List<EventAreaData>>
 
@@ -90,7 +90,7 @@ interface RemoteRepository {
 
     fun editLocationQuery(id: String, name : String, type : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
 
-    fun editEventLocationQuery(eventId: String, name : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,token: String) : Completable
+    fun editEventLocationQuery(eventId: String, name : String, description : String, image: List<MultipartBody.Part?>,imageUrl : List<String?>,type: Int,url: String,token: String) : Completable
 
     fun settingsGetUserData(token: String) : Observable<UserSettingsDataModel>
 

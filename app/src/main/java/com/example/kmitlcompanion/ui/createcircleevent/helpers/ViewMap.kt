@@ -116,7 +116,7 @@ class ViewMap @Inject constructor(
 
     private fun addPoint(point: Point) {
         bitmapUtils.bitmapFromDrawableRes(
-            R.drawable.red_marker
+            R.drawable.type_pin
         )?.let {
             val pointAnnotationOptions = PointAnnotationOptions()
                 .withPoint(point)

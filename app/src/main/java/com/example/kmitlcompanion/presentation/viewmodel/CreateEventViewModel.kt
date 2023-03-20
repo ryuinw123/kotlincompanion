@@ -10,7 +10,7 @@ import com.example.kmitlcompanion.domain.usecases.CreateEventQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
 import com.example.kmitlcompanion.ui.createevent.CreateEventFragmentDirections
-import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
+import com.example.kmitlcompanion.ui.createevent.utils.EventTypeUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateEventViewModel  @Inject constructor(
+    private val eventTypeUtils: EventTypeUtils,
     private val createEventQuery: CreateEventQuery,
 ) : BaseViewModel(){
 
@@ -67,6 +68,13 @@ class CreateEventViewModel  @Inject constructor(
     private val _uploadLoading = MutableLiveData<Boolean>()
     val uploadLoading : MutableLiveData<Boolean> = _uploadLoading
 
+    //For event Type
+    private val _eventType = MutableLiveData<String>()
+    val eventType : LiveData<String> = _eventType
+
+    private val _eventUrl = MutableLiveData<String>()
+    val eventUrl : LiveData<String> = _eventUrl
+
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
     }
@@ -111,6 +119,8 @@ class CreateEventViewModel  @Inject constructor(
         var eTime = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(_endDateTimeValue.value?.time)
         var file : MutableList<File?> = mutableListOf()
         var uris : MutableList<Uri?> = mutableListOf()
+        var eType = _eventType.value ?:""
+        var eUrl = _eventUrl.value
         _storeImageData.forEach{
             file.add(ImagePicker.getFile(it))
             uris.add(it?.data)
@@ -136,7 +146,9 @@ class CreateEventViewModel  @Inject constructor(
             endTime = eTime,
             point = currentLocation.value!!.point,
             file = file,
-            uri = uris
+            uri = uris,
+            type = eventTypeUtils.getCodeByType(eType),
+            url = eUrl
         ),sTime,eTime)
         )
     }
@@ -185,6 +197,14 @@ class CreateEventViewModel  @Inject constructor(
     fun getEndDateTimePick(cal : Calendar){
         _endDateTimeValue.value = cal
         Log.d("test_datetime",cal.toString())
+    }
+
+    fun updateEventType(type : String){
+        _eventType.value = type
+    }
+
+    fun updateEventUrl(url : String){
+        _eventUrl.value = url
     }
 
 

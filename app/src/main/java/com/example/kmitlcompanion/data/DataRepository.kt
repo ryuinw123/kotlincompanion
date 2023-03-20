@@ -1,7 +1,6 @@
 package com.example.kmitlcompanion.data
 
 import android.content.Intent
-import android.util.Log
 import com.example.kmitlcompanion.data.mapper.CommentMapper
 import com.example.kmitlcompanion.data.mapper.EventMapper
 import com.example.kmitlcompanion.data.mapper.MapPointMapper
@@ -14,12 +13,10 @@ import com.example.kmitlcompanion.domain.model.*
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.mapbox.geojson.Point
-import com.mapbox.maps.extension.style.expressions.dsl.generated.get
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.sql.Time
 import java.sql.Timestamp
 import javax.inject.Inject
 
@@ -78,6 +75,8 @@ class DataRepository @Inject constructor(
             endTime = event.endTime!!,
             point = event.point,
             image = imageList,
+            type = event.type!!,
+            url = event.url ?:"",
             token = getToken()
         )
     }
@@ -359,7 +358,9 @@ class DataRepository @Inject constructor(
         eventId: String,
         name: String,
         description: String,
-        image: MutableList<Pair<Int, Any>>
+        image: MutableList<Pair<Int, Any>>,
+        type: Int,
+        url: String,
     ): Completable {
         var imageList : MutableList<MultipartBody.Part?> = mutableListOf()
         var imageUrl : MutableList<String?> = mutableListOf()
@@ -381,8 +382,10 @@ class DataRepository @Inject constructor(
             eventId,
             name,
             description,
-            imageList ,
+            imageList,
             imageUrl,
+            type,
+            url,
             getToken()
         )
     }

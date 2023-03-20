@@ -9,6 +9,7 @@ import com.example.kmitlcompanion.domain.model.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import java.io.File
+import java.net.URL
 import java.sql.Timestamp
 
 interface DomainRepository {
@@ -80,7 +81,7 @@ interface DomainRepository {
 
     fun editLocationQuery(id: String, name : String, type : String, description : String, image : MutableList<Pair<Int,Any>>) : Completable
 
-    fun editEventLocationQuery(eventId: String, name : String, description : String, image : MutableList<Pair<Int,Any>>) : Completable
+    fun editEventLocationQuery(eventId: String, name : String, description : String, image : MutableList<Pair<Int,Any>>,type: Int,url: String) : Completable
 
     fun settingsGetUserData() : Observable<UserSettingsData>
 

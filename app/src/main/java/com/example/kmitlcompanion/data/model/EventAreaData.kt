@@ -3,7 +3,7 @@ package com.example.kmitlcompanion.data.model
 import com.mapbox.geojson.Point
 
 
-data class EventAreaData (
+data class EventAreaData(
     val name:String,
     val description : String,
     val id: Long,
@@ -11,4 +11,6 @@ data class EventAreaData (
     val endTime : String,
     val area : List<Point>,
     val imageLink : List<String>,
+    val type: Int,
+    val url : List<String>,
 )

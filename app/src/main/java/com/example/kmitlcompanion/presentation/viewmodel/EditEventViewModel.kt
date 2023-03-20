@@ -8,7 +8,7 @@ import com.example.kmitlcompanion.domain.model.EditEventLocation
 import com.example.kmitlcompanion.domain.usecases.EditEventQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
-import com.example.kmitlcompanion.ui.createevent.CreateEventFragmentDirections
+import com.example.kmitlcompanion.ui.createevent.utils.EventTypeUtils
 import com.example.kmitlcompanion.ui.editevent.EditEventFragmentDirections
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditEventViewModel @Inject constructor(
-    private val editEventQuery: EditEventQuery
+    private val editEventQuery: EditEventQuery,
+    private val eventTypeUtils: EventTypeUtils,
 ) : BaseViewModel() {
 
     private val _editEventResponse = MutableLiveData<Boolean>()
@@ -60,6 +61,14 @@ class EditEventViewModel @Inject constructor(
 
     private val _uploadLoading = MutableLiveData<Boolean>()
     val uploadLoading : MutableLiveData<Boolean> = _uploadLoading
+
+    //For event Type
+    private val _eventType = MutableLiveData<String>()
+    val eventType : LiveData<String> = _eventType
+
+    private val _eventUrl = MutableLiveData<String>()
+    val eventUrl : LiveData<String> = _eventUrl
+
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -107,8 +116,11 @@ class EditEventViewModel @Inject constructor(
             name = _nameInput.value,
             description = _detailInput.value,
             image = _storeImageData,
+            type = eventTypeUtils.getCodeByType(_eventType.value!!),
+            url = _eventUrl.value,
         ))
-        Log.d("test_edit","updateLocation" + _eventId.value + " " + _nameInput.value + " " + _detailInput.value + " " + _storeImageData.toString())
+        Log.d("test_edit","updateLocation" + _eventId.value + " " + _nameInput.value + " " + _detailInput.value + " " + _storeImageData.toString()
+        + " " + _eventType.value + " " +_eventUrl.value)
     }
 
     fun setStartImage(url : MutableList<String>){
@@ -128,6 +140,14 @@ class EditEventViewModel @Inject constructor(
         _endDateTimeValue.value = cal
     }
 
+    //For event type
+    fun updateEventType(type : String){
+        _eventType.value = type
+    }
+
+    fun updateEventUrl(url : String){
+        _eventUrl.value = url
+    }
 
     //Navigation
     fun goToMapbox() {

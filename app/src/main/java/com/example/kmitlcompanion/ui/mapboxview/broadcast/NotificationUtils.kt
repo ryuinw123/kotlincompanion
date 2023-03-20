@@ -59,9 +59,7 @@ class NotificationUtils @Inject constructor(
     ) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val contentIntent = Intent(context, MainActivity::class.java)
-        //val contentIntent = Intent(Intent.ACTION_VIEW,Uri.parse("https://www.google.com/"))
         contentIntent.putExtra("locationId" , locationId)
-        //contentIntent.putExtra(GeofencingConstants.EXTRA_GEOFENCE_INDEX, foundIndex)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
             GEO_NOTIFICATION_ID,
@@ -93,6 +91,48 @@ class NotificationUtils @Inject constructor(
         notificationManager.notify(GEO_NOTIFICATION_ID, builder.build())
     }
 
+    fun sendGeofenceEnteredNotificationWithUrl(
+        locationId: Long,
+        channelId: String,
+        url : String
+    ) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        //val contentIntent = Intent(context, MainActivity::class.java)
+        val contentIntent = Intent(Intent.ACTION_VIEW,Uri.parse(url))
+        contentIntent.putExtra("locationId" , locationId)
+        //contentIntent.putExtra(GeofencingConstants.EXTRA_GEOFENCE_INDEX, foundIndex)
+        val contentPendingIntent = PendingIntent.getActivity(
+            context,
+            GEO_NOTIFICATION_ID,
+            contentIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val mapImage = BitmapFactory.decodeResource(
+            context.resources,
+            R.drawable.ic_baseline_link_24
+        )
+        val bigPicStyle = NotificationCompat.BigPictureStyle()
+            .bigPicture(mapImage)
+            .bigLargeIcon(null)
+
+        // We use the name resource ID from the LANDMARK_DATA along with content_text to create
+        // a custom message when a Geofence triggers.
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setContentTitle(context.getString(R.string.noti_event_url))
+            .setContentText(context.getString(R.string.content_text_url, url))
+            .setDefaults(3)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setContentIntent(contentPendingIntent)
+            .setSmallIcon(R.drawable.ic_baseline_link_24)
+            //.setStyle(bigPicStyle)
+            .setLargeIcon(mapImage)
+
+        Log.d("test_noti","sendGeofenceEnteredNotification")
+
+        notificationManager.notify(GEO_NOTIFICATION_URL_ID, builder.build())
+    }
+
+
     fun createNotification(channelId: String): Notification {
         val mapImage = BitmapFactory.decodeResource(
             context.resources,
@@ -117,6 +157,7 @@ class NotificationUtils @Inject constructor(
 
     companion object {
         const val GEO_NOTIFICATION_ID = 33
+        const val GEO_NOTIFICATION_URL_ID = 69
         const val LOCATION_NOTIFICATION_ID = 34
         const val GEO_CHANNEL_ID = "GeofenceChannel"
         const val LOCATION_CHANNEL_ID = "LocationChannel"

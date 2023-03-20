@@ -15,6 +15,7 @@ import com.example.kmitlcompanion.R
 import com.example.kmitlcompanion.databinding.FragmentEditEventBinding
 import com.example.kmitlcompanion.presentation.viewmodel.EditEventViewModel
 import com.example.kmitlcompanion.ui.BaseFragment
+import com.example.kmitlcompanion.ui.createevent.utils.EventTypeUtils
 import com.example.kmitlcompanion.ui.editevent.helper.EditEventHelper
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -38,6 +39,8 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
 
     private val requestGallery = 2121
 
+    @Inject lateinit var eventTypeUtils: EventTypeUtils
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +57,7 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
             helper.upload.setup(this@EditEventFragment.viewModel)
 
             //helper.datetime.setup(requireContext(), this@EditEventFragment.viewModel,startTimeTextInput,endTimeTextInput)
+            helper.spinner.setup(eventTypeSpinner, eventTypeUtils.getType(),requireContext(),this@EditEventFragment.viewModel)
 
             helper.setup(this@EditEventFragment.viewModel)
             setupViewObservers()
@@ -84,13 +88,21 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
     private fun FragmentEditEventBinding.setupViewObservers(){
         this@EditEventFragment.viewModel.run {
             editEventResponse.observe(viewLifecycleOwner, Observer {
-                helper.updateData(navArgs.id,navArgs.name,navArgs.description,navArgs.startTime,navArgs.endTime)
+                helper.updateData(
+                    navArgs.id,
+                    navArgs.name,
+                    navArgs.description,
+                    navArgs.startTime,
+                    navArgs.endTime,
+                    eventTypeUtils.getTypeByCode(navArgs.eventType.toString()),
+                    navArgs.eventUrl)
                 binding.nameInput.setText(navArgs.name)
                 binding.detailInput.setText(navArgs.description)
                 helper.image.setupStartImage(navArgs.imageLink?.toList() ?: listOf())
-
+                helper.spinner.setSpinner(eventTypeUtils.getTypeByCode(navArgs.eventType.toString()))
                 binding.startTimeTextInput.isEnabled = false
                 binding.endTimeTextInput.isEnabled = false
+                binding.eventUrlValue.setText(navArgs.eventUrl)
             })
 
             imageUpload.observe(viewLifecycleOwner, Observer {
@@ -128,16 +140,35 @@ class EditEventFragment : BaseFragment<FragmentEditEventBinding,EditEventViewMod
                 }
             })
 
+            eventType.observe(viewLifecycleOwner, Observer {
+                if ( it == eventTypeUtils.getURLType()){
+                    eventUrlLayout.visibility = View.VISIBLE
+                }else{
+                    eventUrlLayout.visibility = View.GONE
+                }
+                submitButton.isEnabled = (binding.nameInput.text.toString().trim() != "") &&
+                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" &&
+                                ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false))
+            })
+
         }
     }
 
     private fun FragmentEditEventBinding.setupTextChange() {
         nameInput.doAfterTextChanged {
             viewModel?.updateNameInput(nameInput.text.toString())
-            submitButton.isEnabled = (nameInput.text.toString().trim() != "")
+            submitButton.isEnabled = (nameInput.text.toString().trim() != "") &&
+                    (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false))
         }
         detailInput.doAfterTextChanged {
             viewModel?.updateDetailInput(detailInput.text.toString())
+        }
+        eventUrlValue.doAfterTextChanged {
+            viewModel?.updateEventUrl(eventUrlValue.text.toString().replace(" ",""))
+            if (viewModel?.eventType?.value == eventTypeUtils.getURLType()){
+                submitButton.isEnabled = (nameInput.text.toString().trim() != "") &&
+                        (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false))
+            }
         }
     }
 

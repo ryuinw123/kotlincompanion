@@ -230,6 +230,12 @@
             android:name="endTime"
             app:argType="string"
             app:nullable="true" />
+        <argument android:name="eventType"
+            app:argType="integer" />
+        <argument
+            android:name="eventUrl"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/settingsEditFragment"

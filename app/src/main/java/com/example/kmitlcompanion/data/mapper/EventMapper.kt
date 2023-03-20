@@ -1,9 +1,8 @@
 package com.example.kmitlcompanion.data.mapper
 
+import android.util.Log
 import com.example.kmitlcompanion.data.model.EventAreaData
-import com.example.kmitlcompanion.data.model.MapPointData
 import com.example.kmitlcompanion.domain.model.EventArea
-import com.example.kmitlcompanion.domain.model.MapPoint
 import javax.inject.Inject
 
 class EventMapper @Inject constructor(
@@ -18,6 +17,8 @@ class EventMapper @Inject constructor(
             endTime = it.endTime,
             area = it.area,
             imageLink = it.imageLink,
+            type = it.type,
+            url = it.url,
         )
     }
 

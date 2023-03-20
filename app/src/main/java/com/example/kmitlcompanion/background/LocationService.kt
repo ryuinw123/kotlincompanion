@@ -6,9 +6,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import com.example.kmitlcompanion.domain.model.EventArea
-import com.example.kmitlcompanion.domain.model.MapPoint
 import com.example.kmitlcompanion.ui.mapboxview.broadcast.NotificationUtils
-import com.google.android.gms.location.GeofencingEvent
 import com.mapbox.geojson.Point
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
@@ -66,24 +64,36 @@ class LocationService : Service() {
             val startTime = eventObject.getString("startTime")
             val endTime = eventObject.getString("endTime")
             val imageLinkArray = eventObject.getJSONArray("imageLink")
+            val eventType = eventObject.getInt("type")
+            val eventUrlArray = eventObject.getJSONArray("url")
+
             val imageLinks = mutableListOf<String>()
             for (i in 0 until imageLinkArray.length()) {
                 imageLinks.add(imageLinkArray.getString(i))
             }
+
+            val eventUrl = mutableListOf<String>()
+            for (i in 0 until eventUrlArray.length()) {
+                eventUrl.add(eventUrlArray.getString(i))
+            }
+
 
 
             eventList.add(
                 EventArea(
                     name = name,
                     description = "",
-                    imageLink = imageLinks,
+                    id = id,
                     startTime = startTime,
                     endTime = endTime,
-                    id = id,
-                    area = area
+                    area = area,
+                    imageLink = imageLinks,
+                    type = eventType,
+                    url = eventUrl,
                 )
             )
         }
+
 
         secretLocation.start(this)
         secretPolygon.start(eventList)

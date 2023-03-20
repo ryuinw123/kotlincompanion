@@ -2,6 +2,8 @@ package com.example.kmitlcompanion.ui.mapboxview
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,6 @@ import com.example.kmitlcompanion.ui.BaseFragment
 import com.example.kmitlcompanion.ui.mainactivity.utils.BottomBarUtils
 import com.example.kmitlcompanion.ui.mapboxview.helpers.ViewHelper
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
@@ -73,6 +74,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             helper.createSheet.setup(requireContext(),this@MapboxFragment.viewModel)
             helper.editDeleteMarker.setup(this@MapboxFragment.viewModel,requireContext(),editDeleteMarkerButton)
             helper.googleCalendar.setup(this@MapboxFragment.viewModel,requireContext())
+            helper.viewEvent.setup(this@MapboxFragment.viewModel, requireContext(),eventClickUrl,eventClickUrlValue)
 
             setupViewObservers()
             //setSeachBarOnQueryTextFocusChange()
@@ -258,7 +260,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
             editComment.observe(viewLifecycleOwner, Observer {
                 Log.d("test_bm","hello gon")
                 binding.commend.clearFocus()
-                editComment?.value?.let {
+                editComment.value?.let {
                     editCommentBtn.visibility = View.VISIBLE
                     cancelEditCommentBtn.visibility = View.VISIBLE
                     sendCommend.visibility = View.GONE
@@ -273,7 +275,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
             //ForBookmark
             isMarkerBookmarked.observe(viewLifecycleOwner, Observer {
-                isMarkerBookmarked?.value?.let {
+                isMarkerBookmarked.value?.let {
                     Log.d("test_ismarkerbookmarked",it.toString())
                     if (it){
                         pinbookmarkButton.background.setTint(ContextCompat.getColor(requireContext(),R.color.kmitl_color))
@@ -425,6 +427,25 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 binding.eventStartValue.text = it
             })
 
+            eventType.observe(viewLifecycleOwner, Observer {
+                helper.viewEvent.setViewURLEnable(it)
+                Log.d("test_event_new",it.toString())
+            })
+
+            eventUrl.observe(viewLifecycleOwner, Observer {
+                Log.d("test_event_new",it.toString())
+                val mSpannableString = SpannableString(it)
+                mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
+                eventClickUrlValue.text = mSpannableString
+            })
+
+            eventOnClickUrl.observe(viewLifecycleOwner, Observer {
+                if (it == true){
+                    helper.viewEvent.startIntentToBrowser()
+                    eventOnClickUrl.value = false
+                }
+            })
+
             displayTimer.observe(viewLifecycleOwner, Observer {
                 //Log.d("test_time",it)
                 eventRemainValue.text = it
@@ -493,7 +514,7 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapView?.onLowMemory()
+        binding.mapView.onLowMemory()
     }
 
     override fun onDestroyView() {

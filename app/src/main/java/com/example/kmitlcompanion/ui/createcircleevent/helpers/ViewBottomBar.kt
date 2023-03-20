@@ -12,8 +12,8 @@ class ViewBottomBar @Inject constructor(
 ) {
 
     private val RADIUS_SEEKBAR_DIFFERENCE = 1
-    private val RADIUS_SEEKBAR_MAX = 150
-    private val RADIUS_INITIAL = 1
+    private val RADIUS_SEEKBAR_MAX = 100//150
+    private val RADIUS_INITIAL = 5//1
 
     lateinit var viewModel: CreateCircleEventViewModel
     lateinit var weakGuideline: WeakReference<Guideline>
@@ -27,14 +27,15 @@ class ViewBottomBar @Inject constructor(
         seekBar.incrementProgressBy(RADIUS_SEEKBAR_DIFFERENCE)
         seekBar.progress = RADIUS_INITIAL
 
-        viewModel.updateRadius(RADIUS_INITIAL / 10.0)
+        viewModel.updateRadius(RADIUS_INITIAL / 100.0) //10.0
+
 
         seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (progress == 0) {
                     seekBar.progress = 1
                 }
-                val radius = seekBar.progress / 10.0
+                val radius = seekBar.progress / 100.0 //10.0
                 viewModel.updateRadius(radius)
             }
 

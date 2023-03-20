@@ -122,14 +122,17 @@ class ViewSearch @Inject constructor(
                     var targetEvent = allEvents?.firstOrNull { searchDetail.id.toLong() == it.id }
 
                     val center = polygonUtils.getCenter(targetEvent!!.area)
-                    eventDetail(name = targetEvent!!.name,
-                                        eventId = targetEvent!!.id.toString(),
-                                        startTime = targetEvent!!.startTime,
-                                        endTime = targetEvent!!.endTime,
-                                        location = center,
-                                        description = targetEvent!!.description,
-                                        imageList = targetEvent!!.imageLink
-                                        )
+                    eventDetail(
+                        name = targetEvent!!.name,
+                        eventId = targetEvent!!.id.toString(),
+                        startTime = targetEvent!!.startTime,
+                        endTime = targetEvent!!.endTime,
+                        location = center,
+                        description = targetEvent!!.description,
+                        imageList = targetEvent!!.imageLink,
+                        eventType = targetEvent!!.type,
+                        eventUrl = targetEvent!!.url.firstOrNull() ?:"",
+                    )
 
                 }else{
                     val allMarker = viewModel.mapInformationResponse.value?.mapPoints
@@ -144,8 +147,6 @@ class ViewSearch @Inject constructor(
                         imageList = targetMarker!!.imageLink
                     )
                 }
-
-
 
             }
         })
@@ -215,7 +216,7 @@ class ViewSearch @Inject constructor(
     }
 
     fun eventDetail(name : String ,eventId : String ,startTime : String,endTime : String,
-                    location : Point ,description : String ,imageList : List<String>) {
+                    location : Point ,description : String ,imageList : List<String>,eventType : Int,eventUrl : String) {
 
         viewModel.getEventDetailsLocationQuery(eventId)//get marker details
         //Log.d("test_event","$name $startTime $endTime $description $imageList")
@@ -229,6 +230,9 @@ class ViewSearch @Inject constructor(
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
         viewModel.setIconLocation(R.drawable.ic_event_48px)
+
+        viewModel.setEventType(eventType)
+        viewModel.setEventUrl(eventUrl)
 
         viewModel.changeEventState(true)
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)

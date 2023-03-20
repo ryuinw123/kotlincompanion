@@ -10,7 +10,6 @@ import com.example.kmitlcompanion.domain.usecases.GetLastestNotificationTime
 import com.example.kmitlcompanion.domain.usecases.UpdateNotificationTime
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
 import io.reactivex.rxjava3.observers.DisposableObserver
-import java.sql.Time
 import java.sql.Timestamp
 import javax.inject.Inject
 
@@ -27,6 +26,8 @@ class GeofenceReceiver : BroadcastReceiver() {
         if (intent.action == "com.example.kmitl.geofence") {
             val id = intent.getLongExtra("id" , 0)
             val name = intent.getStringExtra("name")
+            val type = intent.getIntExtra("type",0)
+            val url = intent.getStringExtra("url")
             val thistime = Timestamp(System.currentTimeMillis())
 
 
@@ -46,6 +47,11 @@ class GeofenceReceiver : BroadcastReceiver() {
                     if (diffInMillis > oneDayInMillis) {
                         notificationUtils.sendGeofenceEnteredNotification(id , name ?: "Error",NotificationUtils.GEO_CHANNEL_ID)
                         saveNotificationUtils.saveNotificationToCache(intent)
+
+                        if (type == 1){
+                            notificationUtils.sendGeofenceEnteredNotificationWithUrl(id,NotificationUtils.GEO_CHANNEL_ID,url ?:"")
+                        }
+
                         Log.d("Geofence" , "Transition In $id")
 
                         updateNotificationTime.execute(object : DisposableCompletableObserver() {

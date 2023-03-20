@@ -28,9 +28,11 @@ class RemoteDataStore @Inject constructor(
         endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
-        return remoteRepository.createEventQuery(name, detail, startTime,endTime, point, image, token)
+        return remoteRepository.createEventQuery(name, detail, startTime,endTime, point, image,type,url,token)
     }
 
     override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
@@ -236,9 +238,20 @@ class RemoteDataStore @Inject constructor(
         description: String,
         image: List<MultipartBody.Part?>,
         imageUrl: List<String?>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
-        return remoteRepository.editEventLocationQuery(eventId, name, description, image,imageUrl, token)
+        return remoteRepository.editEventLocationQuery(
+            eventId,
+            name,
+            description,
+            image,
+            imageUrl,
+            type,
+            url,
+            token
+        )
     }
 
 

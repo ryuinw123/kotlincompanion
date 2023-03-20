@@ -24,7 +24,6 @@ class MapperUtils @Inject constructor(
     }
 
     private fun getAreaFeature(eventArea: EventArea?): Feature {
-
         val polygon = Polygon.fromLngLats(listOf( eventArea?.area))
         val feature = Feature.fromGeometry(polygon)
         feature.addStringProperty("name", eventArea?.name)
@@ -33,6 +32,8 @@ class MapperUtils @Inject constructor(
         feature.addStringProperty("startTime", eventArea?.startTime)
         feature.addStringProperty("endTime", eventArea?.endTime)
         feature.addStringProperty("imageLink",eventArea?.imageLink.toString())
+        feature.addNumberProperty("type",eventArea?.type)
+        feature.addStringProperty("url",eventArea?.url?.firstOrNull() ?:"")
 
         /*val areaJson = ("{ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ ${
              getDoubleFromPointArea(eventArea.area)

@@ -12,7 +12,6 @@ import com.example.kmitlcompanion.presentation.utils.SingleLiveData
 import com.example.kmitlcompanion.ui.createlocation.utils.TagTypeListUtil
 import com.example.kmitlcompanion.ui.mapboxview.MapboxFragmentDirections
 import com.example.kmitlcompanion.ui.mapboxview.utils.DateUtils
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.geojson.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
@@ -205,6 +204,15 @@ class MapboxViewModel @Inject constructor(
     private val _eventBindEnd = MutableLiveData<String>()
     val eventBindEnd : LiveData<String> = _eventBindEnd
 
+    private val _eventType = MutableLiveData<Int>()
+    val eventType : LiveData<Int> = _eventType
+
+    private val _eventUrl = MutableLiveData<String>()
+    val eventUrl : LiveData<String> = _eventUrl
+
+    private val _eventOnClickUrl = MutableLiveData<Boolean>()
+    val eventOnClickUrl : MutableLiveData<Boolean> = _eventOnClickUrl
+
     private val _allEventBookmarkedIdList = MutableLiveData<MutableList<Int>>()
     val allEventBookmarkedIdList : LiveData<MutableList<Int>> = _allEventBookmarkedIdList
 
@@ -299,16 +307,16 @@ class MapboxViewModel @Inject constructor(
         getEventLocations.execute(object : DisposableObserver<EventInformation>(){
 
             override fun onComplete() {
-                Log.d("test_downloadLocationsEvent","complete")
+                Log.d("downloadLocationsEvent","complete")
             }
 
             override fun onNext(t: EventInformation) {
-                Log.d("test_downloadLocationsEvent",t.toString())
+                Log.d("downloadLocationsEvent",t.toString())
                 _mapEventResponse.value = t
             }
 
             override fun onError(e: Throwable) {
-                Log.d("test_downloadLocationsEvent",e.toString())
+                Log.d("downloadLocationsEvent",e.toString())
             }
         })
     }
@@ -581,6 +589,7 @@ class MapboxViewModel @Inject constructor(
     fun appendDataToSearchList(searchText : String?, tagList : MutableList<Int?>){
         val currentLocation = _userLocation.value
         Log.d("test_appendDataToSearchList",_itemTagList.value.toString())
+        Log.d("test_event_new", Triple(searchText,tagList,currentLocation).toString())
         getSearchDetailsQuery.execute(object : DisposableObserver<List<SearchDetail>>(){
             override fun onComplete() {
                 Log.d("getSearchDetailsQuery","onComplete")
@@ -678,6 +687,18 @@ class MapboxViewModel @Inject constructor(
 
     fun setStartTime(startTime : String){
         _eventBindStart.value = startTime
+    }
+
+    fun setEventType(type : Int){
+        _eventType.value = type
+    }
+
+    fun setEventUrl(url : String){
+        _eventUrl.value = url
+    }
+
+    fun onEventUrlClick(){
+        _eventOnClickUrl.value = true
     }
 
     //event like
@@ -834,7 +855,9 @@ class MapboxViewModel @Inject constructor(
             _descriptionLocationLabel.value,
             _imageLink.value?.toTypedArray(),
             _eventBindStart.value,
-            _eventBindEnd.value
+            _eventBindEnd.value,
+            _eventType.value ?:0,
+            _eventUrl.value,
         ))
     }
 

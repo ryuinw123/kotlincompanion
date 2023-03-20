@@ -73,7 +73,7 @@ class CreateCircleEventFragment : BaseFragment<FragmentCreateCircleEventBinding,
         lifecycle.addObserver(mapHelper)
         this@CreateCircleEventFragment.viewModel.run {
             currentRadius.observe(viewLifecycleOwner, Observer {
-                circleRadiusTextview.text = "รัศมี : $it กิโลเมตร"
+                circleRadiusTextview.text = "รัศมี : ${it.times(1000.0).toInt()} เมตร"
                 mapHelper.redraw()
             })
 

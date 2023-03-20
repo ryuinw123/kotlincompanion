@@ -20,9 +20,19 @@ class RetrofitClient @Inject constructor(
         endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
-        return retrofitTestClient.createEventQuery(name, detail, startTime,endTime, point, image, token)
+        return retrofitTestClient.createEventQuery(
+            name,
+            detail,
+            startTime,
+            endTime,
+            point,
+            image,type,url,
+            token
+        )
     }
 
     override fun getEventLocations(token: String): Observable<List<EventAreaData>> {
@@ -203,10 +213,20 @@ class RetrofitClient @Inject constructor(
         description: String,
         image: List<MultipartBody.Part?>,
         imageUrl: List<String?>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
-
-        return retrofitTestClient.editEventLocationQuery(eventId,name,description,image,imageUrl,token)
+        return retrofitTestClient.editEventLocationQuery(
+            eventId,
+            name,
+            description,
+            image,
+            imageUrl,
+            type,
+            url,
+            token
+        )
     }
 
     override fun settingsGetUserData(token: String): Observable<UserSettingsDataModel> {

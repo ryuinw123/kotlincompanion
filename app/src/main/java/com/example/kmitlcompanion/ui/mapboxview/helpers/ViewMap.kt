@@ -28,7 +28,6 @@ import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import com.mapbox.maps.plugin.scalebar.scalebar
 import com.mapbox.turf.TurfMeasurement
 import java.lang.ref.WeakReference
-import java.util.*
 import javax.inject.Inject
 
 
@@ -179,7 +178,17 @@ class ViewMap @Inject constructor(
                 val pointsList = it.area
                 val pointsFeature = Feature.fromGeometry(MultiPoint.fromLngLats(pointsList))
                 val center = TurfMeasurement.center(pointsFeature).geometry() as Point
-                eventDetail(it.name,it.id.toString(),it.startTime,it.endTime,center,it.description,it.imageLink)
+                eventDetail(
+                    it.name,
+                    it.id.toString(),
+                    it.startTime,
+                    it.endTime,
+                    center,
+                    it.description,
+                    it.imageLink,
+                    it.type.toInt(),
+                    it.url.firstOrNull() ?:"",
+                )
             }
 
             if (eventData == null){
@@ -243,7 +252,8 @@ class ViewMap @Inject constructor(
     }
 
     fun eventDetail(name : String ,eventId : String ,startTime : String,endTime : String,
-                            location : Point ,description : String ,imageList : List<String>) {
+                            location : Point ,description : String ,imageList : List<String>,
+        eventType : Int,eventUrl : String) {
 
         viewModel.getEventDetailsLocationQuery(eventId)//get marker details
         //Log.d("test_event","$name $startTime $endTime $description $imageList")
@@ -257,6 +267,9 @@ class ViewMap @Inject constructor(
         viewModel.updateDescriptionLocationLabel(description)
         viewModel.updateImageLink(imageList)
         viewModel.setIconLocation(R.drawable.ic_event_48px)
+
+        viewModel.setEventType(eventType)
+        viewModel.setEventUrl(eventUrl)
 
         viewModel.changeEventState(true)
         viewModel.updateBottomSheetState(BottomSheetBehavior.STATE_HALF_EXPANDED)
@@ -330,17 +343,19 @@ class ViewMap @Inject constructor(
                             val imageList = selectedFeature.getStringProperty("imageLink").removePrefix("[").removeSuffix("]").split(",").map { it.trim() }.toList()
                             val startTime = selectedFeature.getStringProperty("startTime")
                             val endTime = selectedFeature.getStringProperty("endTime")
-
-                            Log.d("test_event",selectedFeature.toString())
+                            val type = selectedFeature.getNumberProperty("type")
+                            val url = selectedFeature.getStringProperty("url")
 
                             eventDetail(
-                                name=name,
+                                name =name,
                                 eventId =id,
                                 startTime = startTime,
                                 endTime = endTime,
                                 location = center,
                                 description = description,
-                                imageList = imageList
+                                imageList = imageList,
+                                eventType = type.toInt(),
+                                eventUrl = url,
                             )
 
                         }

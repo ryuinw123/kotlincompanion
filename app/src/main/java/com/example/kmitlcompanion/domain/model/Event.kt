@@ -12,4 +12,6 @@ data class Event(
     val point: List<Point>,
     val file: List<File?>,
     val uri: List<Uri?>,
+    val type : Int?,
+    val url : String?
 )

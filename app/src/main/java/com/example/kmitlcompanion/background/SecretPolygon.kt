@@ -53,6 +53,8 @@ class SecretPolygon @Inject constructor(
                     intent.putExtra("startTime", area.startTime)
                     intent.putExtra("endTime", area.endTime)
                     intent.putExtra("imageLinks",area.imageLink.getOrNull(0))
+                    intent.putExtra("type", area.type)
+                    intent.putExtra("url",area.url.getOrNull(0))
                     context.sendBroadcast(intent)
  //                   cancelTimeArea.removeAll { it.id == area.id }
  //                   cancelTimeArea.add(NotiCollection(area.id, Calendar.getInstance().time))

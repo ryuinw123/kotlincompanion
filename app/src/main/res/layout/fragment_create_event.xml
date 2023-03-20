@@ -194,6 +194,66 @@
                         app:srcCompat="@drawable/event_busy_fill1_wght400_grad0_opsz48"
                         app:tint="@color/kmitl_color" />
 
+                    <Spinner
+                        android:id="@+id/event_type_spinner"
+                        style="@style/spinner_style"
+                        android:layout_width="0dp"
+                        android:layout_height="43dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="@+id/end_time_dialog"
+                        app:layout_constraintStart_toStartOf="@+id/end_time_dialog"
+                        app:layout_constraintTop_toBottomOf="@+id/end_time_dialog"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                    <ImageView
+                        android:id="@+id/event_type_icon"
+                        android:layout_width="42dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="30dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/event_type_spinner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/event_type_spinner"
+                        app:srcCompat="@drawable/format_list_bulleted_fill1_wght400_grad0_opsz48"
+                        app:tint="@color/kmitl_color" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/event_url_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColorHint="@color/kmitl_color"
+                        app:boxStrokeColor="@color/kmitl_color"
+                        app:boxStrokeWidth="2dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:hintTextColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/event_type_spinner"
+                        app:layout_constraintStart_toStartOf="@+id/event_type_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/event_type_spinner">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/event_url_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
+                            android:hint="ลิ้งภายนอก" />
+
+
+                        <TextView
+                            android:id="@+id/validate_w_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="* ลิ้งภายนอกต้องขึ้นต้นด้วย http:// หรือ https:// เท่านั้น"
+                            android:textColor="@color/kmitl_color"
+                            app:layout_constraintEnd_toEndOf="@+id/event_url_value"
+                            app:layout_constraintStart_toStartOf="@+id/event_url_value"
+                            app:layout_constraintTop_toBottomOf="@+id/event_url_value" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/detail_helper"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -205,9 +265,9 @@
                         app:boxStrokeWidth="2dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:hintTextColor="@color/kmitl_color"
-                        app:layout_constraintEnd_toEndOf="@+id/end_time_dialog"
-                        app:layout_constraintStart_toStartOf="@+id/end_time_dialog"
-                        app:layout_constraintTop_toBottomOf="@+id/end_time_dialog">
+                        app:layout_constraintEnd_toEndOf="@+id/event_type_spinner"
+                        app:layout_constraintStart_toStartOf="@+id/event_type_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/event_url_layout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/detail_input"

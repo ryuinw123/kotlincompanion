@@ -35,6 +35,8 @@ interface RetrofitTestClient {
         @Part("endTime") endTime: String,
         @Part("point") point: List<Point>,
         @Part image: List<MultipartBody.Part>,
+        @Part("type") type: Int,
+        @Part("url") url: String,
         @Part("token") token: String
     ): Completable
 
@@ -208,6 +210,8 @@ interface RetrofitTestClient {
         @Part("description") description: String,
         @Part image: List<MultipartBody.Part?>,
         @Part("imageUrl") imageUrl: List<String?>,
+        @Part("type") type: Int,
+        @Part("url") url: String,
         @Part("token") token: String
     ): Completable
 

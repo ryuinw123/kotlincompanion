@@ -21,7 +21,9 @@ class CreateEventQuery @Inject constructor(
                  endTime = params?.third ?:"",
                  point = params!!.first!!.point,
                  file = params!!.first!!.file,
-                 uri = params!!.first!!.uri
+                 uri = params!!.first!!.uri,
+                 type = params!!.first.type,
+                 url = params!!.first.url,
              )
         )
     }

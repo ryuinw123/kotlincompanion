@@ -14,4 +14,6 @@ data class EditEventLocation(
     val name: String?,
     val description:String?,
     val image : MutableList<Pair<Int,Any>?>,
+    val type : Int?,
+    val url : String?,
 ) : Parcelable

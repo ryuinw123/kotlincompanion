@@ -3,7 +3,6 @@ package com.example.kmitlcompanion.domain.usecases
 import com.example.kmitlcompanion.domain.CompletableUseCase
 import com.example.kmitlcompanion.domain.executor.PostExecutionThread
 import com.example.kmitlcompanion.domain.model.EditEventLocation
-import com.example.kmitlcompanion.domain.model.Event
 import com.example.kmitlcompanion.domain.repository.DomainRepository
 import io.reactivex.rxjava3.core.Completable
 import javax.inject.Inject
@@ -19,6 +18,8 @@ class EditEventQuery @Inject constructor(
             name = params?.name ?:"",
             description = params?.description ?:"",
             image = (params?.image ?: mutableListOf()) as MutableList<Pair<Int, Any>>,
+            type = params?.type ?:0,
+            url = params?.url ?:"",
         )
     }
 }

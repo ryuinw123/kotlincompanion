@@ -29,6 +29,8 @@ class CacheDataStore @Inject constructor(
         endTime: String,
         point: List<Point>,
         image: List<MultipartBody.Part>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
@@ -222,6 +224,8 @@ class CacheDataStore @Inject constructor(
         description: String,
         image: List<MultipartBody.Part?>,
         imageUrl: List<String?>,
+        type: Int,
+        url: String,
         token: String
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
