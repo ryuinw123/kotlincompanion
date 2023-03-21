@@ -135,7 +135,7 @@ class NotificationUtils @Inject constructor(
 
     fun createNotification(channelId: String): Notification {
 
-        Log.d("test_noti_bug","create notification")
+
         val mapImage = BitmapFactory.decodeResource(
             context.resources,
             R.mipmap.ic_launcher_round

@@ -77,7 +77,6 @@ class LocationService : Service() {
                 eventUrl.add(eventUrlArray.getString(i))
             }
 
-            Log.d("test_noti_bug","$name create notification")
 
             eventList.add(
                 EventArea(
