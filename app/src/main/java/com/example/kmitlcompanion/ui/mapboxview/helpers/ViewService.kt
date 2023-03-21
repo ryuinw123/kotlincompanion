@@ -22,7 +22,7 @@ class ViewService @Inject constructor(
 
         val eventPoints = viewModel.mapEventResponse.value?.eventPoints
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        val nowTime = format.parse(dateUtils.shinGetTime())
+        val nowTime = Calendar.getInstance().time
         val filteredEventPoints = eventPoints?.filter { format.parse(it.startTime) < nowTime }?.toMutableList() ?: mutableListOf()
 //        Log.d("test_noti",nowTime.toString())
 //        Log.d("test_noti",format.parse(eventPoints?.get(0)?.startTime).toString())
