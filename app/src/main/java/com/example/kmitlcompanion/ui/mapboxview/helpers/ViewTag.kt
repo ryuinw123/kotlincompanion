@@ -82,49 +82,6 @@ class ViewTag @Inject constructor(
         tagAdapter.notifyDataSetChanged()
     }
 
-//    private fun tagFlyPosition(valueList: MutableList<Int?>){ ///[0,1,2,3,4,5]
-//        val allMapData = viewModel.mapInformationResponse.value?.mapPoints
-//        val bookMarkId = viewModel.allMarkerBookmarked.value //Id
-//        val currentPosition = viewModel.userLocation.value
-//
-//        val setOfMarkerPosition = mutableListOf<Point>()
-//
-//        allMapData?.forEach {
-//            if (valueList.contains(100)){
-//                var buff = allMapData.filter { allMapData -> bookMarkId!!.any { id -> id.toLong() == allMapData.id} }
-//                var buffer = buff.map { Point.fromLngLat(it.longitude,it.latitude) }
-//                setOfMarkerPosition.plus(buffer)
-//            }
-//            if (valueList.contains(tagTypeListUtil.typeToTagCode(it.type))){
-//                setOfMarkerPosition.add(Point.fromLngLat(it.longitude,it.latitude))
-//            }
-//        }
-//
-//        Log.d("test_tagfly",setOfMarkerPosition.toString())
-//        viewModel.updatePositionFlyer(Point.fromLngLat(0.00,0.00))
-//
-//    }
-
-//    private fun tagFlyPosition(valueList: MutableList<Int?>) {
-//        val allMapData = viewModel.mapInformationResponse.value?.mapPoints
-//        val bookMarkId = viewModel.allMarkerBookmarked.value
-//        val currentPosition = viewModel.userLocation.value
-//        //val currentLong = currentPosition?.longitude()
-//        //val currentLat = currentPosition?.latitude()
-//
-//        val setOfMarkerPosition = allMapData?.filter {
-//            (valueList.contains(100) && bookMarkId!!.any { id -> id.toLong() == it.id }) ||
-//                    valueList.contains(tagTypeListUtil.typeToTagCode(it.type))
-//        }?.map { Point.fromLngLat(it.longitude, it.latitude) }
-//
-//        Log.d("test_tagfly", setOfMarkerPosition.toString())
-//
-//        viewModel.updatePositionFlyer(Point.fromLngLat(0.00, 0.00))
-//
-//        val centerOfAllPoint = ????
-//
-//    }
-
     private fun test(valueList: MutableList<Int?>){
         val allEventData = viewModel.mapEventResponse.value?.eventPoints
         val bookEventMarkId = viewModel.allEventBookmarkedIdList.value

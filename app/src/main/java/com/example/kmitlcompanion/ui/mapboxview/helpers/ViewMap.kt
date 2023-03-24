@@ -61,33 +61,7 @@ class ViewMap @Inject constructor(
         }
 
         mapView?.getMapboxMap()?.loadStyle(
-            styleExtension = style(styleUri = STYLE_ID) {
-                +image(LOCATION) {
-                    var bitmap = bitmapConverter.bitmapFromDrawableRes(R.drawable.type_pin)!!
-//                    var bitmapImage = Bitmap.createScaledBitmap(bitmap
-//                        ,bitmap.width * 0.5 as Int
-//                        , bitmap.width * 0.5 as Int, true)
-                    bitmap(bitmap)
-                }
-                +image(RESTAURANT) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_restaurant)!!)
-                }
-                +image(SCHOOL) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_school)!!)
-                }
-                +image(ROOM) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_room)!!)
-                }
-                +image(SHOP) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_shop)!!)
-                }
-                +image(BUILDING) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_building)!!)
-                }
-                +image(DORM) {
-                    bitmap(bitmapConverter.bitmapFromDrawableRes(R.drawable.type_dorm)!!)
-                }
-            }
+            styleExtension = mapExpressionUtils.getImageStyle(STYLE_ID)
         ) {
             callback(mapView.getMapboxMap())
         }
@@ -581,6 +555,8 @@ class ViewMap @Inject constructor(
         const val SHOP = "shop"
         const val BUILDING = "building"
         const val DORM = "dorm"
+        const val TOILET = "toilet"
+        const val BANK = "bank"
     }
 
 
