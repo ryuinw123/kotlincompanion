@@ -16,7 +16,7 @@ class TagTypeListUtil @Inject constructor(
         TagDetail(2,"ห้องเรียน",R.drawable.tag_room),
         TagDetail(3,"ร้านค้า",R.drawable.tag_shop),
         TagDetail(7,"ธนาคาร",R.drawable.tag_bank),
-        TagDetail(4,"ตึก",R.drawable.tag_building),
+        TagDetail(4,"สถานที่",R.drawable.tag_building),
         TagDetail(5,"หอพัก",R.drawable.tag_dorm),
     )
 
@@ -41,7 +41,7 @@ class TagTypeListUtil @Inject constructor(
         return mutableListOf<TagDetail>()
             .plus(spacialTagTypeList[0]) //bookmark
             .plus(spacialTagTypeList[1]) //event
-            .plus(tagTypeDetailsList.slice(IntRange(1, tagTypeDetailsList.size - 1)))
+            .plus(tagTypeDetailsList.slice(IntRange(0, tagTypeDetailsList.size - 1)))
                 as MutableList<TagDetail>
     }
 
