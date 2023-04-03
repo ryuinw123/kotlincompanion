@@ -58,6 +58,9 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
             val itemList = tagTypeListUtil.getMutableListOfTagTypeString() as ArrayList<String>
             helper.spinner.setup(typeSpinner,itemList,requireContext(),this@CreateLocationFragment.viewModel)
             helper.upload.setup(this@CreateLocationFragment.viewModel)
+
+            helper.checkValid.setup(this@CreateLocationFragment.viewModel,requireContext())
+
             setupViewObservers()
             setupTextChange()
         }
@@ -116,6 +119,14 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
                     uploadLoading.value = false
                 }
             })
+
+            validCount.observe(viewLifecycleOwner, Observer {
+                numberOfCountPublicPin.text = it.toString()
+                if (it == 0){
+                    publicSubmit.isEnabled = false
+                }
+            })
+
         }
 
     }
@@ -124,7 +135,7 @@ class CreateLocationFragment : BaseFragment<FragmentCreateLocationBinding , Crea
             viewModel?.updateNameInput(nameInput.text.toString())
 
             privateSubmit.isEnabled = (nameInput.text.toString().trim() != "")
-            publicSubmit.isEnabled = (nameInput.text.toString().trim() != "")
+            publicSubmit.isEnabled = (nameInput.text.toString().trim() != "") && (viewModel?.validCount?.value != 0)
         }
         detailInput.doAfterTextChanged {
             viewModel?.updateDetailInput(detailInput.text.toString())

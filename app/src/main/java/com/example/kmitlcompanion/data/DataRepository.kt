@@ -465,4 +465,12 @@ class DataRepository @Inject constructor(
     ): Completable {
         return dataStore.getRemoteData(true).reportMarkerLocationQueryDetails(id,reason,details, getToken())
     }
+
+    override fun checkValidCreateMarkerCount(): Observable<Int> {
+        return dataStore.getRemoteData(true).checkValidCreateMarkerCountDetails(getToken())
+    }
+
+    override fun checkValidCreateEventCount(): Observable<Int> {
+        return dataStore.getRemoteData(true).checkValidCreateEventCountDetails(getToken())
+    }
 }

@@ -55,10 +55,12 @@ class ViewMap @Inject constructor(
             marginRight = 48F
         }
 
-        mapView?.scalebar?.updateSettings {
-            marginLeft = 40F
-            marginTop = 350F
-        }
+//        mapView?.scalebar?.updateSettings {
+//            marginLeft = 40F
+//            marginTop = 350F
+//        }
+
+        mapView?.scalebar?.enabled = false
 
         mapView?.getMapboxMap()?.loadStyle(
             styleExtension = mapExpressionUtils.getImageStyle(STYLE_ID)

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.kmitlcompanion.domain.model.EventDetail
+import com.example.kmitlcompanion.domain.usecases.CheckValidCreateEventCount
 import com.example.kmitlcompanion.domain.usecases.CreateEventQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
 import com.example.kmitlcompanion.presentation.eventobserver.Event
@@ -14,6 +15,7 @@ import com.example.kmitlcompanion.ui.createevent.utils.EventTypeUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
+import io.reactivex.rxjava3.observers.DisposableObserver
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class CreateEventViewModel  @Inject constructor(
     private val eventTypeUtils: EventTypeUtils,
     private val createEventQuery: CreateEventQuery,
+    private val checkValidCreateEventCount: CheckValidCreateEventCount,
 ) : BaseViewModel(){
 
 
@@ -74,6 +77,10 @@ class CreateEventViewModel  @Inject constructor(
 
     private val _eventUrl = MutableLiveData<String>()
     val eventUrl : LiveData<String> = _eventUrl
+
+    //check valid
+    private val _validCount = MutableLiveData<Int>()
+    val validCount : MutableLiveData<Int> = _validCount
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -205,6 +212,24 @@ class CreateEventViewModel  @Inject constructor(
 
     fun updateEventUrl(url : String){
         _eventUrl.value = url
+    }
+
+    ///check valid
+    fun getValidValue() {
+        checkValidCreateEventCount.execute(object : DisposableObserver<Int>(){
+            override fun onNext(t: Int) {
+                Log.d("test_valid","$t")
+                _validCount.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("checkValidCreateMarkerCount","$e")
+            }
+
+            override fun onComplete() {
+                Log.d("checkValidCreateMarkerCount","onComplete")
+            }
+        })
     }
 
 

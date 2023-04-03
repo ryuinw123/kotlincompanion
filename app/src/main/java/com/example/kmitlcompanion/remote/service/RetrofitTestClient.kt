@@ -244,4 +244,13 @@ interface RetrofitTestClient {
                                         @Part("details") details : String,
                                         @Part("token") token: String) : Completable
 
+    @Multipart
+    @POST("checkvalidcreatemarkercount")
+    fun checkValidCreateMarkerCountDetails(@Part("token") token: String) : Observable<Int>
+
+    @Multipart
+    @POST("checkvalidcreateeventcount")
+    fun checkValidCreateEventCountDetails(@Part("token") token: String) : Observable<Int>
+
+
 }

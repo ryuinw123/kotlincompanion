@@ -7,5 +7,6 @@ import javax.inject.Inject
 class CreateLocationHelper @Inject constructor(
     val image: ImageHelper,
     val spinner : SpinnerHelper,
-    val upload : UploadHelper
+    val upload : UploadHelper,
+    val checkValid : CheckValidHelper,
 )

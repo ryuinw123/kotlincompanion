@@ -59,8 +59,9 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
             helper.upload.setup(this@CreateEventFragment.viewModel)
 
             helper.spinner.setup(eventTypeSpinner, eventTypeUtils.getType(),requireContext(),this@CreateEventFragment.viewModel)
-
             helper.datetime.setup(requireContext(), this@CreateEventFragment.viewModel,startTimeTextInput,endTimeTextInput)
+            helper.validHelper.setup(this@CreateEventFragment.viewModel,requireContext())
+
             setupViewObservers()
             setupTextChange()
 
@@ -118,13 +119,15 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
             startDateTimeValue.observe(viewLifecycleOwner, Observer {
                 //submitButton.isEnabled = endDateTimeValue.value?.timeInMillis!! - startDateTimeValue.value?.timeInMillis!! >= 10 * 60 * 1000
                 submitButton.isEnabled = nameInput != null && !TextUtils.isEmpty(binding.nameInput.text?.trim()) && endDateTimeValue.value?.timeInMillis!! - startDateTimeValue.value?.timeInMillis!! >= 10 * 60 * 1000 &&
-                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false))
+                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false)) &&
+                        (validCount?.value != 0)
             })
 
             endDateTimeValue.observe(viewLifecycleOwner, Observer {
                 //submitButton.isEnabled = endDateTimeValue.value?.timeInMillis!! - startDateTimeValue.value?.timeInMillis!! >= 10 * 60 * 1000
                 submitButton.isEnabled = nameInput != null && !TextUtils.isEmpty(binding.nameInput.text?.trim()) && endDateTimeValue.value?.timeInMillis!! - startDateTimeValue.value?.timeInMillis!! >= 10 * 60 * 1000 &&
-                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false))
+                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false)) &&
+                        (validCount?.value != 0)
 
             })
 
@@ -144,7 +147,15 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
                     eventUrlLayout.visibility = View.GONE
                 }
                 submitButton.isEnabled = binding.nameInput != null && !TextUtils.isEmpty(binding.nameInput.text?.trim()) && endDateTimeValue?.value?.timeInMillis!! - startDateTimeValue?.value?.timeInMillis!! >= 10 * 60 * 1000 &&
-                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false))
+                        (eventType?.value != eventTypeUtils.getURLType() || binding.eventUrlValue.text.toString().replace(" ","") != "" && ((binding.eventUrlValue.text?.startsWith("http://") ?:false) || binding.eventUrlValue.text?.startsWith("https://") ?:false)) &&
+                        (validCount?.value != 0)
+            })
+
+            validCount.observe(viewLifecycleOwner, Observer {
+                numberOfCountEvent.text = it.toString()
+                if (it == 0){
+                    submitButton.isEnabled = false
+                }
             })
 
         }
@@ -155,13 +166,15 @@ class CreateEventFragment : BaseFragment<FragmentCreateEventBinding , CreateEven
         nameInput.doAfterTextChanged {
             viewModel?.updateNameInput(nameInput.text.toString())
             submitButton.isEnabled = nameInput != null && !TextUtils.isEmpty(nameInput.text?.trim()) && viewModel?.endDateTimeValue?.value?.timeInMillis!! - viewModel?.startDateTimeValue?.value?.timeInMillis!! >= 10 * 60 * 1000 &&
-                    (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false))
+                    (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false)) &&
+                    (viewModel?.validCount?.value != 0)
         }
         eventUrlValue.doAfterTextChanged {
             viewModel?.updateEventUrl(eventUrlValue.text.toString().replace(" ",""))
             if (viewModel?.eventType?.value == eventTypeUtils.getURLType()){
                 submitButton.isEnabled = nameInput != null && !TextUtils.isEmpty(nameInput.text?.trim()) && viewModel?.endDateTimeValue?.value?.timeInMillis!! - viewModel?.startDateTimeValue?.value?.timeInMillis!! >= 10 * 60 * 1000 &&
-                        (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false))
+                        (viewModel?.eventType?.value != eventTypeUtils.getURLType() || eventUrlValue.text.toString().replace(" ","") != "" && ((eventUrlValue.text?.startsWith("http://") ?:false) || eventUrlValue.text?.startsWith("https://") ?:false)) &&
+                        (viewModel?.validCount?.value != 0)
             }
         }
         detailInput.doAfterTextChanged {

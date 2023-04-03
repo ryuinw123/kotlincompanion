@@ -5,9 +5,12 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.kmitlcompanion.domain.ObservableUseCase
 import com.example.kmitlcompanion.domain.model.Location
 import com.example.kmitlcompanion.domain.model.LocationDetail
 import com.example.kmitlcompanion.domain.model.LocationPublic
+import com.example.kmitlcompanion.domain.model.MapInformation
+import com.example.kmitlcompanion.domain.usecases.CheckValidCreateMarkerCount
 import com.example.kmitlcompanion.domain.usecases.CreateLocationQuery
 import com.example.kmitlcompanion.domain.usecases.CreatePublicLocationQuery
 import com.example.kmitlcompanion.presentation.BaseViewModel
@@ -16,13 +19,15 @@ import com.example.kmitlcompanion.ui.createlocation.CreateLocationFragmentDirect
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.observers.DisposableCompletableObserver
+import io.reactivex.rxjava3.observers.DisposableObserver
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateLocationViewModel @Inject constructor(
     private val createLocationQuery: CreateLocationQuery,
-    private val createPublicLocationQuery: CreatePublicLocationQuery
+    private val createPublicLocationQuery: CreatePublicLocationQuery,
+    private val checkValidCreateMarkerCount: CheckValidCreateMarkerCount,
 ) : BaseViewModel(){
 
 
@@ -60,6 +65,11 @@ class CreateLocationViewModel @Inject constructor(
 
     private val _uploadLoading = MutableLiveData<Boolean>()
     val uploadLoading : MutableLiveData<Boolean> = _uploadLoading
+
+    //valid helper
+    private val _validCount = MutableLiveData<Int>()
+    val validCount : MutableLiveData<Int> = _validCount
+
 
     fun updateNameInput(name: String?) {
         _nameInput.value = name?:""
@@ -162,6 +172,25 @@ class CreateLocationViewModel @Inject constructor(
         )
         Log.d("publicLocation","upload")
     }
+
+    ///check valid
+    fun getValidValue() {
+       checkValidCreateMarkerCount.execute(object : DisposableObserver<Int>(){
+            override fun onNext(t: Int) {
+                Log.d("test_valid","$t")
+                _validCount.value = t
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("checkValidCreateMarkerCount","$e")
+            }
+
+            override fun onComplete() {
+                Log.d("checkValidCreateMarkerCount","onComplete")
+            }
+        })
+    }
+
 
     //Navigation
     fun goToMapbox() {

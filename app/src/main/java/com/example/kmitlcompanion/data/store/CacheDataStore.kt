@@ -286,4 +286,13 @@ class CacheDataStore @Inject constructor(
     ): Completable {
         throw IllegalStateException("Function not currently supported!")
     }
+
+
+    override fun checkValidCreateMarkerCountDetails(token: String): Observable<Int> {
+        throw IllegalStateException("Function not currently supported!")
+    }
+
+    override fun checkValidCreateEventCountDetails(token: String): Observable<Int> {
+        throw IllegalStateException("Function not currently supported!")
+    }
 }

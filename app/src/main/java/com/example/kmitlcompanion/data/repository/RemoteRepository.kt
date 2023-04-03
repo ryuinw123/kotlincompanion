@@ -100,6 +100,9 @@ interface RemoteRepository {
 
     fun reportMarkerLocationQueryDetails(id : Long,reason : String,details : String,token: String) : Completable
 
+    fun checkValidCreateMarkerCountDetails(token: String) : Observable<Int>
+
+    fun checkValidCreateEventCountDetails(token: String) : Observable<Int>
 
 }
 

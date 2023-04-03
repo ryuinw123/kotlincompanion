@@ -262,4 +262,13 @@ class RetrofitClient @Inject constructor(
     ): Completable {
         return retrofitTestClient.reportMarkerLocationQueryDetails(id,reason,details,token)
     }
+
+
+    override fun checkValidCreateMarkerCountDetails(token: String): Observable<Int> {
+        return retrofitTestClient.checkValidCreateMarkerCountDetails(token)
+    }
+
+    override fun checkValidCreateEventCountDetails(token: String): Observable<Int> {
+        return retrofitTestClient.checkValidCreateEventCountDetails(token)
+    }
 }

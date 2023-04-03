@@ -308,4 +308,13 @@ class RemoteDataStore @Inject constructor(
     ): Completable {
         return remoteRepository.reportMarkerLocationQueryDetails(id,reason,details,token)
     }
+
+
+    override fun checkValidCreateMarkerCountDetails(token: String): Observable<Int> {
+        return remoteRepository.checkValidCreateMarkerCountDetails(token)
+    }
+
+    override fun checkValidCreateEventCountDetails(token: String): Observable<Int> {
+        return remoteRepository.checkValidCreateEventCountDetails(token)
+    }
 }

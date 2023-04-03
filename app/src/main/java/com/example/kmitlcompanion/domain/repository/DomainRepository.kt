@@ -6,6 +6,7 @@ import com.example.kmitlcompanion.data.model.LocationPublicData
 import com.example.kmitlcompanion.data.model.ReturnLoginData
 import com.example.kmitlcompanion.data.model.UserData
 import com.example.kmitlcompanion.domain.model.*
+import com.example.kmitlcompanion.domain.usecases.CheckValidCreateMarkerCount
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import java.io.File
@@ -98,4 +99,8 @@ interface DomainRepository {
     fun reportEventLocationQueryDetails(id : Long,reason : String,details : String) : Completable
 
     fun reportMarkerLocationQueryDetails(id : Long,reason : String,details : String) : Completable
+
+    fun checkValidCreateMarkerCount() : Observable<Int>
+
+    fun checkValidCreateEventCount() : Observable<Int>
 }

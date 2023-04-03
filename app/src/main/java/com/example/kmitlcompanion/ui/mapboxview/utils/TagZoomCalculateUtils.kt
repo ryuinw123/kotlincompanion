@@ -94,7 +94,7 @@ class TagZoomCalculateUtils @Inject constructor() {
     }
 
     companion object {
-        const val DISTANCE = 20
+        const val DISTANCE = 5
     }
 
 
