@@ -594,7 +594,10 @@ class ViewNavigation @Inject constructor(
             clearEvents()
             val replayEvents = ReplayRouteMapper().mapDirectionsRouteGeometry(route)
             pushEvents(replayEvents)
-            seekTo(replayEvents.first())
+            if (!replayEvents.isNullOrEmpty()){
+                seekTo(replayEvents.first())
+            }
+
             play()
         }
     }
