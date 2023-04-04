@@ -1,10 +1,12 @@
 package com.example.kmitlcompanion.ui.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -67,6 +69,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(), Acti
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Disable back button functionality here
+            }
+        })
+    }
 
     private fun subscribeUi() {
         viewModel.startActivityForResultEvent.setEventReceiver(this,this)

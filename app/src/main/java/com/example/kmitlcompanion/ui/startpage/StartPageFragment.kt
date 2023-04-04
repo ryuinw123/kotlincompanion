@@ -1,6 +1,7 @@
 package com.example.kmitlcompanion.ui.startpage
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
@@ -68,6 +70,15 @@ class StartPageFragment : BaseFragment<FragmentStartPageBinding, StartPageViewMo
         bottomBarUtils.bottomMap?.visibility = View.INVISIBLE
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Disable back button functionality here
+            }
+        })
     }
 
     override fun onResume() {

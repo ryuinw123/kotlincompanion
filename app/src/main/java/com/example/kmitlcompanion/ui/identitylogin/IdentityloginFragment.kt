@@ -1,10 +1,12 @@
 package com.example.kmitlcompanion.ui.identitylogin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -63,6 +65,15 @@ class IdentityloginFragment : BaseFragment<FragmentIdentityloginBinding, Identit
 //                nextHomePage()
 //            })
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Disable back button functionality here
+            }
+        })
     }
 
     private fun FragmentIdentityloginBinding.setupListener(){
