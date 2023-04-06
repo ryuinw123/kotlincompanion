@@ -20,13 +20,13 @@ object RetrofitServiceFactory {
 
     private fun makeRetrofitTestClient(okHttpClient: OkHttpClient, gson: Gson): RetrofitTestClient {
         val retrofit = Retrofit.Builder()
-            //.baseUrl("http://shitduck.duckdns.org:8000/api/")
+            .baseUrl("http://shitduck.duckdns.org:8000/api/")
             //.baseUrl("http://192.168.2.40:8000/api/")
             //.baseUrl("http://172.28.48.1:8000/api/") //For Banana PC เน็ตข้างบ้าน
             //.baseUrl("http://192.168.1.22:8000/api/") //For Banana Phone เน็ตข้างบ้าน
             //.baseUrl("http://192.168.43.98:8000/api/") //For Banana PC เน็ตตัวเอง
             //.baseUrl("http://1.46.3.79:8000/api/") //For Banana Phone เน็ตตัวเอง
-            .baseUrl("http://192.168.0.117:8000/api/")
+            //.baseUrl("http://192.168.0.111:8000/api/")
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

@@ -39,7 +39,9 @@ class GeofenceReceiver : BroadcastReceiver() {
 
                     var diffInMillis: Long = Math.abs(Timestamp(System.currentTimeMillis()).getTime() - lastesttime.getTime())
                     //val oneDayInMillis = (24 * 60 * 60 * 1000).toLong()
-                    val oneDayInMillis = (10 * 1000).toLong()
+                    //val oneDayInMillis = (10 * 1000).toLong()
+                    val oneDayInMillis = (60 * 10 * 1000).toLong()
+
 
                     //Log.d("test_noti","$diffInMillis and $oneDayInMillis")
                     Log.d("test_bug_poly",id.toString())

@@ -423,8 +423,8 @@ class MapboxFragment : BaseFragment<FragmentMapboxBinding, MapboxViewModel>() {
                 val visibility = if (it == true) View.GONE else View.VISIBLE
                 binding.eventTimeLayout.visibility = if (it == false) View.GONE else View.VISIBLE
                 binding.navigation.visibility = visibility
-                binding.placeText.visibility = visibility
-                binding.addressText.visibility = visibility
+                //binding.placeText.visibility = visibility
+                //binding.addressText.visibility = visibility
                 binding.commentZone.visibility = visibility
                 binding.constraintLayout3.visibility = visibility
                 binding.pinToGoogleCalendar.visibility = if (it == false) View.GONE else View.VISIBLE
