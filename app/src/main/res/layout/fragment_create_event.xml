@@ -522,64 +522,76 @@
 
                     <TextView
                         android:id="@+id/warning_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:paddingLeft="100dp"
-                        android:paddingRight="25dp"
                         android:text="* การสร้างอีเวนต์ จะแสดงผลแบบสาธารณะซึ่งจะมองเห็นได้ทุกคน"
                         android:textColor="@color/kmitl_color"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/select_image_group5" />
+                        app:layout_constraintTop_toBottomOf="@+id/select_image_group5"
+                        app:layout_constraintWidth_percent="0.8" />
 
                     <TextView
                         android:id="@+id/warning_text2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:paddingLeft="100dp"
-                        android:paddingRight="25dp"
                         android:text="* เมื่อผู้อื่นเข้ามาในบริเวณอีเวนต์ จะส่งแจ้งเตือนแสดงอีเวนต์"
                         android:textColor="@color/kmitl_color"
                         app:layout_constraintEnd_toEndOf="@+id/warning_text"
                         app:layout_constraintStart_toStartOf="@+id/warning_text"
-                        app:layout_constraintTop_toBottomOf="@+id/warning_text" />
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text"
+                        app:layout_constraintWidth_percent="0.8" />
+
+                    <TextView
+                        android:id="@+id/warning_text2_5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="** อีเวนต์จะแสดงผลให้ผู้สร้างเห็นเพียงคนเดียวเท่านั้น หากสร้างอีเวนต์โดยให้เวลาเริ่มต้นมากกว่าปัจจุบัน 30 วัน"
+                        android:textColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/warning_text2"
+                        app:layout_constraintStart_toStartOf="@+id/warning_text2"
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text2"
+                        app:layout_constraintWidth_percent="0.8" />
 
                     <TextView
                         android:id="@+id/warning_text3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:paddingLeft="100dp"
-                        android:paddingRight="25dp"
                         android:text="* อีเวนต์จะสามารถสร้างได้ 3 ครั้ง / สัปดาห์เท่านั้น"
                         android:textColor="@color/kmitl_color"
-                        app:layout_constraintEnd_toEndOf="@+id/warning_text2"
-                        app:layout_constraintStart_toStartOf="@+id/warning_text2"
-                        app:layout_constraintTop_toBottomOf="@+id/warning_text2" />
+                        app:layout_constraintEnd_toEndOf="@+id/warning_text2_5"
+                        app:layout_constraintStart_toStartOf="@+id/warning_text2_5"
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text2_5"
+                        app:layout_constraintWidth_percent="0.8" />
 
 
                     <TextView
                         android:id="@+id/warning_text4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_marginTop="10dp"
-                        android:paddingLeft="100dp"
+                        android:layout_marginEnd="16dp"
                         android:text="*** อีเวนต์ที่สามารถสร้างได้ในสัปดาห์นี้ :"
                         android:textColor="@color/kmitl_color"
+                        app:layout_constraintEnd_toEndOf="@+id/warning_text3"
                         app:layout_constraintStart_toStartOf="@+id/warning_text3"
-                        app:layout_constraintTop_toBottomOf="@+id/warning_text3" />
+                        app:layout_constraintTop_toBottomOf="@+id/warning_text3"
+                        app:layout_constraintWidth_percent="0.8" />
 
                     <TextView
                         android:id="@+id/number_of_count_event"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:text="3"
-                        android:textStyle="bold"
                         android:textColor="@color/kmitl_color"
+                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/warning_text4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.05"
                         app:layout_constraintStart_toEndOf="@+id/warning_text4"
                         app:layout_constraintTop_toTopOf="@+id/warning_text4" />
 
