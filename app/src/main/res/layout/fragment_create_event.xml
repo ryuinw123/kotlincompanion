@@ -549,7 +549,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="** อีเวนต์จะแสดงผลให้ผู้สร้างเห็นเพียงคนเดียวเท่านั้น หากสร้างอีเวนต์โดยให้เวลาเริ่มต้นมากกว่าปัจจุบัน 30 วัน"
+                        android:text="** อีเวนต์จะแสดงผลให้ผู้สร้างเห็นเพียงคนเดียวเท่านั้น หากสร้างอีเวนต์โดยให้เวลาเริ่มต้นอีเวนต์ มากกว่าปัจจุบัน 30 วัน"
                         android:textColor="@color/kmitl_color"
                         app:layout_constraintEnd_toEndOf="@+id/warning_text2"
                         app:layout_constraintStart_toStartOf="@+id/warning_text2"
