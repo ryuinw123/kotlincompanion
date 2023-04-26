@@ -11,8 +11,8 @@ class SecretLocation @Inject constructor(
 ) {
 
     companion object {
-        const val LOCATION_UPDATE_INTERVAL : Long = 5000
-        const val LOCATION_UPDATE_FASTEST_INTERVAL : Long = 3000
+        const val LOCATION_UPDATE_INTERVAL : Long = 300000
+        const val LOCATION_UPDATE_FASTEST_INTERVAL : Long = 150000
     }
     lateinit var locationService : LocationService
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -36,7 +36,7 @@ class SecretLocation @Inject constructor(
         val locationRequest = LocationRequest.create().apply {
             interval = LOCATION_UPDATE_INTERVAL
             fastestInterval = LOCATION_UPDATE_FASTEST_INTERVAL
-            priority = Priority.PRIORITY_HIGH_ACCURACY
+            priority = Priority.PRIORITY_LOW_POWER
         }
         fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null)
     }
