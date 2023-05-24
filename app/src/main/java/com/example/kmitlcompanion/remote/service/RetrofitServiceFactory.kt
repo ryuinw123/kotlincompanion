@@ -1,5 +1,8 @@
 package com.example.kmitlcompanion.remote.service
 
+import android.content.Context
+import android.content.res.Resources
+import com.example.kmitlcompanion.R
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,22 +13,17 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitServiceFactory {
 
-    fun makeRetrofitTestClient(isDebug: Boolean): RetrofitTestClient {
+    fun makeRetrofitTestClient(context: Context,isDebug: Boolean): RetrofitTestClient {
         val okHttpClient = makeOkHttpClient(
             makeLoggingInterceptor((isDebug))
         )
-        return makeRetrofitTestClient(okHttpClient, Gson())
+        return makeRetrofitTestClient(context,okHttpClient, Gson())
     }
 
 
-    private fun makeRetrofitTestClient(okHttpClient: OkHttpClient, gson: Gson): RetrofitTestClient {
+    private fun makeRetrofitTestClient(context: Context,okHttpClient: OkHttpClient, gson: Gson): RetrofitTestClient {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://shitduck.duckdns.org:8000/api/")
-            //.baseUrl("http://192.168.2.40:8000/api/")
-            //.baseUrl("http://192.168.1.22:8000/api/") //For Banana Phone เน็ตข้างบ้าน
-            //.baseUrl("http://192.168.43.98:8000/api/") //For Banana PC เน็ตตัวเอง
-            //.baseUrl("http://1.46.3.79:8000/api/") //For Banana Phone เน็ตตัวเอง
-            //.baseUrl("http://192.168.0.111:8000/api/")
+            .baseUrl(context.getString(R.string.ip))
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))

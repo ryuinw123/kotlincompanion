@@ -1,5 +1,6 @@
 package com.example.kmitlcompanion.di
 
+import android.content.Context
 import com.example.kmitlcompanion.BuildConfig
 import com.example.kmitlcompanion.data.repository.RemoteRepository
 import com.example.kmitlcompanion.remote.RetrofitClient
@@ -9,6 +10,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -19,8 +21,8 @@ abstract class RemoteModule {
     @InstallIn(SingletonComponent::class)
     object Retrofit {
         @Provides
-        fun provideRetrofitTestClient(): RetrofitTestClient {
-            return RetrofitServiceFactory.makeRetrofitTestClient(BuildConfig.DEBUG)
+        fun provideRetrofitTestClient(@ApplicationContext context: Context): RetrofitTestClient {
+            return RetrofitServiceFactory.makeRetrofitTestClient(context,BuildConfig.DEBUG)
         }
 
     }
